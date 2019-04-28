@@ -1,0 +1,540 @@
+/*
+SQLyog Ultimate v12.09 (64 bit)
+MySQL - 5.7.9 : Database - ef3c71v0_rvweb
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`ef3c71v0_rvweb` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+USE `ef3c71v0_rvweb`;
+
+/*Table structure for table `cabecera` */
+
+DROP TABLE IF EXISTS `cabecera`;
+
+CREATE TABLE `cabecera` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cliente` int(11) DEFAULT NULL,
+  `estadoActual` int(11) DEFAULT NULL,
+  `fecha_ingreso` datetime DEFAULT NULL,
+  `conFactura` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `id_cliente` (`id_cliente`),
+  KEY `estadoActual` (`estadoActual`),
+  CONSTRAINT `cabecera_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5849 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cabecera` */
+
+insert  into `cabecera`(`id`,`id_cliente`,`estadoActual`,`fecha_ingreso`,`conFactura`) values (5847,257,118,'2017-08-11 11:59:59',0),(5848,258,121,'2017-08-16 11:59:59',0);
+
+/*Table structure for table `cambioestado` */
+
+DROP TABLE IF EXISTS `cambioestado`;
+
+CREATE TABLE `cambioestado` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificador',
+  `id_cabecera` int(11) NOT NULL COMMENT 'Cabecera a la cual pertenece',
+  `estado` int(11) NOT NULL COMMENT 'estado que representa',
+  `fecha` datetime NOT NULL COMMENT 'fecha de inserccion',
+  `id_usuario` int(11) unsigned NOT NULL COMMENT 'identificacion del pc que actualizo',
+  PRIMARY KEY (`id`,`id_cabecera`),
+  KEY `id_cabecera` (`id_cabecera`),
+  KEY `cambioestado_fk` (`estado`),
+  KEY `ce_user` (`id_usuario`),
+  CONSTRAINT `cambioestado_fk` FOREIGN KEY (`estado`) REFERENCES `estado` (`id`),
+  CONSTRAINT `cambioestado_ibfk_1` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`),
+  CONSTRAINT `ce_user` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cambioestado` */
+
+insert  into `cambioestado`(`id`,`id_cabecera`,`estado`,`fecha`,`id_usuario`) values (118,5847,1,'2017-08-15 23:23:14',1),(119,5848,1,'2017-08-16 14:23:46',1),(120,5848,2,'2017-08-17 00:35:47',1),(121,5848,1,'2017-08-24 22:33:29',1);
+
+/*Table structure for table `cliente` */
+
+DROP TABLE IF EXISTS `cliente`;
+
+CREATE TABLE `cliente` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'numero de cliente',
+  `nombre` varchar(100) CHARACTER SET latin1 DEFAULT NULL COMMENT 'nombre cliente',
+  `nombre2` varchar(250) CHARACTER SET latin1 DEFAULT NULL,
+  `correo1` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `correo2` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `fono1` varchar(15) CHARACTER SET latin1 DEFAULT NULL,
+  `fono2` varchar(15) CHARACTER SET latin1 DEFAULT NULL,
+  `giro` varchar(60) CHARACTER SET latin1 DEFAULT NULL,
+  `rut` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
+  `domicilio` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `comuna` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `observaciones` text CHARACTER SET latin1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=259 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cliente` */
+
+insert  into `cliente`(`id`,`nombre`,`nombre2`,`correo1`,`correo2`,`fono1`,`fono2`,`giro`,`rut`,`domicilio`,`comuna`,`observaciones`) values (257,'johnny henriquez','','admjahb@gmail.com','','','','','','','',''),(258,'Emilio Varela Diaz','','','','','','','','','Curanilahue','');
+
+/*Table structure for table `comentarios` */
+
+DROP TABLE IF EXISTS `comentarios`;
+
+CREATE TABLE `comentarios` (
+  `id_comentario` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id_comentario',
+  `id_cabecera` int(11) NOT NULL COMMENT 'Pedido de los comentarios.',
+  `id_user` int(11) unsigned NOT NULL COMMENT 'Creador del comentario.',
+  `estado` int(11) NOT NULL COMMENT 'Estado del comentario activado o desactivado',
+  `fecha_creacion` datetime NOT NULL COMMENT 'Fecha de creaciòn',
+  `comentario` text COMMENT 'Comentario',
+  PRIMARY KEY (`id_comentario`),
+  KEY `56gffg` (`id_cabecera`),
+  KEY `fkusercomentario` (`id_user`),
+  CONSTRAINT `56gffg` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`),
+  CONSTRAINT `fkusercomentario` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8;
+
+/*Data for the table `comentarios` */
+
+insert  into `comentarios`(`id_comentario`,`id_cabecera`,`id_user`,`estado`,`fecha_creacion`,`comentario`) values (95,5847,1,1,'2017-08-15 23:23:14','Pedido Ingresado correctamente el 2017-08-11 11:59:59'),(96,5848,1,1,'2017-08-16 14:23:46','Pedido Ingresado correctamente el 2017-08-16 11:59:59'),(97,5848,1,2,'2017-08-24 22:32:19','No se puede ubicar al cliente ');
+
+/*Table structure for table `cuenta` */
+
+DROP TABLE IF EXISTS `cuenta`;
+
+CREATE TABLE `cuenta` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(200) DEFAULT NULL,
+  `Numero` varchar(50) DEFAULT NULL,
+  `Entidad` varchar(50) DEFAULT NULL,
+  `Tipo` varchar(20) DEFAULT NULL,
+  `Obs` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cuenta` */
+
+insert  into `cuenta`(`id`,`Nombre`,`Numero`,`Entidad`,`Tipo`,`Obs`) values (1,'Jose Cabrera','1','-','1',NULL),(2,'Eduardo Cabrera','2','-','0',NULL),(3,'Vanesa Gutierrez','3','-','1',NULL),(4,'Ingreso','0','Ingreso','1',NULL);
+
+/*Table structure for table `detalle` */
+
+DROP TABLE IF EXISTS `detalle`;
+
+CREATE TABLE `detalle` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cabecera` int(11) NOT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `valor_cli` double DEFAULT NULL,
+  `costo` double DEFAULT NULL,
+  `id_producto` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_cabecera` (`id_cabecera`),
+  KEY `detalle_prod` (`id_producto`),
+  CONSTRAINT `detalle_ibfk_1` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`),
+  CONSTRAINT `detalle_prod` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=662 DEFAULT CHARSET=utf8;
+
+/*Data for the table `detalle` */
+
+insert  into `detalle`(`id`,`id_cabecera`,`cantidad`,`valor_cli`,`costo`,`id_producto`) values (657,5847,2,190000,180000,12),(659,5847,40,15000,12500,11),(660,5848,25,11000,9000,13),(661,5848,2,5000,2500,8);
+
+/*Table structure for table `estado` */
+
+DROP TABLE IF EXISTS `estado`;
+
+CREATE TABLE `estado` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(50) DEFAULT NULL,
+  `vigente` int(11) DEFAULT NULL,
+  `secuencia` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `estado` */
+
+insert  into `estado`(`id`,`descripcion`,`vigente`,`secuencia`) values (0,'Ingresado',1,0),(1,'En Fabricacion',1,1),(2,'Esperando Entrega',1,2),(3,'Entregado',1,3);
+
+/*Table structure for table `feriados` */
+
+DROP TABLE IF EXISTS `feriados`;
+
+CREATE TABLE `feriados` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(500) CHARACTER SET latin1 DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `diadelagno` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+
+/*Data for the table `feriados` */
+
+insert  into `feriados`(`id`,`nombre`,`fecha`,`diadelagno`) values (1,'01 de Enero	Año Nuevo','2014-01-01',1),(2,'Santo Religioso	Ley 2.977','2014-04-18',108),(3,'Santo	Religioso	Ley 2.977','2014-04-19',109),(4,'Día Nacional del Trabajo','2014-05-01',121),(5,'Día de las Glorias Navales	Civil	Ley 2.977','2014-05-21',141),(6,'San Pedro y San Pablo	Religioso	Ley 2.977','2014-06-29',180),(7,'Día de la Virgen del Carmen	Religioso	Ley 20.148','2014-07-16',197),(8,'Asunción de la Virgen	Religioso	Ley 2.977','2014-08-15',227),(9,'Independencia Nacional','2014-09-18',261),(10,'Día de las Glorias del Ejército','2014-09-19',262),(11,'Encuentro de Dos Mundos	Civil	Ley 3.810','2014-10-12',285),(12,'Día de las Iglesias Evangélicas y Protestantes	Religioso	Ley 20.299','2014-10-31',304),(13,'Día de Todos los Santos	Religioso	Ley 2.977','2014-11-01',305),(14,'Inmaculada Concepción	Religioso	Ley 2.977','2014-12-08',342),(15,'Navidad','2014-12-25',359),(16,'Año Nuevo','2013-01-01',1),(17,'Viernes Santo	Religioso	Ley 2.977','2013-03-29',88),(18,'Sábado Santo	Religioso	Ley 2.977','2013-03-30',89),(19,'Día Nacional del Trabajo','2013-05-01',121),(20,'Día de las Glorias Navales	Civil	Ley 2.977','2013-05-21',141),(21,'San Pedro y San Pablo	Religioso	Ley 2.977','2013-06-29',180),(22,'Elecciones Primarias	Civil	Ley 20.640','2013-06-30',181),(23,'Día de la Virgen del Carmen	Religioso	Ley 20.148','2013-07-16',197),(24,'Asunción de la Virgen	Religioso	Ley 2.977','2013-08-15',227),(25,'Independencia Nacional','2013-09-18',261),(26,'Día de las Glorias del Ejército','2013-09-19',262),(27,'Fiestas Patrias	Civil	Ley 20.215','2013-09-20',263),(28,'Encuentro de Dos Mundos	Civil	Ley 3.810','2013-10-12',285),(29,'Día de las Iglesias Evangélicas y Protestantes	Religioso	Ley 20.299','2013-10-31',304),(30,'Día de Todos los Santos	Religioso	Ley 2.977','2013-11-01',305),(31,'Navidad','2013-12-25',359);
+
+/*Table structure for table `groups` */
+
+DROP TABLE IF EXISTS `groups`;
+
+CREATE TABLE `groups` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `groups` */
+
+insert  into `groups`(`id`,`name`,`description`) values (1,'admin','Administrator'),(2,'members','General User');
+
+/*Table structure for table `login_attempts` */
+
+DROP TABLE IF EXISTS `login_attempts`;
+
+CREATE TABLE `login_attempts` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(15) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `time` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `login_attempts` */
+
+/*Table structure for table `movimiento_ctas` */
+
+DROP TABLE IF EXISTS `movimiento_ctas`;
+
+CREATE TABLE `movimiento_ctas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cabecera` int(11) DEFAULT NULL,
+  `monto` double DEFAULT NULL,
+  `fecha_ingreso` datetime DEFAULT NULL,
+  `id_cuenta_origen` int(11) DEFAULT NULL,
+  `id_cuenta_destino` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_cabecera` (`id_cabecera`),
+  KEY `movimiento_ctas_ctas1` (`id_cuenta_origen`),
+  KEY `movimiento_ctas_ctas2` (`id_cuenta_destino`),
+  CONSTRAINT `movimiento_ctas_ctas1` FOREIGN KEY (`id_cuenta_origen`) REFERENCES `cuenta` (`id`),
+  CONSTRAINT `movimiento_ctas_ctas2` FOREIGN KEY (`id_cuenta_destino`) REFERENCES `cuenta` (`id`),
+  CONSTRAINT `movimiento_ctas_ibfk_1` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=839 DEFAULT CHARSET=utf8;
+
+/*Data for the table `movimiento_ctas` */
+
+insert  into `movimiento_ctas`(`id`,`id_cabecera`,`monto`,`fecha_ingreso`,`id_cuenta_origen`,`id_cuenta_destino`) values (834,5848,140000,'2017-08-16 23:30:31',4,1),(835,5848,115000,'2017-08-16 23:34:18',1,2),(836,5848,12500,'2017-08-16 23:34:54',1,3),(837,5847,435000,'2017-08-17 00:14:56',4,1),(838,5847,380000,'2017-08-17 00:15:20',1,2);
+
+/*Table structure for table `producto` */
+
+DROP TABLE IF EXISTS `producto`;
+
+CREATE TABLE `producto` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Codigo` varchar(10) NOT NULL,
+  `Nombre` varchar(100) DEFAULT NULL,
+  `Descripcion` varchar(1000) DEFAULT NULL,
+  `valor_venta` double DEFAULT NULL,
+  `costo` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+/*Data for the table `producto` */
+
+insert  into `producto`(`id`,`Codigo`,`Nombre`,`Descripcion`,`valor_venta`,`costo`) values (2,'B4060','Bandeja enlozada lisa de 40x60cm','1mm de espesor, 2cm de altura',9500,6000),(3,'B6565','Bandeja enlozada lisa de 65x65cm','Bandeja enlozada lisa de 65x65',11000,9000),(4,'B6558','Bandeja enlozada lisa de 65x58cm ','bandeja lisa de 65x58cm ',12000,9000),(5,'B6565','NUEVA BANDEJA','es la descripcion',9000,11000),(7,'6080','Bandeja enlozada lisa de 60x80cm. de 0.8mm. de espesor','Bandeja enlozada lisa de 60x80cm. de 0.8mm. de espesor, altura 1,8cm aproximadamente.',12000,9000),(8,'CTR1','Cortador redondo','Cortador redondo',5000,2500),(9,'US40','Uslero picador 40cm','Uslero picador 40cm',25000,15000),(10,'CARR20','Carro bandejero capacidad 20 bandejas','Carro bandejero capacidad 20 bandejas',120000,90000),(11,'6181','Bandeja perforada de 61x81 de 0.8mm','Bandejas enlozadas perforadas de 61x81cm, de 0.8mm. de espesor',15000,12500),(12,'BD6181','Carro bandejero especial para 20 bandejas de 61x81 de acero inxo. con ruedas, con separaciÃ³n de 9cm','Carro bandejero especial para 20 bandejas de 61x81 de acero inxo. con ruedas, con separaciÃ³n de 9cm',190000,180000),(13,'BN7243','Bandeja enlozada lisa de 72x43,5 x3cm de altura','',11000,9000);
+
+/*Table structure for table `users` */
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(15) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `salt` varchar(255) DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `activation_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_time` int(11) unsigned DEFAULT NULL,
+  `remember_code` varchar(40) DEFAULT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `last_login` int(11) unsigned DEFAULT NULL,
+  `active` tinyint(1) unsigned DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `users` */
+
+insert  into `users`(`id`,`ip_address`,`username`,`password`,`salt`,`email`,`activation_code`,`forgotten_password_code`,`forgotten_password_time`,`remember_code`,`created_on`,`last_login`,`active`,`first_name`,`last_name`,`company`,`phone`) values (1,'127.0.0.1','administrator','$2a$06$Euf0K4uVgbPEpMBOWqwfuuuRZV4pmSYY.NjlbRvbj.Lfqsj1DnMhm','','admin@admin.com','','aIjyaeYgb5VHqXowe9Di7e133e1bc3497b489d7b',1496288968,'q2edgd2INbgtZZxuMZMsPu',1268889823,1503624482,1,'Admin','istrator','ADMIN','0');
+
+/*Table structure for table `users_groups` */
+
+DROP TABLE IF EXISTS `users_groups`;
+
+CREATE TABLE `users_groups` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `group_id` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uc_users_groups` (`user_id`,`group_id`),
+  KEY `fk_users_groups_users1_idx` (`user_id`),
+  KEY `fk_users_groups_groups1_idx` (`group_id`),
+  CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `users_groups` */
+
+insert  into `users_groups`(`id`,`user_id`,`group_id`) values (1,1,1),(2,1,2);
+
+/*Table structure for table `usuariocliente` */
+
+DROP TABLE IF EXISTS `usuariocliente`;
+
+CREATE TABLE `usuariocliente` (
+  `id_usuario` int(11) unsigned NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  PRIMARY KEY (`id_usuario`,`id_cliente`),
+  KEY `clienteusuario_cliente` (`id_cliente`),
+  CONSTRAINT `clienteusuario_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`),
+  CONSTRAINT `clienteusuario_user1` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `usuariocliente` */
+
+
+/*!50003 DROP PROCEDURE IF EXISTS  `SpGetProductos` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `SpGetProductos`(in codProd VARCHAR(10))
+BEGIN
+	
+		IF (codProd!='-1')THEN
+			SELECT *, (p.valor_venta- p.costo) ganancia FROM producto p 
+			where 
+			(
+				p.Codigo like  CONCAT('%', codProd , '%') OR 
+				p.`Descripcion` LIKE CONCAT('%', codProd , '%') 
+			
+			);
+		ELSE
+			SELECT *, (p.valor_venta- p.costo) ganancia FROM producto p;
+		END IF;
+    END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `SPGetProductosPorId` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `SPGetProductosPorId` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `SPGetProductosPorId`(IN idin INT)
+BEGIN
+		SELECT * FROM producto p WHERE p.id = idin;
+    END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `SPListadoPedidoss` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `SPListadoPedidoss` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `SPListadoPedidoss`(IN idpedido INT, IN limite INT)
+BEGIN
+SET NAMES utf8;
+SET @sele = "SELECT cab.id,
+		cli.nombre,
+		es.descripcion estado,
+		ce.fecha,
+		res.venta,
+		res.costo,
+		(res.venta-res.costo) 'ganancia',
+		res.debe,
+		res.haber,
+		(res.debe-res.haber) 'debevshaber'
+		";
+SET @fro = "FROM cabecera cab    
+		INNER JOIN  cliente cli    
+			ON cli.id = cab.id_cliente   
+		INNER JOIN cambioestado ce 
+			ON cab.estadoActual = ce.id 
+			AND cab.id = ce.id_cabecera  
+		INNER JOIN estado es 
+			ON ce.estado = es.id 
+		INNER JOIN ids i ON es.id = i.id
+		LEFT JOIN Resumen_pedido res ON cab.id = res.id_cabecera
+		";
+set @were = "WHERE";
+IF (idpedido <> -1) THEN
+	SET @were = CONCAT (@were," cab.id = " , idpedido , " AND ");
+END IF;
+SET @orde = " ORDER BY cab.id desc ";
+SET @were = CONCAT(@were ," 1 = 1 ");	
+SET @limite = concat("LIMIT ", limite);
+		   
+/*SET @were = @were + " ORDER BY cab.id DESC"; */
+SET @queri = CONCAT(@sele,@fro,@were,@orde,@limite);
+PREPARE stmt FROM @queri;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+	
+    END */$$
+DELIMITER ;
+
+/*Table structure for table `resumen_cta` */
+
+DROP TABLE IF EXISTS `resumen_cta`;
+
+/*!50001 DROP VIEW IF EXISTS `resumen_cta` */;
+/*!50001 DROP TABLE IF EXISTS `resumen_cta` */;
+
+/*!50001 CREATE TABLE  `resumen_cta`(
+ `id` int(11) ,
+ `id_cabecera` int(11) ,
+ `Tipo` varchar(20) ,
+ `nombre_cta` varchar(200) ,
+ `nombre_cta_des` varchar(200) ,
+ `fecha_ingreso` datetime ,
+ `Saldo` double 
+)*/;
+
+/*Table structure for table `resumen_pedido` */
+
+DROP TABLE IF EXISTS `resumen_pedido`;
+
+/*!50001 DROP VIEW IF EXISTS `resumen_pedido` */;
+/*!50001 DROP TABLE IF EXISTS `resumen_pedido` */;
+
+/*!50001 CREATE TABLE  `resumen_pedido`(
+ `id_cabecera` int(11) ,
+ `venta` double ,
+ `costo` double ,
+ `saldo` double ,
+ `Debe` double ,
+ `haber` double 
+)*/;
+
+/*Table structure for table `v_cabecera` */
+
+DROP TABLE IF EXISTS `v_cabecera`;
+
+/*!50001 DROP VIEW IF EXISTS `v_cabecera` */;
+/*!50001 DROP TABLE IF EXISTS `v_cabecera` */;
+
+/*!50001 CREATE TABLE  `v_cabecera`(
+ `id` int(11) ,
+ `est_id` int(11) ,
+ `est_fec_estactual` datetime ,
+ `est_fec_ing` datetime ,
+ `cli_id` int(11) ,
+ `cli_nom` varchar(100) ,
+ `ConFactura` tinyint(1) 
+)*/;
+
+/*Table structure for table `v_lineapedido` */
+
+DROP TABLE IF EXISTS `v_lineapedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_lineapedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_lineapedido` */;
+
+/*!50001 CREATE TABLE  `v_lineapedido`(
+ `id_cabecera` int(11) ,
+ `cod_prod` varchar(10) ,
+ `nom_prod` varchar(100) ,
+ `desc_prod` varchar(1000) ,
+ `id_detalle` int(11) ,
+ `cantidad` int(11) ,
+ `Precio_vta` double ,
+ `costo` double ,
+ `total_vta` double ,
+ `total_cos` double ,
+ `ganancia` double 
+)*/;
+
+/*Table structure for table `v_resumenclientepedido` */
+
+DROP TABLE IF EXISTS `v_resumenclientepedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_resumenclientepedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_resumenclientepedido` */;
+
+/*!50001 CREATE TABLE  `v_resumenclientepedido`(
+ `id` int(11) ,
+ `nom_cliente` varchar(100) ,
+ `adr_cliente` varchar(100) ,
+ `cant_pedidos` bigint(21) 
+)*/;
+
+/*Table structure for table `v_totalcuentapedido` */
+
+DROP TABLE IF EXISTS `v_totalcuentapedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_totalcuentapedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_totalcuentapedido` */;
+
+/*!50001 CREATE TABLE  `v_totalcuentapedido`(
+ `id_cabecera` int(11) ,
+ `Debe` double ,
+ `haber` double 
+)*/;
+
+/*View structure for view resumen_cta */
+
+/*!50001 DROP TABLE IF EXISTS `resumen_cta` */;
+/*!50001 DROP VIEW IF EXISTS `resumen_cta` */;
+
+/*!50001 CREATE VIEW `resumen_cta` AS (select `mov`.`id` AS `id`,`mov`.`id_cabecera` AS `id_cabecera`,`cta_des`.`Tipo` AS `Tipo`,`cta`.`Nombre` AS `nombre_cta`,ifnull(`cta_des`.`Nombre`,'*') AS `nombre_cta_des`,`mov`.`fecha_ingreso` AS `fecha_ingreso`,sum(`mov`.`monto`) AS `Saldo` from ((`movimiento_ctas` `mov` join `cuenta` `cta` on((`mov`.`id_cuenta_origen` = `cta`.`id`))) left join `cuenta` `cta_des` on((`mov`.`id_cuenta_destino` = `cta_des`.`id`))) group by `mov`.`id_cabecera`,`cta_des`.`Tipo`,`cta`.`Nombre`,ifnull(`cta_des`.`Nombre`,'*'),`mov`.`fecha_ingreso`) */;
+
+/*View structure for view resumen_pedido */
+
+/*!50001 DROP TABLE IF EXISTS `resumen_pedido` */;
+/*!50001 DROP VIEW IF EXISTS `resumen_pedido` */;
+
+/*!50001 CREATE VIEW `resumen_pedido` AS (select `det`.`id_cabecera` AS `id_cabecera`,sum((`det`.`valor_cli` * `det`.`cantidad`)) AS `venta`,sum((`det`.`costo` * `det`.`cantidad`)) AS `costo`,sum((`res`.`Debe` - `res`.`haber`)) AS `saldo`,sum(`res`.`Debe`) AS `Debe`,sum(`res`.`haber`) AS `haber` from (`ef3c71v0_rvweb`.`detalle` `det` left join `ef3c71v0_rvweb`.`v_totalcuentapedido` `res` on((`det`.`id_cabecera` = `res`.`id_cabecera`))) group by `det`.`id_cabecera`) */;
+
+/*View structure for view v_cabecera */
+
+/*!50001 DROP TABLE IF EXISTS `v_cabecera` */;
+/*!50001 DROP VIEW IF EXISTS `v_cabecera` */;
+
+/*!50001 CREATE VIEW `v_cabecera` AS select `cab`.`id` AS `id`,`est`.`id` AS `est_id`,`ce`.`fecha` AS `est_fec_estactual`,`cab`.`fecha_ingreso` AS `est_fec_ing`,`cli`.`id` AS `cli_id`,`cli`.`nombre` AS `cli_nom`,`cab`.`conFactura` AS `ConFactura` from (((`cabecera` `cab` join `cambioestado` `ce` on(((`cab`.`estadoActual` = `ce`.`id`) and (`cab`.`id` = `ce`.`id_cabecera`)))) join `estado` `est` on((`ce`.`estado` = `est`.`id`))) join `cliente` `cli` on((`cab`.`id_cliente` = `cli`.`id`))) */;
+
+/*View structure for view v_lineapedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_lineapedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_lineapedido` */;
+
+/*!50001 CREATE VIEW `v_lineapedido` AS (select `det`.`id_cabecera` AS `id_cabecera`,`pro`.`Codigo` AS `cod_prod`,`pro`.`Nombre` AS `nom_prod`,`pro`.`Descripcion` AS `desc_prod`,`det`.`id` AS `id_detalle`,`det`.`cantidad` AS `cantidad`,`det`.`valor_cli` AS `Precio_vta`,`det`.`costo` AS `costo`,(`det`.`cantidad` * `det`.`valor_cli`) AS `total_vta`,(`det`.`cantidad` * `det`.`costo`) AS `total_cos`,((`det`.`cantidad` * `det`.`valor_cli`) - (`det`.`cantidad` * `det`.`costo`)) AS `ganancia` from (`detalle` `det` join `producto` `pro` on((`det`.`id_producto` = `pro`.`id`)))) */;
+
+/*View structure for view v_resumenclientepedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_resumenclientepedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_resumenclientepedido` */;
+
+/*!50001 CREATE VIEW `v_resumenclientepedido` AS select `cli`.`id` AS `id`,`cli`.`nombre` AS `nom_cliente`,`cli`.`correo1` AS `adr_cliente`,count(`cab`.`id`) AS `cant_pedidos` from (`cliente` `cli` left join `cabecera` `cab` on((`cli`.`id` = `cab`.`id_cliente`))) group by `cli`.`id` */;
+
+/*View structure for view v_totalcuentapedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_totalcuentapedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_totalcuentapedido` */;
+
+/*!50001 CREATE VIEW `v_totalcuentapedido` AS (select `dt`.`id_cabecera` AS `id_cabecera`,sum(`dt`.`Debe`) AS `Debe`,sum(`dt`.`haber`) AS `haber` from (select `mov`.`id_cabecera` AS `id_cabecera`,sum((case `cta_des`.`Tipo` when 1 then (case `cta`.`Numero` when 0 then `mov`.`monto` else 0 end) else 0 end)) AS `Debe`,sum((case `cta_des`.`Tipo` when 0 then `mov`.`monto` else 0 end)) AS `haber` from ((`ef3c71v0_rvweb`.`movimiento_ctas` `mov` join `ef3c71v0_rvweb`.`cuenta` `cta_des` on((`mov`.`id_cuenta_destino` = `cta_des`.`id`))) join `ef3c71v0_rvweb`.`cuenta` `cta` on((`mov`.`id_cuenta_origen` = `cta`.`id`))) group by `mov`.`id_cabecera`) `dt` group by `dt`.`id_cabecera`) */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

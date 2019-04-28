@@ -1,0 +1,219 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+	<?php echo $titleHeader; ?>
+	<small>
+	<?php echo $descHeader ?>
+	</small>
+  </h1>
+  <ol class="breadcrumb">
+	<li><a href="<?php echo base_url(); ?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
+	<li><a href="<?php echo base_url($currentClass); ?>"><?php echo $currentClass ?></a></li>
+	<li class="active"><?php echo $currentAction ?></li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <!-- Your Page Content Here -->
+	<div class="row">
+            <div class="col-md-12">
+              <div class="box">
+                <div class="box-header with-border">
+                  <h3 class="box-title"><?php echo $descHeader; ?></h3>
+				    <div class="box-tools pull-right">
+								<button class="btn btn-box-tool" data-widget="collapse" 
+								data-toggle="tooltip" title="" data-original-title="Collapse">
+									<i class="fa fa-plus"></i></button>
+				    </div>
+               </div><!-- /.box-header -->
+                <div class="box-body">
+                 		<form role="form" data-toggle="validator" id="frm_pedido">
+                 		<div class="row">
+                 			
+                 			<div class="col-lg-4 col-md-4  col-xs-12">
+ 								<div class="form-group">
+		                 		  <label for="cntrl_codigo" 
+		                 		  	class="control-label">Cod.:
+		                 		  </label>
+								  <input type="text" class="form-control" 
+								  id="txt_codProd" placeholder="4321" value="<?php echo $proEdit['Codigo']; ?>" required>
+								 </div>
+							</div>
+							
+                 			<div class="col-lg-4 col-md-4  col-xs-12">
+                 			
+								<div class="form-group">
+								  <label for="cntrl_categoria_prod" 
+		                 		  	class="control-label">Categoria:
+		                 		  </label>
+		                 		  
+		                 		  	<select id="cntrl_categoria_prod"  
+								    class="form-control" 
+								    name="cntrl_categoria_prod" 
+								    style="width:100%;" data-error="Seleccione una categoria!" required>
+								    
+								    <?php 
+								    foreach($categorias as $cat){
+								        $esselected = ($proEdit['id_categoria']==$cat["id"])?"selected":"";
+								        echo "<option value='".$cat["id"]."'".$esselected." >".$cat["nom_categoria"]."</option>";
+								    }
+								    ?>
+								    
+								    
+								    </select>
+		                 		  
+								 </div>
+							</div>
+							
+ 							
+							<div class="col-lg-4 col-md-4  col-xs-12">
+								<div class="form-group">
+								  <label for="cntrl_codigo" 
+		                 		  	class="control-label">Nombre:
+		                 		  </label>
+		                 		  <input type="text" class="form-control" 
+								  id="txt_nomProd" placeholder="- bandeja enlozada-"  value="<?php echo $proEdit['Nombre']; ?>" required>
+								 </div>
+							</div>
+						</div><!-- Row -->
+						<div class="row">
+							<div class="col-lg-10 col-md-10  col-xs-10">
+								<label for="cntrl_codigo">	
+									Descripci&oacute;n:
+								</label>
+								 <textarea id="txt_descProd" class="form-control" rows="3" placeholder="Datos extra."><?php echo $proEdit['Descripcion']; ?></textarea>
+							</div>
+						</div><!-- Row -->		
+						<div class="row">
+							<div class="col-lg-3 col-md-6  col-xs-6">
+							   <div class="form-group">
+							    <label for="txt_costoventa" 
+		                 		  	class="control-label">Valor costo:
+		                 		  </label>
+								<input type="text" class="form-control" id="txt_costoventa" 
+								placeholder="Costo venta" value="<?php echo $proEdit['costo']; ?>" required>
+							   </div>
+							</div>
+							<div class="col-lg-3 col-md-6  col-xs-6">
+								<div class="form-group">
+								 <label for="txt_precioventa" 
+		                 		  	class="control-label">Valor venta:
+		                 		  </label>
+								<input type="text" class="form-control" id="txt_precioventa"  
+								placeholder="Precio venta" value="<?php echo $proEdit['valor_venta']; ?>" required>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-6  col-xs-12">
+								<input type="hidden" id="idproducto" value="<?php echo $proEdit['id'];?>">
+								<div class="form-group">
+									<button  id="btn_guardar_det" type="submit"	class="btn btn-default"	title="Guardar" ><i class="fa fa-save"></i> Grabar</button>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6  col-xs-12">
+								<div class="form-group">
+    								<a class="btn btn-default" href="<?php echo base_url(); ?>Productos/listado/">
+    								<i class="fa fa-repeat"></i> Volver al Listado</a>
+								</div>
+							</div>
+						</div>
+                 		</form>
+                </div><!-- /.box-body -->
+               
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+			
+			
+    </div><!-- /.Row -->
+
+</section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+
+
+<script type="text/javascript">
+			
+$(document).ready(function() {
+
+	
+
+	$('#txt_nomProd').change(function () {
+
+		/*Buscar productos ya ingresados*/
+
+	    
+	});
+
+	$('#cntrl_categoria_prod').change(function () {
+
+		$('#txt_nomProd').val( $("#cntrl_categoria_prod :selected").text());
+	});
+
+	
+		
+	$('#txt_costoventa').priceFormat({
+	    prefix: '$ ',
+	    centsSeparator: ',',
+	    thousandsSeparator: '.',
+	    centsLimit: 0
+	});
+	$('#txt_precioventa').priceFormat({
+	    prefix: '$ ',
+	    centsSeparator: ',',
+	    thousandsSeparator: '.',
+	    centsLimit: 0
+	});
+
+	$("#frm_pedido").validate({
+			submitHandler: function(form){
+			
+		//TODO validacion antes de grabar
+		event.preventDefault();
+	
+		var txt_codProd    =  $("#txt_codProd").val();
+		var txt_nomProd  =  $("#txt_nomProd").val();
+		var txt_descProd  =  $("#txt_descProd").val();
+		
+		var txt_costoventa =  $("#txt_costoventa").unmask();
+		var txt_precioventa=  $("#txt_precioventa").unmask();
+		
+
+		var idproducto = $("#idproducto").val();
+		var idcategoria = $("#cntrl_categoria_prod").val();
+		
+	
+		jQuery.ajax({
+		method: "POST",
+			url: "<?php echo base_url(); ?>Productos/save",
+			dataType: 'json',
+			data: {txt_codProd,txt_nomProd,txt_costoventa,txt_precioventa,idproducto,txt_descProd,idcategoria},
+			success: function(res) {
+						if (res)
+						{
+							alert('Producto grabado ' + res.id)
+						
+							
+						}else
+						{
+							alert("ERROR al actualizar el producto");
+						}
+				}
+		}); //jqueryajax
+		
+		
+		}//function form	
+	});
+	
+	
+
+	
+}); //Function ready
+</script>
+ 
+
+
+	
+

@@ -1,0 +1,92 @@
+
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+/*
+ * Controlar de Seguimientos
+ */
+class Seguimiento extends CI_Controller
+{
+
+    public function Index()
+    {
+       redirect ( 'seguimiento/Consulta' );
+    }
+    
+    public function Consulta(){
+        $dataContent['titleHeader']  =  "Sistema de seguimiento de pedidos ONLINE.";
+        $dataContent['descHeader']   =  "ver estado de su pedido";
+        
+        
+        $this->load->templatepublic('v_seguimiento_consulta', $dataContent);
+    }
+    
+    
+    public function Ver($idpedido=-1,$idcliente = -1)
+    {
+        if ($idpedido==-1 or $idcliente==-1) {
+            redirect ( 'seguimiento/Consulta' );
+        } else {
+                $dataContent['titleHeader']  =  "Sistema de seguimiento de pedidos ONLINE.";
+                $dataContent['descHeader']   =  "ver estado de su pedido";
+                $dataContent['id_cabecera']   =  $idpedido;
+                
+                
+                $pededit = $this->M_pedido->obtenerPedido($idpedido);
+                if($pededit==NULL)
+                    redirect ( 'seguimiento/Consulta' );
+                $cliente = $this->M_cliente->getcliente($idcliente);
+                if($cliente==NULL)
+                    redirect ( 'seguimiento/Consulta' );
+                $dataContent['cliente']   =  $cliente[0];
+                
+                
+                
+                $fecha_actual = date_create();
+               
+                $dataContent['fecha_consulta']= $fecha_actual->format('Y-m-d');;
+                $dataContent['datos_seguimiento'] = $this->ProcesaListado($this->M_pedido->obtenerPedidoSeguimiento($idpedido,$idcliente),$fecha_actual);
+                
+                //var_dump( $dataContent['datos_seguimiento']);
+                /*Mostrar resumen pedido*/
+                
+                $detallepedido = $this->M_pedido->obtenerPedidoDetalle($idpedido);
+                
+                $indicadores =  $this->M_pedido->obtenerPedidoIndicadores($idpedido);
+                
+                $dataContent['pedEdit'] = $pededit[0];
+                $dataContent['detEdit'] = $detallepedido;
+                
+                if($indicadores==NULL)
+                    $dataContent['indicadores'] = '';
+                else 
+                    $dataContent['indicadores'] = $indicadores[0];
+                
+                $this->load->templatepublic('v_seguimiento', $dataContent);
+        }
+    }
+    
+    
+    function ProcesaListado($data,$fecha_actual)
+    {
+        $this->load->library("Comun");
+        
+        
+        
+        for ($i = 0; $i < count($data); $i ++) {
+            
+            $fecha_mod =  $this->comun->transformaStringFecha($data[$i]["fecha_mod"]);
+            $fecha_mod_hora = $this->comun->transformaStringFechaHora($data[$i]["fecha_mod"]);
+            
+            $data[$i]["fecha_mod"] = $fecha_mod->format('Y-m-d');
+            $data[$i]["fecha_mod_hora"] = $fecha_mod_hora;
+            
+
+            
+            $data[$i]["cuentadias_fecha_mod"] =  $this->comun->cuentaDias($fecha_mod, $fecha_actual);
+        }
+        
+        return $data;
+    }
+  
+}

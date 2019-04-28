@@ -1,0 +1,134 @@
+<?php
+
+class M_Productos extends CI_Model {
+	
+    function __construct()
+    {
+        // Call the Model constructor
+        parent::__construct();
+		
+    }
+	
+    function getProdPorid($idProd)
+    {
+    	$this->db->select('*');
+    	$this->db->from('producto');
+    	$this->db->where('id',$idProd);
+    	 
+    	$query = $this->db->get();
+    	 
+    	return $query->result_array();
+    }
+    
+    /**
+     * Retorna las categorias de productos del sistema
+     */
+    function get_Categorias(){
+        
+        return   $this->db->select(' id,nom_categoria')->from('categoria')->get()->result_array();
+    }
+    
+    
+    
+	/**
+	 * 
+	 *  Metodo de busqueda por COD
+	 */
+	function get_productos($search,$limit,$ordenarpor,$orden,$cat)
+	{
+		
+		$this->db->select('producto.*, categoria.nom_categoria,(producto.valor_venta- producto.costo) as ganancia')->from('producto')
+		->join('categoria','categoria.id = producto.id_categoria')
+		->group_start()
+		->or_like(' producto.codigo ', $search)
+		->or_like(' producto.descripcion', $search)
+		->group_end();
+		
+		if($cat!=0)// valor 0 es cuando se muestran todas
+		    $this->db->where('categoria.id',$cat);
+		
+        $this->db->limit($limit);
+        $this->db->order_by($ordenarpor, $orden);
+        return $this->db->get()->result_array();;
+	}
+    /**
+     * Metodo de busqueda por descripcion 
+     * 
+     * @param unknown $criterio
+     */
+    function getAll($criterio)
+    {
+        $sql = "SELECT id, nombre FROM producto WHERE descripcion LIKE  '%".$criterio."%'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    
+     /**
+      * Obtiene un producto por su ID.
+      */
+     function getById($idprod)
+     {
+     	
+     	$sql = "SELECT * FROM producto WHERE id = " . $idprod;
+     	$query = $this->db->query($sql);
+     	return $query->result_array();
+     	
+     }
+    
+	/*
+	* Elimina un producto de la >BD.
+	*/    
+     function delete_prod($id)
+     {
+     	return $this->db->simple_query("DELETE FROM `producto` WHERE `id` = ".$id);
+     }
+     
+     
+	/**
+	 * 
+	 * @param unknown $codigo
+	 * @param unknown $nombre
+	 * @param unknown $Descripcion
+	 * @param unknown $valor_venta
+	 * @param unknown $costo
+	 */
+    function insert_entry($codigo,$Nombre,$Descripcion, $valor_venta, $costo,$cat)
+    {
+    	$this->codigo   	  = $codigo;
+    	$this->nombre   	  = $Nombre;
+    	$this->Descripcion    = $Descripcion;
+    	$this->valor_venta    = $valor_venta;
+    	$this->costo 		  = $costo;
+    	$this->id_categoria   = $cat;
+    	
+    	$this->db->insert('producto', $this);
+    	
+    	$insert_id = $this->db->insert_id();
+    	
+    	return  $insert_id;
+    }
+ 	
+    function ajax_getProductos($cod_prod)
+    {
+    	
+    	
+    }
+    
+    
+    function update_entry($idproducto,$codigo,$Nombre,$Descripcion, $valor_venta, $costo,$cat)
+    {
+    	$this->codigo   	  = $codigo;
+    	$this->Nombre   	  = $Nombre;
+    	$this->Descripcion    = $Descripcion;
+    	$this->valor_venta    = $valor_venta;
+    	$this->costo 		  = $costo;
+    	$this->id_categoria   = $cat;
+    	
+    	$this->db->where('id', $idproducto);
+    	$this->db->update('producto', $this);
+    }
+    
+
+}
+
+?>

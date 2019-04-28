@@ -1,0 +1,25 @@
+
+ALTER VIEW `registroventasweb_des`.`resumen_pedido` 
+AS
+(
+	SELECT
+	  det.id_cabecera AS `id_cabecera`,
+	  SUM(det.valor_cli*det.cantidad) AS `venta`,
+	  SUM(det.costo*det.cantidad)  AS `costo`,
+	  SUM(res.Saldo)  AS 'saldo',
+	  SUM(CASE res.tipo 
+		WHEN 1 THEN res.saldo
+		ELSE 0
+	  END) Debe,
+	  SUM(CASE res.tipo 
+		WHEN 0 THEN res.saldo
+		ELSE 0
+	  END) haber
+	FROM 
+	  detalle AS det 
+	  LEFT JOIN resumen_cta res ON det.id_cabecera = res.id_cabecera
+			
+	GROUP BY  
+	   det.id_cabecera,
+	   det.id_producto
+);

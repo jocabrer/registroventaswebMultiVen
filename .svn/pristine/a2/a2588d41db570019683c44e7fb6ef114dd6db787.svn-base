@@ -1,0 +1,650 @@
+/*
+SQLyog Ultimate v12.09 (64 bit)
+MySQL - 5.6.33 : Database - ef3c71v0_rvweb
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`ef3c71v0_rvweb` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+
+
+/*Table structure for table `cabecera` */
+
+DROP TABLE IF EXISTS `cabecera`;
+
+CREATE TABLE `cabecera` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cliente` int(11) DEFAULT NULL,
+  `estadoActual` int(11) DEFAULT NULL,
+  `fecha_ingreso` datetime DEFAULT NULL,
+  `conFactura` tinyint(1) DEFAULT '1' COMMENT '0 false 1 true',
+  PRIMARY KEY (`id`),
+  KEY `id_cliente` (`id_cliente`),
+  KEY `estadoActual` (`estadoActual`),
+  CONSTRAINT `cabecera_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6025 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cabecera` */
+
+insert  into `cabecera`(`id`,`id_cliente`,`estadoActual`,`fecha_ingreso`,`conFactura`) values (5864,261,200,'2017-09-25 11:59:59',0),(5865,259,201,'2017-09-25 11:59:59',1),(5866,262,194,'2017-09-25 11:59:59',0),(5867,263,199,'2017-09-25 11:59:59',0),(5868,264,215,'2017-09-26 11:59:59',0),(5869,265,204,'2017-09-28 11:59:59',0),(5870,266,214,'2017-10-02 11:59:59',0),(6000,267,227,'2017-10-04 11:59:59',0),(6001,268,228,'2017-10-02 11:59:59',0),(6002,269,249,'2017-10-05 11:59:59',0),(6003,270,216,'2017-10-03 11:59:59',0),(6004,271,229,'2017-10-05 11:59:59',0),(6005,272,213,'2017-10-05 11:59:59',0),(6006,273,240,'2017-10-06 11:59:59',0),(6007,274,230,'2017-10-02 11:59:59',0),(6008,275,262,'2017-10-10 11:59:59',1),(6009,276,243,'2017-10-11 11:59:59',1),(6010,277,248,'2017-10-11 11:59:59',0),(6011,278,247,'2017-10-12 11:59:59',0),(6012,279,272,'2017-10-16 11:59:59',1),(6013,280,251,'2017-10-16 11:59:59',1),(6014,281,260,'2017-10-17 11:59:59',0),(6015,282,263,'2017-10-19 11:59:59',0),(6016,283,271,'2017-10-23 11:59:59',0),(6017,272,267,'2017-10-24 11:59:59',0),(6018,284,281,'2017-10-25 11:59:59',0),(6019,285,280,'2017-10-24 11:59:59',0),(6020,286,279,'2017-10-25 11:59:59',0),(6021,287,258,'2017-10-25 11:59:59',0),(6022,288,270,'2017-10-30 00:00:00',0),(6023,272,266,'2017-10-30 00:00:00',0);
+
+/*Table structure for table `cambioestado` */
+
+DROP TABLE IF EXISTS `cambioestado`;
+
+CREATE TABLE `cambioestado` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificador',
+  `id_cabecera` int(11) NOT NULL COMMENT 'Cabecera a la cual pertenece',
+  `estado` int(11) NOT NULL COMMENT 'estado que representa',
+  `fecha` datetime NOT NULL COMMENT 'fecha de inserccion',
+  `id_usuario` int(11) unsigned NOT NULL COMMENT 'identificacion del pc que actualizo',
+  PRIMARY KEY (`id`,`id_cabecera`),
+  KEY `id_cabecera` (`id_cabecera`),
+  KEY `cambioestado_fk` (`estado`),
+  KEY `ce_user` (`id_usuario`),
+  CONSTRAINT `cambioestado_fk` FOREIGN KEY (`estado`) REFERENCES `estado` (`id`),
+  CONSTRAINT `cambioestado_ibfk_1` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`),
+  CONSTRAINT `ce_user` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=282 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cambioestado` */
+
+insert  into `cambioestado`(`id`,`id_cabecera`,`estado`,`fecha`,`id_usuario`) values (184,5864,0,'2017-09-25 12:03:51',1),(185,5864,1,'2017-09-25 12:06:20',1),(186,5864,1,'2017-09-25 12:06:34',1),(187,5864,1,'2017-09-25 12:06:43',1),(188,5865,1,'2017-09-25 12:09:47',1),(189,5865,1,'2017-09-25 12:09:51',1),(190,5866,1,'2017-09-25 12:11:40',1),(191,5867,1,'2017-09-25 20:36:29',1),(192,5868,1,'2017-09-26 10:45:18',1),(193,5869,0,'2017-09-28 22:45:20',1),(194,5866,3,'2017-09-28 23:01:17',1),(195,5864,2,'2017-10-02 09:21:53',1),(196,5865,2,'2017-10-02 09:22:17',1),(197,5867,2,'2017-10-02 09:22:44',1),(198,5870,0,'2017-10-02 11:14:32',1),(199,5867,3,'2017-10-04 10:28:05',1),(200,5864,3,'2017-10-04 10:28:27',1),(201,5865,3,'2017-10-04 10:28:41',1),(202,6000,1,'2017-10-04 11:13:56',1),(203,6001,1,'2017-10-05 09:46:14',1),(204,5869,3,'2017-10-05 09:58:36',1),(205,6002,0,'2017-10-05 11:10:49',1),(206,6003,2,'2017-10-05 12:20:56',1),(207,6004,1,'2017-10-05 12:38:34',1),(208,6005,1,'2017-10-05 22:29:21',1),(209,6006,0,'2017-10-05 23:57:17',1),(210,6007,1,'2017-10-06 11:09:21',1),(211,6007,2,'2017-10-06 11:09:41',1),(212,6006,1,'2017-10-06 11:25:20',1),(213,6005,3,'2017-10-06 17:49:53',1),(214,5870,3,'2017-10-06 19:30:46',1),(215,5868,3,'2017-10-06 20:19:59',1),(216,6003,3,'2017-10-06 21:02:37',1),(217,6002,1,'2017-10-06 21:03:03',1),(218,6008,1,'2017-10-10 12:19:56',1),(219,6009,0,'2017-10-11 08:05:39',1),(220,6009,1,'2017-10-11 09:17:10',1),(221,6010,1,'2017-10-11 10:51:56',1),(222,6011,0,'2017-10-12 11:11:44',1),(223,6000,2,'2017-10-12 22:26:27',1),(224,6006,2,'2017-10-12 22:27:01',1),(225,6004,2,'2017-10-12 22:29:20',1),(226,6001,2,'2017-10-13 09:38:17',1),(227,6000,3,'2017-10-14 15:39:25',1),(228,6001,3,'2017-10-14 15:40:18',1),(229,6004,3,'2017-10-14 15:40:47',1),(230,6007,3,'2017-10-14 15:42:07',1),(231,6011,1,'2017-10-14 15:45:52',1),(232,6012,1,'2017-10-16 11:07:00',1),(233,6013,1,'2017-10-16 11:22:10',1),(234,6009,2,'2017-10-17 15:57:11',1),(235,6010,2,'2017-10-17 15:57:51',1),(236,6011,3,'2017-10-17 15:58:21',1),(237,6011,3,'2017-10-17 15:58:26',1),(238,6009,2,'2017-10-17 18:03:17',1),(239,6011,2,'2017-10-17 18:16:41',1),(240,6006,3,'2017-10-17 18:19:20',1),(241,6014,1,'2017-10-17 18:40:39',1),(242,6002,2,'2017-10-18 08:26:55',1),(243,6009,3,'2017-10-18 18:48:24',1),(244,6015,0,'2017-10-19 13:12:50',1),(245,6013,2,'2017-10-19 19:59:58',1),(246,6015,1,'2017-10-19 20:17:14',1),(247,6011,3,'2017-10-22 17:50:46',1),(248,6010,3,'2017-10-22 17:51:03',1),(249,6002,3,'2017-10-22 17:51:16',1),(250,6014,2,'2017-10-23 16:28:25',1),(251,6013,3,'2017-10-23 17:12:03',1),(252,6016,0,'2017-10-23 17:50:38',1),(253,6016,1,'2017-10-23 18:15:34',1),(254,6017,1,'2017-10-25 10:59:09',1),(255,6018,1,'2017-10-25 11:08:50',1),(256,6019,1,'2017-10-25 13:20:12',1),(257,6020,1,'2017-10-25 13:51:46',1),(258,6021,1,'2017-10-25 14:45:46',1),(259,6015,2,'2017-10-26 01:35:17',1),(260,6014,3,'2017-10-26 01:35:42',1),(261,6017,2,'2017-10-30 14:50:11',1),(262,6008,2,'2017-10-30 14:50:22',1),(263,6015,3,'2017-10-30 14:50:42',1),(264,6016,2,'2017-10-30 14:50:52',1),(265,6022,0,'2017-10-30 16:34:06',1),(266,6023,1,'2017-10-30 16:41:59',1),(267,6017,3,'2017-10-31 09:09:02',1),(268,6022,1,'2017-10-31 09:10:55',1),(269,6012,2,'2017-10-31 09:12:36',1),(270,6022,1,'2017-10-31 12:00:37',1),(271,6016,3,'2017-10-31 15:34:48',1),(272,6012,3,'2017-11-01 15:55:30',1),(274,6019,2,'2017-11-01 18:15:14',1),(275,6018,2,'2017-11-03 14:10:55',1),(276,6020,2,'2017-11-03 14:11:06',1),(277,6020,3,'2017-11-03 18:02:10',1),(278,6020,3,'2017-11-03 18:02:44',1),(279,6020,3,'2017-11-03 18:04:00',1),(280,6019,3,'2017-11-03 18:05:06',1),(281,6018,3,'2017-11-05 14:06:59',1);
+
+/*Table structure for table `cliente` */
+
+DROP TABLE IF EXISTS `cliente`;
+
+CREATE TABLE `cliente` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'numero de cliente',
+  `nombre` varchar(100) CHARACTER SET latin1 DEFAULT NULL COMMENT 'nombre cliente',
+  `nombre2` varchar(250) CHARACTER SET latin1 DEFAULT NULL,
+  `correo1` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `correo2` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `fono1` varchar(15) CHARACTER SET latin1 DEFAULT NULL,
+  `fono2` varchar(15) CHARACTER SET latin1 DEFAULT NULL,
+  `giro` varchar(60) CHARACTER SET latin1 DEFAULT NULL,
+  `rut` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
+  `domicilio` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `comuna` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `observaciones` text CHARACTER SET latin1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cliente` */
+
+insert  into `cliente`(`id`,`nombre`,`nombre2`,`correo1`,`correo2`,`fono1`,`fono2`,`giro`,`rut`,`domicilio`,`comuna`,`observaciones`) values (257,'johnny henriquez','','admjahb@gmail.com','','','','','','','',''),(258,'Emilio Varela Diaz','','','','','','','','','Curanilahue',''),(259,'Nancy Margarita Hidalgo Alfaro','','','','','','','','AVDA LAS AMERICAS 3935 B','',''),(260,'Maria Cristina Mac Kay Musac','','mariacristinamackay@gmail.com','','','','','','','',''),(261,'Luis Leal','','luisleal28633@gmail.com','','+56955323366','','','16287066-1','','','OficinaÂ concepción. Tucapel 530Â es mi direcciÃ³n. Pero enviÃ© por tur bus. Retiro en sucursal.Â '),(262,'Luis Gomez Ramos','','vaviluchile@gmail.com','','','','','','','',''),(263,'Ricardo Oyarzun','','royarzun@laflorida.cl','','','','','','','',''),(264,'Yohana Contreras','','yohanacontreras9@gmail.com','','','','','','','',''),(265,'Omar carreño soto','','','','+569942362090','','','','','',''),(266,'Carlos andres lepe ortiz','','carloslepeortiz@gmail.com','','+56975955310','','','','','',''),(267,'Pamela Guajardo','','pamela_guajardo@hotmail.com','','','','','','','',''),(268,'Solange Del Carmen Ramirez Jorquera','','solanch12_1@hotmail.com ','','995460761','','','','','',''),(269,'Mauricio Sofanor Leon Hernandez','','mleon@e-center.cl','','','','','','','',''),(270,'Rossana','','nany_76@live.cl','','930318264','','','','','',''),(271,'Katherine Oraya Huenchuleo','','Katherine_hc@live.com','','','','','','','',''),(272,'Johny Rivero Cabas','JEANNETTE DE LOURDE PARDO SOTOMAYOR','albert.maquinariasgastronomica@gmail.com ','','32-3217085','','','','','',''),(273,'Francisca fabiola zambra zambra','','','','','','','19.772.116','Tangue 298,','Ovalle',''),(274,'Francisco luco squella ','','franciscoluco@yahoo.com','','','','','','','',''),(275,'Karen gallardo zamorano','Tortas montero ltda.','kgallardo@tortasmontero.cl','','075-2310149','','','','Arturo Prat 659-b','Curicó',''),(276,'Pablo andres romero reyes.','','pabloandresromero@gmail.com','','','','','16792535-9','Villa los girasoles pasaje los almendros # 02879','Rancagua','Pablo andres romero reyes\nRuta. 16792535-9\nGiro elaboraciÃ³n de productos de panaderÃ­a y pastelerÃ­a\nDirecciÃ³n .villa los girasoles pasaje los almendros # 02879 rancagua'),(277,'Jocelyne andrea navarrete aguirre ','Epifania alimentacion saludable','epifaniasingluten@gmail.com','','+56982383154','','','','','',''),(278,'Ruben dario llanquiman reyes','','tatiana.pizarro@gmail.com','','+56951977690','','','','','','Retira en fabrica.'),(279,'Pedro Espinosa','','dahin994@yahoo.com','','','','','','','',''),(280,'Jose antonio montes manquel','','','','+5695358 1993','','','','','',''),(281,'Yeiner Alezander Gaviria Franco ','Alex Tortas','milan2905@hotmail.com','','+56953012294','','','24.706.336','','',''),(282,'Keny Ernesto Egana Varas','','','','','','','','','',''),(283,'Gonzalo Rojas Bravo','','gonzalop.2016@gmail.com','','','','','','Av oriente 1224,  sector labanda','Calama',''),(284,'Carolina donoso','','carolina.donoso@moviendomasas.cl','','+569990891714','','','','Moviendomasas.cl','Ñuñoa',''),(285,'Alvaro Fuentes','','alvarofuentes96@gmail.com','','+56959892523','','','','','',''),(286,'Franco Gutierrez','','francogutierrez.1992@gmail.com','','+56950346642','','Rancagua','','','','Con envío por Starken a la sucursal de Rancagua.'),(287,'Rodigo Cruzat','Supermercados Paula Ltda.','pstcolina@gmail.com','','','','Colina','76.821.320','Fontt 1.200 Colina Stgo.','',''),(288,'Rodrigo Ignacio Pohl Picón','','rodrigo.pohl@gmail.com','','','','','','','','');
+
+/*Table structure for table `comentarios` */
+
+DROP TABLE IF EXISTS `comentarios`;
+
+CREATE TABLE `comentarios` (
+  `id_comentario` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id_comentario',
+  `id_cabecera` int(11) NOT NULL COMMENT 'Pedido de los comentarios.',
+  `id_user` int(11) unsigned NOT NULL COMMENT 'Creador del comentario.',
+  `estado` int(11) NOT NULL COMMENT 'Estado del comentario activado o desactivado',
+  `fecha_creacion` datetime NOT NULL COMMENT 'Fecha de creaciòn',
+  `comentario` text COMMENT 'Comentario',
+  PRIMARY KEY (`id_comentario`),
+  KEY `56gffg` (`id_cabecera`),
+  KEY `fkusercomentario` (`id_user`),
+  CONSTRAINT `56gffg` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`),
+  CONSTRAINT `fkusercomentario` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
+
+/*Data for the table `comentarios` */
+
+insert  into `comentarios`(`id_comentario`,`id_cabecera`,`id_user`,`estado`,`fecha_creacion`,`comentario`) values (101,5869,1,3,'2017-10-05 09:58:28','numero de envio 909 090 571'),(102,6005,1,1,'2017-10-06 17:49:23','enviado'),(103,6004,1,2,'2017-10-13 22:00:31','http://www.starken.cl/seguimiento?codigo=909232251'),(104,6006,1,2,'2017-10-17 18:01:23','http://www.starken.cl/seguimiento?codigo=909260706'),(105,6009,1,2,'2017-10-18 18:48:19','www.starken.cl/seguimiento?codigo=909307373'),(106,6016,1,2,'2017-10-31 15:34:34','http://www.starken.cl/seguimiento?codigo=909497202'),(107,6012,1,2,'2017-10-31 15:35:32','http://www.starken.cl/seguimiento?codigo=909497107'),(109,6021,1,1,'2017-11-03 09:25:30','Retirados 20 Molde Pan de molde enlozado con tapa de 30cmx14x14,5 boca y 14cm alto.'),(110,6020,1,2,'2017-11-03 18:02:01','http://www.starken.cl/seguimiento?codigo=909545125'),(111,6021,1,1,'2017-11-04 11:20:34','Entregados 20 moldes mas');
+
+/*Table structure for table `cuenta` */
+
+DROP TABLE IF EXISTS `cuenta`;
+
+CREATE TABLE `cuenta` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(200) DEFAULT NULL,
+  `Numero` varchar(50) DEFAULT NULL,
+  `Entidad` varchar(50) DEFAULT NULL,
+  `Tipo` varchar(20) DEFAULT NULL,
+  `Obs` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cuenta` */
+
+insert  into `cuenta`(`id`,`Nombre`,`Numero`,`Entidad`,`Tipo`,`Obs`) values (1,'Jose Cabrera','1','VEN1','1',NULL),(2,'Eduardo Cabrera','2','PRO','2',NULL),(3,'Vanesa Gutierrez','3','VEN2','1',NULL),(4,'Cliente','0','ING','0',NULL);
+
+/*Table structure for table `detalle` */
+
+DROP TABLE IF EXISTS `detalle`;
+
+CREATE TABLE `detalle` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cabecera` int(11) NOT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `valor_cli` double DEFAULT NULL,
+  `costo` double DEFAULT NULL,
+  `id_producto` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_cabecera` (`id_cabecera`),
+  KEY `detalle_prod` (`id_producto`),
+  CONSTRAINT `detalle_ibfk_1` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`),
+  CONSTRAINT `detalle_prod` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=721 DEFAULT CHARSET=utf8;
+
+/*Data for the table `detalle` */
+
+insert  into `detalle`(`id`,`id_cabecera`,`cantidad`,`valor_cli`,`costo`,`id_producto`) values (672,5864,3,12000,9000,15),(673,5865,6,10000,6000,5),(674,5866,14,12000,9000,4),(675,5867,1,25000,10000,16),(676,5868,2,12000,9000,4),(677,5868,2,12000,9000,17),(678,5869,2,7000,2500,18),(679,5869,1,5000,1500,20),(680,5869,1,7000,2500,19),(681,5869,1,22000,15000,9),(682,5870,4,12000,9000,21),(683,6000,15,11000,6000,22),(685,6001,1,13500,9000,23),(686,6002,1,13500,10000,24),(687,6000,1,7000,4000,25),(688,6000,1,7000,4000,26),(689,6003,4,12000,9000,3),(690,6004,40,11000,6000,27),(691,6005,10,11000,9000,3),(692,6006,6,10000,6000,2),(693,6007,2,13500,9000,28),(694,6008,50,14800,12000,29),(695,6009,3,12000,9000,3),(696,6009,1,15000,12000,30),(697,6010,1,15000,12000,31),(698,6011,2,13000,9000,32),(699,6012,5,14000,12000,34),(700,6012,5,16000,14000,35),(701,6012,5,10000,7000,33),(702,6013,8,13000,9000,7),(703,6014,20,12000,9000,36),(704,6014,10,12000,9000,17),(705,6015,2,12000,9000,38),(706,6016,2,11000,8000,39),(707,6017,10,11000,9000,3),(708,6018,10,9500,5000,40),(709,6018,1,130000,100000,41),(710,6019,3,14000,9000,42),(711,6020,10,12000,9000,4),(712,6020,1,130000,100000,43),(716,6021,40,16500,14500,14),(717,6022,4,12000,7000,45),(718,6023,10,11000,9000,3),(720,6021,80,11500,8000,44);
+
+/*Table structure for table `estado` */
+
+DROP TABLE IF EXISTS `estado`;
+
+CREATE TABLE `estado` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(50) DEFAULT NULL,
+  `vigente` int(11) DEFAULT NULL,
+  `secuencia` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `estado` */
+
+insert  into `estado`(`id`,`descripcion`,`vigente`,`secuencia`) values (0,'Ingresado',1,0),(1,'En Fabricacion',1,1),(2,'Esperando Entrega',1,2),(3,'Entregado',1,3);
+
+/*Table structure for table `feriados` */
+
+DROP TABLE IF EXISTS `feriados`;
+
+CREATE TABLE `feriados` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(500) CHARACTER SET latin1 DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `diadelagno` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+
+/*Data for the table `feriados` */
+
+insert  into `feriados`(`id`,`nombre`,`fecha`,`diadelagno`) values (1,'01 de Enero	Año Nuevo','2014-01-01',1),(2,'Santo Religioso	Ley 2.977','2014-04-18',108),(3,'Santo	Religioso	Ley 2.977','2014-04-19',109),(4,'Día Nacional del Trabajo','2014-05-01',121),(5,'Día de las Glorias Navales	Civil	Ley 2.977','2014-05-21',141),(6,'San Pedro y San Pablo	Religioso	Ley 2.977','2014-06-29',180),(7,'Día de la Virgen del Carmen	Religioso	Ley 20.148','2014-07-16',197),(8,'Asunción de la Virgen	Religioso	Ley 2.977','2014-08-15',227),(9,'Independencia Nacional','2014-09-18',261),(10,'Día de las Glorias del Ejército','2014-09-19',262),(11,'Encuentro de Dos Mundos	Civil	Ley 3.810','2014-10-12',285),(12,'Día de las Iglesias Evangélicas y Protestantes	Religioso	Ley 20.299','2014-10-31',304),(13,'Día de Todos los Santos	Religioso	Ley 2.977','2014-11-01',305),(14,'Inmaculada Concepción	Religioso	Ley 2.977','2014-12-08',342),(15,'Navidad','2014-12-25',359),(16,'Año Nuevo','2013-01-01',1),(17,'Viernes Santo	Religioso	Ley 2.977','2013-03-29',88),(18,'Sábado Santo	Religioso	Ley 2.977','2013-03-30',89),(19,'Día Nacional del Trabajo','2013-05-01',121),(20,'Día de las Glorias Navales	Civil	Ley 2.977','2013-05-21',141),(21,'San Pedro y San Pablo	Religioso	Ley 2.977','2013-06-29',180),(22,'Elecciones Primarias	Civil	Ley 20.640','2013-06-30',181),(23,'Día de la Virgen del Carmen	Religioso	Ley 20.148','2013-07-16',197),(24,'Asunción de la Virgen	Religioso	Ley 2.977','2013-08-15',227),(25,'Independencia Nacional','2013-09-18',261),(26,'Día de las Glorias del Ejército','2013-09-19',262),(27,'Fiestas Patrias	Civil	Ley 20.215','2013-09-20',263),(28,'Encuentro de Dos Mundos	Civil	Ley 3.810','2013-10-12',285),(29,'Día de las Iglesias Evangélicas y Protestantes	Religioso	Ley 20.299','2013-10-31',304),(30,'Día de Todos los Santos	Religioso	Ley 2.977','2013-11-01',305),(31,'Navidad','2013-12-25',359);
+
+/*Table structure for table `groups` */
+
+DROP TABLE IF EXISTS `groups`;
+
+CREATE TABLE `groups` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `groups` */
+
+insert  into `groups`(`id`,`name`,`description`) values (1,'admin','Administrator'),(2,'members','General User');
+
+/*Table structure for table `login_attempts` */
+
+DROP TABLE IF EXISTS `login_attempts`;
+
+CREATE TABLE `login_attempts` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(15) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `time` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `login_attempts` */
+
+/*Table structure for table `movimiento_cab` */
+
+DROP TABLE IF EXISTS `movimiento_cab`;
+
+CREATE TABLE `movimiento_cab` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cabecera` int(11) DEFAULT NULL,
+  `id_cuenta` int(11) DEFAULT NULL,
+  `porcentaje` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_cabecera_mov_cab` (`id_cabecera`),
+  KEY `fk_mov_cab_cuenta` (`id_cuenta`),
+  CONSTRAINT `fk_cabecera_mov_cab` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`),
+  CONSTRAINT `fk_mov_cab_cuenta` FOREIGN KEY (`id_cuenta`) REFERENCES `cuenta` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `movimiento_cab` */
+
+insert  into `movimiento_cab`(`id`,`id_cabecera`,`id_cuenta`,`porcentaje`) values (53,5864,1,50),(54,5864,3,50),(55,5865,1,50),(56,5865,3,50),(57,5866,1,100),(58,5867,1,50),(59,5867,3,50),(60,5868,1,50),(61,5868,3,50),(62,5869,3,50),(63,5869,1,50),(64,5870,3,50),(65,5870,1,50),(66,6000,1,50),(67,6000,3,50),(68,6001,1,50),(69,6001,3,50),(70,6002,1,50),(71,6002,3,50),(72,6003,1,50),(73,6003,3,50),(74,6004,1,50),(75,6004,3,50),(76,6005,1,100),(77,6006,1,100),(78,6007,1,100),(80,6009,3,50),(81,6009,1,50),(82,6010,1,50),(83,6010,3,50),(84,6011,3,50),(85,6011,1,50),(86,6012,1,100),(87,6013,1,50),(88,6013,3,50),(89,6014,3,50),(90,6014,1,50),(91,6015,1,50),(92,6016,1,50),(93,6017,1,100),(95,6019,1,100),(99,6023,1,100),(119,6016,3,50),(120,6015,3,50),(127,6008,3,50),(128,6008,1,50),(129,6022,3,50),(130,6022,1,50),(133,6018,1,100),(139,6020,1,50),(140,6020,3,50),(141,6021,3,20),(142,6021,1,80);
+
+/*Table structure for table `movimiento_cta` */
+
+DROP TABLE IF EXISTS `movimiento_cta`;
+
+CREATE TABLE `movimiento_cta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cabecera` int(11) DEFAULT NULL,
+  `id_cuenta` int(11) DEFAULT NULL,
+  `monto` double DEFAULT NULL,
+  `fecha_ingreso` datetime DEFAULT NULL,
+  `glosa` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_cabecera` (`id_cabecera`),
+  KEY `movimiento_ctas_ctas1` (`id_cuenta`),
+  CONSTRAINT `fkmov_cta_cuenta` FOREIGN KEY (`id_cuenta`) REFERENCES `cuenta` (`id`),
+  CONSTRAINT `movimiento_cta_ibfk_1` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1176 DEFAULT CHARSET=utf8;
+
+/*Data for the table `movimiento_cta` */
+
+insert  into `movimiento_cta`(`id`,`id_cabecera`,`id_cuenta`,`monto`,`fecha_ingreso`,`glosa`) values (906,5864,4,17500,'2017-09-25 12:05:56','Ingreso Abono'),(907,5864,1,17500,'2017-09-25 12:05:56','Ingreso Abono'),(908,5865,4,71400,'2017-09-25 12:10:47','Pago total'),(909,5865,1,71400,'2017-09-25 12:10:47','Pago total'),(910,5866,4,100000,'2017-09-25 12:12:39','Ingreso abono'),(911,5866,1,100000,'2017-09-25 12:12:39','Ingreso abono'),(912,5864,2,13000,'2017-09-25 13:03:30','Abono desde cuenta 1 GLOSA:abono papÃ¡ '),(913,5864,1,-13000,'2017-09-25 13:03:30','REFno.912 Cargo transferido a cuenta 2 GLOSA:abono papÃ¡ '),(916,5867,4,12500,'2017-09-25 20:37:07','Abono ingreso'),(917,5867,1,12500,'2017-09-25 20:37:07','Abono ingreso'),(918,5867,2,10000,'2017-09-25 20:37:23','Abono desde cuenta 1 GLOSA:Abono ingreso'),(919,5867,1,-10000,'2017-09-25 20:37:23','REFno.918 Cargo transferido a cuenta 2 GLOSA:Abono ingreso'),(927,5865,2,47400,'2017-09-26 01:01:26','Abono desde la cuenta Eduardo Cabrera, obs:Abono papÃ¡'),(928,5865,1,-47400,'2017-09-26 01:01:26','REFno.927 Monto transferido hacia la cuenta de : Jose Cabrera obs:Abono papÃ¡'),(929,5868,4,26000,'2017-09-26 10:48:30','Abono inicial'),(930,5868,1,26000,'2017-09-26 10:48:30','Abono inicial'),(931,5868,3,6000,'2017-09-26 14:12:07','Abono desde la cuenta Vanesa Gutierrez, obs:Comision pagada'),(932,5868,1,-6000,'2017-09-26 14:12:07','REFno.931 Monto transferido hacia la cuenta de : Jose Cabrera obs:Comision pagada'),(933,5864,3,4500,'2017-09-26 14:12:35','Abono desde la cuenta Vanesa Gutierrez, obs:Comision pagada'),(934,5864,1,-4500,'2017-09-26 14:12:35','REFno.933 Monto transferido hacia la cuenta de : Jose Cabrera obs:Comision pagada'),(935,5865,3,12000,'2017-09-26 14:13:06','Abono desde la cuenta Vanesa Gutierrez, obs:Comision pagada'),(936,5865,1,-12000,'2017-09-26 14:13:06','REFno.935 Monto transferido hacia la cuenta de : Jose Cabrera obs:Comision pagada'),(937,5867,3,7500,'2017-09-26 14:13:43','Abono desde la cuenta Vanesa Gutierrez, obs:Comision pagada'),(938,5867,1,-7500,'2017-09-26 14:13:43','REFno.937 Monto transferido hacia la cuenta de : Jose Cabrera obs:Comision pagada'),(939,5869,4,41000,'2017-09-28 22:52:40','Ingreso abono'),(940,5869,1,41000,'2017-09-28 22:52:40','Ingreso abono'),(944,5864,4,18000,'2017-10-02 09:21:38','Paga saldo '),(945,5864,1,18000,'2017-10-02 09:21:38','Paga saldo '),(946,5870,4,48000,'2017-10-02 11:14:58','Pago por adelantado'),(947,5870,1,48000,'2017-10-02 11:14:58','Pago por adelantado'),(948,5867,4,12500,'2017-10-02 16:40:28','Pagado'),(949,5867,1,12500,'2017-10-02 16:40:28','Pagado'),(963,5866,2,60000,'2017-10-02 22:36:42','Abono desde la cuenta Jose Cabrera, obs:abono papa'),(964,5866,1,-60000,'2017-10-02 22:36:42','REF.963 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:abono papa'),(965,5866,2,68000,'2017-10-02 22:37:16','Pago saldo'),(966,5866,4,68000,'2017-10-02 22:37:16','Pago saldo'),(967,5866,1,2000,'2017-10-02 22:44:40','Abono desde la cuenta Eduardo Cabrera, obs:Pago papa'),(968,5866,2,-2000,'2017-10-02 22:44:40','REF.967 Monto transferido hacia la cuenta de : Jose Cabrera obs:Pago papa'),(969,5864,2,14000,'2017-10-02 22:48:37','Abono desde la cuenta Jose Cabrera, obs:Saldo pedido 3 de 58x68'),(970,5864,1,-14000,'2017-10-02 22:48:37','REF.969 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Saldo pedido 3 de 58x68'),(973,5864,4,500,'2017-10-02 22:50:17','saldo cliente'),(974,5864,1,500,'2017-10-02 22:50:17','saldo cliente'),(975,5869,2,24000,'2017-10-02 22:55:49','Abono desde la cuenta Jose Cabrera, obs:Pago papa'),(976,5869,1,-24000,'2017-10-02 22:55:49','REF.975 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Pago papa'),(977,5870,2,36000,'2017-10-02 22:57:06','Abono desde la cuenta Jose Cabrera, obs:pago papa'),(978,5870,1,-36000,'2017-10-02 22:57:06','REF.977 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:pago papa'),(979,6000,4,89500,'2017-10-04 11:16:01','Abono inicial'),(980,6000,1,89500,'2017-10-04 11:16:01','Abono inicial'),(982,6001,4,6750,'2017-10-05 09:46:43','Abono inicial'),(983,6001,1,6750,'2017-10-05 09:46:43','Abono inicial'),(984,6002,4,7000,'2017-10-05 11:11:15','Abono'),(985,6002,1,7000,'2017-10-05 11:11:15','Abono'),(988,6003,4,48000,'2017-10-05 12:21:35','Abono inicial'),(989,6003,1,48000,'2017-10-05 12:21:35','Abono inicial'),(990,6003,2,36000,'2017-10-05 12:21:52','Abono desde la cuenta Jose Cabrera, obs:Pago'),(991,6003,1,-36000,'2017-10-05 12:21:52','REF.990 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Pago'),(992,6004,4,220000,'2017-10-05 12:41:00','Abono inicial'),(993,6004,1,220000,'2017-10-05 12:41:00','Abono inicial'),(994,6004,3,50000,'2017-10-05 15:52:59','Abono desde la cuenta Jose Cabrera, obs:Pago comisiÃ³n'),(995,6004,1,-50000,'2017-10-05 15:52:59','REF.994 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:Pago comisiÃ³n'),(996,6004,2,120000,'2017-10-05 22:00:33','Abono desde la cuenta Jose Cabrera, obs:Abono papÃ¡'),(997,6004,1,-120000,'2017-10-05 22:00:33','REF.996 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Abono papÃ¡'),(998,6000,2,50000,'2017-10-05 22:02:41','Abono desde la cuenta Jose Cabrera, obs:abono papÃ¡'),(999,6000,1,-50000,'2017-10-05 22:02:41','REF.998 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:abono papÃ¡'),(1000,5868,2,36000,'2017-10-05 22:03:49','Abono desde la cuenta Jose Cabrera, obs:Abono papa'),(1001,5868,1,-36000,'2017-10-05 22:03:49','REF.1000 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Abono papa'),(1002,6006,4,30000,'2017-10-05 23:57:52','Abonado'),(1003,6006,1,30000,'2017-10-05 23:57:52','Abonado'),(1004,6005,4,110000,'2017-10-06 11:03:46','Pago Total'),(1005,6005,1,110000,'2017-10-06 11:03:46','Pago Total'),(1006,6005,2,90000,'2017-10-06 17:49:43','Abono desde la cuenta Jose Cabrera, obs:Pago papÃ¡'),(1007,6005,1,-90000,'2017-10-06 17:49:43','REF.1006 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Pago papÃ¡'),(1008,5869,4,7000,'2017-10-06 17:50:48','pago saldo'),(1009,5869,1,7000,'2017-10-06 17:50:48','pago saldo'),(1010,6004,3,50000,'2017-10-08 13:34:39','Abono desde la cuenta Jose Cabrera, obs:Pago adelantado'),(1011,6004,1,-50000,'2017-10-08 13:34:39','REF.1010 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:Pago adelantado'),(1013,6008,2,300000,'2017-10-10 20:50:09','Abono desde la cuenta Jose Cabrera, obs:Abono inicial PapÃ¡'),(1014,6008,1,-300000,'2017-10-10 20:50:09','REF.1013 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Abono inicial PapÃ¡'),(1015,6009,4,25500,'2017-10-11 08:08:19','abono inicial'),(1016,6009,1,25500,'2017-10-11 08:08:19','abono inicial'),(1017,6010,4,15000,'2017-10-11 10:52:14','pago'),(1018,6010,1,15000,'2017-10-11 10:52:14','pago'),(1019,6011,4,20000,'2017-10-12 11:12:06','Abono inicial'),(1020,6011,1,20000,'2017-10-12 11:12:06','Abono inicial'),(1021,6000,4,89500,'2017-10-12 23:11:12','Saldo'),(1022,6000,1,89500,'2017-10-12 23:11:12','Saldo'),(1023,6000,3,40500,'2017-10-12 23:11:28','Abono desde la cuenta Jose Cabrera, obs:Saldo'),(1024,6000,1,-40500,'2017-10-12 23:11:28','REF.1023 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:Saldo'),(1025,5869,3,12000,'2017-10-12 23:16:15','Abono desde la cuenta Jose Cabrera, obs:Saldo vane'),(1026,5869,1,-12000,'2017-10-12 23:16:15','REF.1025 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:Saldo vane'),(1027,5870,3,6000,'2017-10-12 23:16:56','Abono desde la cuenta Jose Cabrera, obs:Saldo vane'),(1028,5870,1,-6000,'2017-10-12 23:16:56','REF.1027 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:Saldo vane'),(1029,6003,3,6000,'2017-10-12 23:17:25','Abono desde la cuenta Jose Cabrera, obs:Saldo vane'),(1030,6003,1,-6000,'2017-10-12 23:17:25','REF.1029 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:Saldo vane'),(1033,6001,2,6750,'2017-10-14 12:58:58','Canceló en taller'),(1034,6001,4,6750,'2017-10-14 12:58:58','Canceló en taller'),(1035,6004,4,220000,'2017-10-14 13:00:35','Canceló'),(1036,6004,1,220000,'2017-10-14 13:00:35','Canceló'),(1037,6006,4,30000,'2017-10-14 13:01:26','Canceló saldo'),(1038,6006,1,30000,'2017-10-14 13:01:26','Canceló saldo'),(1039,6000,2,48000,'2017-10-14 15:39:15','Abono desde la cuenta Jose Cabrera, obs:saldado'),(1040,6000,1,-48000,'2017-10-14 15:39:15','REF.1039 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:saldado'),(1041,6001,2,2250,'2017-10-14 15:40:00','Abono desde la cuenta Jose Cabrera, obs:saldo'),(1042,6001,1,-2250,'2017-10-14 15:40:00','REF.1041 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:saldo'),(1043,6004,2,120000,'2017-10-14 15:40:41','Abono desde la cuenta Jose Cabrera, obs:saldo'),(1044,6004,1,-120000,'2017-10-14 15:40:41','REF.1043 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:saldo'),(1045,6006,2,36000,'2017-10-14 15:41:12','Abono desde la cuenta Jose Cabrera, obs:saldado'),(1046,6006,1,-36000,'2017-10-14 15:41:12','REF.1045 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:saldado'),(1047,6007,4,27000,'2017-10-14 15:43:33','pago'),(1048,6007,1,27000,'2017-10-14 15:43:33','pago'),(1049,6007,2,18000,'2017-10-14 15:43:45','Abono desde la cuenta Jose Cabrera, obs:pago'),(1050,6007,1,-18000,'2017-10-14 15:43:45','REF.1049 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:pago'),(1053,5868,4,22000,'2017-10-14 15:52:22','pagado'),(1054,5868,1,22000,'2017-10-14 15:52:22','pagado'),(1055,6001,3,2250,'2017-10-15 10:49:40','Abono desde la cuenta Jose Cabrera, obs:pagada comision'),(1056,6001,1,-2250,'2017-10-15 10:49:40','REF.1055 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:pagada comision'),(1057,6013,2,52000,'2017-10-16 11:22:43','Abonó en el taller'),(1058,6013,4,52000,'2017-10-16 11:22:43','Abonó en el taller'),(1059,6012,4,100000,'2017-10-16 11:23:15','abonó'),(1060,6012,1,100000,'2017-10-16 11:23:15','abonó'),(1061,6008,4,370000,'2017-10-16 11:28:04','Abono inicial'),(1062,6008,1,370000,'2017-10-16 11:28:04','Abono inicial'),(1063,6012,2,80000,'2017-10-17 11:25:26','Abono desde la cuenta Jose Cabrera, obs:hoy abono '),(1064,6012,1,-80000,'2017-10-17 11:25:26','REF.1063 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:hoy abono '),(1065,6009,4,35190,'2017-10-17 18:04:41','ingreso saldo'),(1066,6009,1,35190,'2017-10-17 18:04:41','ingreso saldo'),(1068,6014,4,180000,'2017-10-17 18:44:02','abono inicial'),(1069,6014,1,180000,'2017-10-17 18:44:02','abono inicial'),(1070,6014,2,135000,'2017-10-18 08:27:55','Abono desde la cuenta Jose Cabrera, obs:Abono papa'),(1071,6014,1,-135000,'2017-10-18 08:27:55','REF.1070 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Abono papa'),(1072,6009,2,48690,'2017-10-18 08:28:56','Abono desde la cuenta Jose Cabrera, obs:Pago papa'),(1073,6009,1,-48690,'2017-10-18 08:28:56','REF.1072 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Pago papa'),(1074,6009,3,6000,'2017-10-18 08:29:24','Abono desde la cuenta Jose Cabrera, obs:pago vane'),(1075,6009,1,-6000,'2017-10-18 08:29:24','REF.1074 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:pago vane'),(1076,6002,3,1750,'2017-10-18 08:29:55','Abono desde la cuenta Jose Cabrera, obs:pagado vane'),(1077,6002,1,-1750,'2017-10-18 08:29:55','REF.1076 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:pagado vane'),(1078,6010,2,12000,'2017-10-18 08:30:27','Abono desde la cuenta Jose Cabrera, obs:pagado papa'),(1079,6010,1,-12000,'2017-10-18 08:30:27','REF.1078 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:pagado papa'),(1080,6002,2,6500,'2017-10-19 11:31:48','Pago en el taller'),(1081,6002,4,6500,'2017-10-19 11:31:48','Pago en el taller'),(1082,6015,4,24000,'2017-10-19 13:13:10','pago'),(1083,6015,1,24000,'2017-10-19 13:13:10','pago'),(1084,6011,2,6000,'2017-10-19 20:00:56','pago'),(1085,6011,4,6000,'2017-10-19 20:00:56','pago'),(1086,6015,2,18000,'2017-10-19 20:16:32','Abono desde la cuenta Jose Cabrera, obs:Pago total'),(1087,6015,1,-18000,'2017-10-19 20:16:32','REF.1086 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Pago total'),(1088,6011,2,12000,'2017-10-19 20:18:49','Abono desde la cuenta Jose Cabrera, obs:Pago saldo papa'),(1089,6011,1,-12000,'2017-10-19 20:18:49','REF.1088 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Pago saldo papa'),(1090,6013,2,71760,'2017-10-23 17:11:42','Canceló en taller'),(1091,6013,4,71760,'2017-10-23 17:11:42','Canceló en taller'),(1092,6013,1,32000,'2017-10-23 17:43:32','Abono desde la cuenta Eduardo Cabrera, obs:Pago a vendedor'),(1093,6013,2,-32000,'2017-10-23 17:43:32','REF.1092 Monto transferido hacia la cuenta de : Jose Cabrera obs:Pago a vendedor'),(1094,6016,4,22000,'2017-10-23 18:14:50','Pago'),(1095,6016,1,22000,'2017-10-23 18:14:50','Pago'),(1096,6016,2,16000,'2017-10-23 18:15:11','Abono desde la cuenta Jose Cabrera, obs:Pague'),(1097,6016,1,-16000,'2017-10-23 18:15:11','REF.1096 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Pague'),(1098,6013,3,16000,'2017-10-24 20:37:05','Abono desde la cuenta Jose Cabrera, obs:pagado saldo'),(1099,6013,1,-16000,'2017-10-24 20:37:05','REF.1098 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:pagado saldo'),(1100,6011,3,4000,'2017-10-24 20:37:57','Abono desde la cuenta Jose Cabrera, obs:ganancia pagada'),(1101,6011,1,-4000,'2017-10-24 20:37:57','REF.1100 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:ganancia pagada'),(1102,6010,3,1500,'2017-10-24 20:38:29','Abono desde la cuenta Jose Cabrera, obs:apgada ganancia'),(1103,6010,1,-1500,'2017-10-24 20:38:29','REF.1102 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:apgada ganancia'),(1104,6017,4,60000,'2017-10-25 10:59:58','Abono'),(1105,6017,1,60000,'2017-10-25 10:59:58','Abono'),(1106,6017,2,42000,'2017-10-25 11:01:34','Abono desde la cuenta Jose Cabrera, obs:Abono papá'),(1107,6017,1,-42000,'2017-10-25 11:01:34','REF.1106 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Abono papá'),(1108,6018,4,112500,'2017-10-25 11:09:50','Abonado'),(1109,6018,1,112500,'2017-10-25 11:09:50','Abonado'),(1110,6014,4,180000,'2017-10-25 11:18:08','Pagó saldo'),(1111,6014,1,180000,'2017-10-25 11:18:08','Pagó saldo'),(1112,6019,4,21000,'2017-10-25 13:20:54','Abono inicial'),(1113,6019,1,21000,'2017-10-25 13:20:54','Abono inicial'),(1114,6020,4,185000,'2017-10-25 13:52:46','Abono inicial a cuenta rut '),(1115,6020,1,185000,'2017-10-25 13:52:46','Abono inicial a cuenta rut '),(1116,6014,3,45000,'2017-10-25 14:00:04','Abono desde la cuenta Jose Cabrera, obs:pago vane'),(1117,6014,1,-45000,'2017-10-25 14:00:04','REF.1116 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:pago vane'),(1118,6021,4,200000,'2017-10-25 14:46:27','Abono inicial'),(1119,6021,1,200000,'2017-10-25 14:46:27','Abono inicial'),(1120,6014,2,135000,'2017-10-25 15:46:57','Abono desde la cuenta Jose Cabrera, obs:saldo papa'),(1121,6014,1,-135000,'2017-10-25 15:46:57','REF.1120 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:saldo papa'),(1122,6018,2,75000,'2017-10-25 15:47:39','Abono desde la cuenta Jose Cabrera, obs:abono papá'),(1123,6018,1,-75000,'2017-10-25 15:47:39','REF.1122 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:abono papá'),(1124,6019,2,14000,'2017-10-25 15:48:14','Abono desde la cuenta Jose Cabrera, obs:pago papá'),(1125,6019,1,-14000,'2017-10-25 15:48:14','REF.1124 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:pago papá'),(1126,6020,2,95000,'2017-10-25 15:49:10','Abono desde la cuenta Jose Cabrera, obs:abono papa'),(1127,6020,1,-95000,'2017-10-25 15:49:10','REF.1126 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:abono papa'),(1128,6021,2,200000,'2017-10-25 15:49:44','Abono desde la cuenta Jose Cabrera, obs:abono papa'),(1129,6021,1,-200000,'2017-10-25 15:49:44','REF.1128 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:abono papa'),(1130,6021,4,200000,'2017-10-30 10:27:26','Segundo ingreso'),(1131,6021,1,200000,'2017-10-30 10:27:26','Segundo ingreso'),(1132,6022,4,24000,'2017-10-30 16:34:47','Abono inicial'),(1133,6022,1,24000,'2017-10-30 16:34:47','Abono inicial'),(1134,6017,4,50000,'2017-10-30 16:41:28','pagado'),(1135,6017,1,50000,'2017-10-30 16:41:28','pagado'),(1136,6023,4,60000,'2017-10-30 16:42:31','abonado'),(1137,6023,1,60000,'2017-10-30 16:42:31','abonado'),(1138,6017,2,48000,'2017-10-31 09:08:53','Abono desde la cuenta Jose Cabrera, obs:pagado'),(1139,6017,1,-48000,'2017-10-31 09:08:53','REF.1138 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:pagado'),(1140,6023,2,40000,'2017-10-31 09:10:38','Abono desde la cuenta Jose Cabrera, obs:abonado'),(1141,6023,1,-40000,'2017-10-31 09:10:38','REF.1140 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:abonado'),(1142,6022,2,28000,'2017-10-31 09:11:22','Abono desde la cuenta Jose Cabrera, obs:abonado total'),(1143,6022,1,-28000,'2017-10-31 09:11:22','REF.1142 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:abonado total'),(1144,6021,2,84000,'2017-10-31 09:12:08','Abono desde la cuenta Jose Cabrera, obs:Abono papa'),(1145,6021,1,-84000,'2017-10-31 09:12:08','REF.1144 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:Abono papa'),(1146,6012,2,123000,'2017-11-01 12:22:24','Abono desde la cuenta Jose Cabrera, obs:pago papa'),(1147,6012,1,-123000,'2017-11-01 12:22:24','REF.1146 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:pago papa'),(1148,6012,1,138000,'2017-11-01 12:24:24','pagò'),(1149,6012,4,138000,'2017-11-01 12:24:24','pagò'),(1154,6020,4,65000,'2017-11-03 17:56:58','cancelo'),(1155,6020,1,65000,'2017-11-03 17:56:58','cancelo'),(1156,6020,2,95000,'2017-11-03 18:01:06','Abono desde la cuenta Jose Cabrera, obs:pagado'),(1157,6020,1,-95000,'2017-11-03 18:01:06','REF.1156 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:pagado'),(1158,6019,2,21000,'2017-11-03 18:04:33','Pago en el taller'),(1159,6019,4,21000,'2017-11-03 18:04:33','Pago en el taller'),(1160,6019,1,8000,'2017-11-03 18:04:55','Abono desde la cuenta Eduardo Cabrera, obs:Pago de papá a mi '),(1161,6019,2,-8000,'2017-11-03 18:04:55','REF.1160 Monto transferido hacia la cuenta de : Jose Cabrera obs:Pago de papá a mi '),(1162,6021,4,200000,'2017-11-04 10:08:54','ABONO'),(1163,6021,1,200000,'2017-11-04 10:08:54','ABONO'),(1164,6020,3,30000,'2017-11-05 14:03:06','Abono desde la cuenta Jose Cabrera, obs:pago vane'),(1165,6020,1,-30000,'2017-11-05 14:03:06','REF.1164 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:pago vane'),(1166,6016,3,3000,'2017-11-05 14:03:50','Abono desde la cuenta Jose Cabrera, obs:pago'),(1167,6016,1,-3000,'2017-11-05 14:03:50','REF.1166 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:pago'),(1168,6015,3,3000,'2017-11-05 14:04:32','Abono desde la cuenta Jose Cabrera, obs:pago'),(1169,6015,1,-3000,'2017-11-05 14:04:32','REF.1168 Monto transferido hacia la cuenta de : Vanesa Gutierrez obs:pago'),(1170,6021,2,200000,'2017-11-05 14:05:14','Abono desde la cuenta Jose Cabrera, obs:pago papa'),(1171,6021,1,-200000,'2017-11-05 14:05:14','REF.1170 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:pago papa'),(1172,6018,4,112500,'2017-11-05 14:06:16','pago en casa'),(1173,6018,1,112500,'2017-11-05 14:06:16','pago en casa'),(1174,6018,2,75000,'2017-11-05 14:06:52','Abono desde la cuenta Jose Cabrera, obs:pago papa'),(1175,6018,1,-75000,'2017-11-05 14:06:52','REF.1174 Monto transferido hacia la cuenta de : Eduardo Cabrera obs:pago papa');
+
+/*Table structure for table `producto` */
+
+DROP TABLE IF EXISTS `producto`;
+
+CREATE TABLE `producto` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Codigo` varchar(10) NOT NULL,
+  `Nombre` varchar(100) DEFAULT NULL,
+  `Descripcion` varchar(1000) DEFAULT NULL,
+  `valor_venta` double DEFAULT NULL,
+  `costo` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+
+/*Data for the table `producto` */
+
+insert  into `producto`(`id`,`Codigo`,`Nombre`,`Descripcion`,`valor_venta`,`costo`) values (2,'B4060','Bandeja enlozada lisa de 40x60cm','1mm de espesor, 2cm de altura',9500,6000),(3,'B6565','Bandeja enlozada lisa de 65x65cm','Bandeja enlozada lisa de 65x65',12000,9000),(4,'B6558','Bandeja enlozada lisa de 65x58cm ','bandeja lisa de 65x58cm ',12000,9000),(5,'B3555','Bandeja enlozada lisa de 35x55cm 1cm de altura','Bandejas enlozadas lisas nuevas de 35x55cm, de 1cm de altura',10000,6000),(7,'B6080','Bandeja enlozada lisa de 60x80cm. de 0.8mm. de espesor','Bandeja enlozada lisa de 60x80cm. de 0.8mm. de espesor, altura 1,8cm aproximadamente.',12000,9000),(8,'CR1','Cortador redondo','Cortador redondo',5500,2500),(9,'US40','Uslero picador 40cm','Uslero picador 40cm',22000,15000),(10,'CARR6565','Carro bandejero capacidad 20 bandejas de 65x65 con ruedas standar.','Carro bandejero capacidad 20 bandejas de 65x65',130000,100000),(11,'BP6181','Bandeja perforada enlozada de 61x81 de 0.8mm','Bandejas enlozadas perforadas de 61x81cm, de 0.8mm. de espesor',15500,12500),(12,'CARR6181','Carro bandejero capacidad 20 bandejas de 61x81 con ruedas standar.','Carro bandejero especial para 20 bandejas de 61x81 de acero inxo. con ruedas, con separaciÃ³n de 9cm',200000,180000),(13,'B7243','Bandeja enlozada lisa de 72x43,5 x3cm de altura','',12000,9000),(14,'BF608012','Bandeja enlozada de Frica de 60x80cm. frica de 12cm','Bandejas para pan de frica de 12cm. (24 unidades x bandeja), en 60x80cm',16500,14500),(15,'B6858','Bandeja enlozada lisa de 68x58 de 0.8mm.','bandejas enlozadas lisa de 68x59de 0.8mm.',12000,9000),(16,'B8852','Bandeja enlozada lisa de 88x52cm. en 1mm de espesor','Bandeja enlozada de 88x52cm. en 1mm de espesor',25000,10000),(17,'B6252','Bandeja enlozada lisa de 62x52 de 0.8mm de espesor','Bandeja enlozada lisa de 62x52 de 0.8mm de espesor',12000,9000),(18,'CR10','Cortador hallulla 10cm','Cortador hallulla 10cm',7000,2500),(19,'CRESP','Cortador de hallulla especial','Cortador de hallulla especial',7000,2500),(20,'CR5','Cortador de canape','Cortador de canape',5000,1500),(21,'B5275 ','Bandeja enlozada lisa de 53x80','Bandeja enlozada lisa de 53x80',12000,9000),(22,'B6040','Bandeja enlozada lisa de 60x40cm.','Bandeja enlozada lisa de 60x40cm.',10000,6000),(23,'B5365','Bandeja enlozada lisa de 53x65cm. con manillas','Bandeja enlozada lisa de 53x65cm. con manillas',13500,9000),(24,'B5353M','Bandeja enlozada lisa de 53,5x53,5cm. de 1mm. de espesor','Bandeja enlozada de 53,5x53,5cm. de 1mm. de espesor',13500,10000),(25,'CRE18','Cortador de empanadas  de 18cm. Zincado','Cortador de empanadas  de 18cm. Zincado',7000,4000),(26,'CRE20','Cortador de empanadas  de 20cm. Zincado','Cortador de empanadas  de 20cm. Zincado',7000,4000),(27,'B5643','Bandeja enlozada lisa de 56x43cm.  de 0,8 mm. de espesor, x 1,5 cm de altura','Bandejas enlozadas  56x43cm.  de 0,8 mm. de espesor, x 1,5 cm de altura',11000,6000),(28,'B4370M','Bandeja enlozada lisa de 43x70 de 4cm. de altura con manillas','Bandeja enlozada lisa de 43x70 de 4cm. de altura con manillas',13500,9000),(29,'BP4563','Bandeja perforada enlozada de 1,5cm de diámetro, en 45x63x1,5cm. de 0.8mm de espesor','Bandejas perforadas enlozadas especiales de 1,5cm de diÃ¡metro, en\n45x63x1,5cm. de 0.8mm de espesor',14800,12000),(30,'BH656517','Bandeja enlozada de hotdog de 17cm. en  65x65cm','Bandeja enlozada de hotdog de 17cm. en  65x65cm',15000,12000),(31,'BH655817','Bandeja enlozada de hotdog de 17cm. en 65x58cm','Bandeja enlozada de hotdog de 17cm. en 65x58cm',15000,12000),(32,'B7754','Bandeja enlozada lisa de 77x54 ','Bandeja enlozada lisa de 77x54 ',13000,9000),(33,'MP301512','Molde Pan de molde enlozado con tapa de 30x15x12x12.','Moldes para \"pan de molde\" de 30cm.largo/15cm. ancho boca/12cm.Altura/12cm. ancho base, enlozado con tapa',10000,7000),(34,'BH174674','Bandeja enlozada de hotdog de 17cm, en 46x74cm.(24 unidades)','Bandejas enlozadas de 46x74cm. para pan de hot dog de 17cm , (24 unidades)',14000,12000),(35,'BF124674','Bandeja enlozada de Frica en 46x74cm. frica de 12cm. (15 unidades)','bandejas enlozadas de 46x74cm.  para frica de 12cm. (15 unidades),',16000,14000),(36,'B5965','Bandeja enlozada lisa de 59x65 de 0.8mm de espesor','Bandeja enlozada lisa de 59x65 de 0.8mm de espesor\n',12000,9000),(38,'B7065','Bandeja enlozada lisa de 70x65x2cm de 0.8mm','Bandeja enlozada lisa de 70x65x2cm de 0.8mm',12000,9000),(39,'B5050','Bandeja enlozada lisa de 50x50cm de 0.8mm de espesor.','Bandeja enlozada lisa nueva de 50x50cm, de 0.8mm de espesor.',11000,7000),(40,'B3143','Bandeja enlozada lisa de 31,2x43,5cm, de 0.8mm de espesor','Bandeja enlozada lisa de 31,2x43,5cm, de 0.8mm de espesor',9500,5000),(41,'CARR3143','Carro bandejero capacidad 20 bandejas de 31,2x43,5cm con ruedas standar.','Carro bandejero capacidad 20 bandejas de 31,2x43,5cm con ruedas',130000,100000),(42,'B7545X5','Bandeja enlozada lisa de 75x45x5cm de altura de 0.8mm','Bandeja enlozada lisa nueva de 75x45x5cm de altura, de 0.8mm',14000,9000),(43,'CARR6558','Carro bandejero capacidad 20 bandejas de 65x58 con ruedas standar.','Carro bandejero capacidad 20 bandejas de 65x58',130000,100000),(44,'MP301414','Molde Pan de molde enlozado con tapa de 30cmx14x14,5 boca y 14cm alto.','Moldes enlozados con tapa, medidas exteriores:  base 14 cm,    alto  14 cm,  boca superior 14, 5 cm   largo 30 cm.\n',11500,8000),(45,'BL4055','bandejas para horno lisa enlosadas de 40x55x2cm de 1mm','bandejas especiales para horno enlosadas de 40x55x2cm de 1mm',12000,7000);
+
+/*Table structure for table `users` */
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(15) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `salt` varchar(255) DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `activation_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_time` int(11) unsigned DEFAULT NULL,
+  `remember_code` varchar(40) DEFAULT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `last_login` int(11) unsigned DEFAULT NULL,
+  `active` tinyint(1) unsigned DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `users` */
+
+insert  into `users`(`id`,`ip_address`,`username`,`password`,`salt`,`email`,`activation_code`,`forgotten_password_code`,`forgotten_password_time`,`remember_code`,`created_on`,`last_login`,`active`,`first_name`,`last_name`,`company`,`phone`) values (1,'127.0.0.1','administrator','$2a$06$Euf0K4uVgbPEpMBOWqwfuuuRZV4pmSYY.NjlbRvbj.Lfqsj1DnMhm','','ventas@latasymoldes.com','','B6GXK9ZRkZJYB85AJi362e8c73be70cd42353f80',1506350015,'n.GhjzqGiraveDHpKVBNte',1268889823,1509913791,1,'Jose','Cabrera','LYM','0');
+
+/*Table structure for table `users_groups` */
+
+DROP TABLE IF EXISTS `users_groups`;
+
+CREATE TABLE `users_groups` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `group_id` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uc_users_groups` (`user_id`,`group_id`),
+  KEY `fk_users_groups_users1_idx` (`user_id`),
+  KEY `fk_users_groups_groups1_idx` (`group_id`),
+  CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `users_groups` */
+
+insert  into `users_groups`(`id`,`user_id`,`group_id`) values (1,1,1),(2,1,2);
+
+/*Table structure for table `usuariocliente` */
+
+DROP TABLE IF EXISTS `usuariocliente`;
+
+CREATE TABLE `usuariocliente` (
+  `id_usuario` int(11) unsigned NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  PRIMARY KEY (`id_usuario`,`id_cliente`),
+  KEY `clienteusuario_cliente` (`id_cliente`),
+  CONSTRAINT `clienteusuario_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`),
+  CONSTRAINT `clienteusuario_user1` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `usuariocliente` */
+
+/* Function  structure for function  `comision` */
+
+/*!50003 DROP FUNCTION IF EXISTS `comision` */;
+DELIMITER $$
+
+/*!50003 CREATE  FUNCTION `comision`( pid_cabecera INT) RETURNS int(11)
+BEGIN
+  DECLARE cantpor INT;
+  SELECT COUNT(id)-1 INTO cantpor FROM movimiento_cab WHERE id_cabecera = pid_cabecera;
+    
+  RETURN cantpor;
+END */$$
+DELIMITER ;
+
+/*Table structure for table `v_cabecera` */
+
+DROP TABLE IF EXISTS `v_cabecera`;
+
+/*!50001 DROP VIEW IF EXISTS `v_cabecera` */;
+/*!50001 DROP TABLE IF EXISTS `v_cabecera` */;
+
+/*!50001 CREATE TABLE  `v_cabecera`(
+ `id` int(11) ,
+ `est_esecuencia` int(11) ,
+ `est_desc` varchar(50) ,
+ `est_fec_estactual` datetime ,
+ `est_fec_ing` datetime ,
+ `diastranscurridos` int(7) ,
+ `cli_id` int(11) ,
+ `cli_nom` varchar(100) ,
+ `ConFactura` tinyint(1) ,
+ `comision` int(11) 
+)*/;
+
+/*Table structure for table `v_cuentas_pedido` */
+
+DROP TABLE IF EXISTS `v_cuentas_pedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_cuentas_pedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_cuentas_pedido` */;
+
+/*!50001 CREATE TABLE  `v_cuentas_pedido`(
+ `id_cuenta` int(11) ,
+ `id_cabecera` int(11) ,
+ `porcentaje` bigint(11) 
+)*/;
+
+/*Table structure for table `v_cuentasdebehaber` */
+
+DROP TABLE IF EXISTS `v_cuentasdebehaber`;
+
+/*!50001 DROP VIEW IF EXISTS `v_cuentasdebehaber` */;
+/*!50001 DROP TABLE IF EXISTS `v_cuentasdebehaber` */;
+
+/*!50001 CREATE TABLE  `v_cuentasdebehaber`(
+ `id_cuenta` int(10) ,
+ `id_cabecera` int(11) ,
+ `nombre_cta` varchar(200) ,
+ `tipo` varchar(20) ,
+ `debe` double ,
+ `haber` double 
+)*/;
+
+/*Table structure for table `v_detallecuentas` */
+
+DROP TABLE IF EXISTS `v_detallecuentas`;
+
+/*!50001 DROP VIEW IF EXISTS `v_detallecuentas` */;
+/*!50001 DROP TABLE IF EXISTS `v_detallecuentas` */;
+
+/*!50001 CREATE TABLE  `v_detallecuentas`(
+ `id_transaccion` int(11) ,
+ `id_cuenta` int(10) ,
+ `nombre_cuenta` varchar(200) ,
+ `nro_pedido` int(11) ,
+ `glosa` varchar(250) ,
+ `fecha_ingreso` datetime ,
+ `debe` double ,
+ `haber` double 
+)*/;
+
+/*Table structure for table `v_indicador_lite` */
+
+DROP TABLE IF EXISTS `v_indicador_lite`;
+
+/*!50001 DROP VIEW IF EXISTS `v_indicador_lite` */;
+/*!50001 DROP TABLE IF EXISTS `v_indicador_lite` */;
+
+/*!50001 CREATE TABLE  `v_indicador_lite`(
+ `id_cabecera` int(11) ,
+ `Subtotal` double ,
+ `iva` double ,
+ `totalAPagar` double ,
+ `CostoTotal` double ,
+ `Ganancia100` double 
+)*/;
+
+/*Table structure for table `v_listadopedido` */
+
+DROP TABLE IF EXISTS `v_listadopedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_listadopedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_listadopedido` */;
+
+/*!50001 CREATE TABLE  `v_listadopedido`(
+ `nro_pedido` int(11) ,
+ `nom_cliente` varchar(100) ,
+ `est_sec` int(11) ,
+ `nom_estado` varchar(50) ,
+ `dat_actualizacion` datetime ,
+ `Cliente` double ,
+ `Haber` double ,
+ `Debe` double ,
+ `Costo` double ,
+ `Venta` double ,
+ `Ganancia` double 
+)*/;
+
+/*Table structure for table `v_listadopedidoextendido` */
+
+DROP TABLE IF EXISTS `v_listadopedidoextendido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_listadopedidoextendido` */;
+/*!50001 DROP TABLE IF EXISTS `v_listadopedidoextendido` */;
+
+/*!50001 CREATE TABLE  `v_listadopedidoextendido`(
+ `numeroPedido` int(11) ,
+ `cli_id` int(11) ,
+ `cli_nom` varchar(100) ,
+ `estado_sec` int(11) ,
+ `est_desc` varchar(50) ,
+ `est_fec_estactual` datetime ,
+ `est_fec_ing` datetime ,
+ `comision` int(11) ,
+ `confactura` tinyint(1) ,
+ `Subtotal` double ,
+ `iva` double ,
+ `totalAPagar` double ,
+ `PagadoCLiente` double ,
+ `SaldoCLiente` double ,
+ `CostoTotal` double ,
+ `SaldoFabrica` double ,
+ `Ganancia100` double ,
+ `diastranscurridos` int(7) ,
+ `SaldoVendedor1` double ,
+ `SaldoVendedor2` double 
+)*/;
+
+/*Table structure for table `v_resumenclientepedido` */
+
+DROP TABLE IF EXISTS `v_resumenclientepedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_resumenclientepedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_resumenclientepedido` */;
+
+/*!50001 CREATE TABLE  `v_resumenclientepedido`(
+ `id` int(11) ,
+ `nom_cliente` varchar(100) ,
+ `adr_cliente` varchar(100) ,
+ `cant_pedidos` bigint(21) 
+)*/;
+
+/*Table structure for table `v_saldoscuentapedido` */
+
+DROP TABLE IF EXISTS `v_saldoscuentapedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_saldoscuentapedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_saldoscuentapedido` */;
+
+/*!50001 CREATE TABLE  `v_saldoscuentapedido`(
+ `id_cabecera` int(11) ,
+ `id` int(11) ,
+ `nombre_cta` varchar(200) ,
+ `tipo_cta` varchar(20) ,
+ `Entidad` varchar(50) ,
+ `porcentaje` bigint(11) ,
+ `saldo` double 
+)*/;
+
+/*Table structure for table `v_totalcuentapedido` */
+
+DROP TABLE IF EXISTS `v_totalcuentapedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_totalcuentapedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_totalcuentapedido` */;
+
+/*!50001 CREATE TABLE  `v_totalcuentapedido`(
+ `id_cabecera` int(11) ,
+ `tipo0` double ,
+ `tipo1` double ,
+ `tipo2` double 
+)*/;
+
+/*Table structure for table `v_totaldetallepedido` */
+
+DROP TABLE IF EXISTS `v_totaldetallepedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_totaldetallepedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_totaldetallepedido` */;
+
+/*!50001 CREATE TABLE  `v_totaldetallepedido`(
+ `id` int(11) ,
+ `id_cabecera` int(11) ,
+ `id_prod` int(11) ,
+ `cod_prod` varchar(10) ,
+ `nom_prod` varchar(100) ,
+ `des_prod` varchar(1000) ,
+ `costo_un` double ,
+ `venta_un` double ,
+ `cantidad` decimal(32,0) ,
+ `det_costo` double ,
+ `det_venta` double ,
+ `det_ganancia` double 
+)*/;
+
+/*Table structure for table `v_totaldetallepedido1linea` */
+
+DROP TABLE IF EXISTS `v_totaldetallepedido1linea`;
+
+/*!50001 DROP VIEW IF EXISTS `v_totaldetallepedido1linea` */;
+/*!50001 DROP TABLE IF EXISTS `v_totaldetallepedido1linea` */;
+
+/*!50001 CREATE TABLE  `v_totaldetallepedido1linea`(
+ `id_cabecera` int(11) ,
+ `costo_tot` double ,
+ `venta_tot` double ,
+ `iva_tot` double ,
+ `ganancia_tot` double 
+)*/;
+
+/*View structure for view v_cabecera */
+
+/*!50001 DROP TABLE IF EXISTS `v_cabecera` */;
+/*!50001 DROP VIEW IF EXISTS `v_cabecera` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_cabecera` AS select `cab`.`id` AS `id`,`est`.`secuencia` AS `est_esecuencia`,`est`.`descripcion` AS `est_desc`,`ce`.`fecha` AS `est_fec_estactual`,`cab`.`fecha_ingreso` AS `est_fec_ing`,(to_days(now()) - to_days(`cab`.`fecha_ingreso`)) AS `diastranscurridos`,`cli`.`id` AS `cli_id`,`cli`.`nombre` AS `cli_nom`,`cab`.`conFactura` AS `ConFactura`,`comision`(`cab`.`id`) AS `comision` from (((`cabecera` `cab` join `cambioestado` `ce` on(((`cab`.`estadoActual` = `ce`.`id`) and (`cab`.`id` = `ce`.`id_cabecera`)))) join `estado` `est` on((`ce`.`estado` = `est`.`secuencia`))) join `cliente` `cli` on((`cab`.`id_cliente` = `cli`.`id`))) */;
+
+/*View structure for view v_cuentas_pedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_cuentas_pedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_cuentas_pedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_cuentas_pedido` AS select `mov_cta`.`id_cuenta` AS `id_cuenta`,`mov_cta`.`id_cabecera` AS `id_cabecera`,0 AS `porcentaje` from (`movimiento_cta` `mov_cta` join `cuenta` `cta` on((`cta`.`id` = `mov_cta`.`id_cuenta`))) where (`cta`.`Tipo` in (0,2)) union select `cab`.`id_cuenta` AS `id_cuenta`,`cab`.`id_cabecera` AS `id_cabecera`,`cab`.`porcentaje` AS `porcentaje` from `movimiento_cab` `cab` */;
+
+/*View structure for view v_cuentasdebehaber */
+
+/*!50001 DROP TABLE IF EXISTS `v_cuentasdebehaber` */;
+/*!50001 DROP VIEW IF EXISTS `v_cuentasdebehaber` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_cuentasdebehaber` AS select `cta`.`id` AS `id_cuenta`,`dp`.`id_cabecera` AS `id_cabecera`,`sal`.`nombre_cta` AS `nombre_cta`,`cta`.`Tipo` AS `tipo`,sum((case `cta`.`Tipo` when '0' then (`dp`.`venta_tot` + `dp`.`iva_tot`) when '1' then (`dp`.`ganancia_tot` * (`sal`.`porcentaje` / 100)) when '2' then (`dp`.`costo_tot` + `dp`.`iva_tot`) else 0 end)) AS `debe`,sum(`sal`.`saldo`) AS `haber` from ((`v_totaldetallepedido1linea` `dp` left join `v_saldoscuentapedido` `sal` on((`dp`.`id_cabecera` = `sal`.`id_cabecera`))) left join `cuenta` `cta` on((`sal`.`id` = `cta`.`id`))) group by `dp`.`id_cabecera`,`sal`.`nombre_cta`,`cta`.`id` */;
+
+/*View structure for view v_detallecuentas */
+
+/*!50001 DROP TABLE IF EXISTS `v_detallecuentas` */;
+/*!50001 DROP VIEW IF EXISTS `v_detallecuentas` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_detallecuentas` AS select `mov`.`id` AS `id_transaccion`,`cta`.`id` AS `id_cuenta`,`cta`.`Nombre` AS `nombre_cuenta`,`mov`.`id_cabecera` AS `nro_pedido`,`mov`.`glosa` AS `glosa`,`mov`.`fecha_ingreso` AS `fecha_ingreso`,(case when (`mov`.`monto` > 0) then `mov`.`monto` else 0 end) AS `debe`,(case when (`mov`.`monto` < 0) then `mov`.`monto` else 0 end) AS `haber` from (`movimiento_cta` `mov` join `cuenta` `cta` on((`cta`.`id` = `mov`.`id_cuenta`))) order by `mov`.`id_cabecera`,`mov`.`fecha_ingreso` desc */;
+
+/*View structure for view v_indicador_lite */
+
+/*!50001 DROP TABLE IF EXISTS `v_indicador_lite` */;
+/*!50001 DROP VIEW IF EXISTS `v_indicador_lite` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_indicador_lite` AS select `tot_det`.`id_cabecera` AS `id_cabecera`,sum(`tot_det`.`venta_tot`) AS `Subtotal`,sum(`tot_det`.`iva_tot`) AS `iva`,sum((`tot_det`.`venta_tot` + `tot_det`.`iva_tot`)) AS `totalAPagar`,sum(`tot_det`.`costo_tot`) AS `CostoTotal`,sum(`tot_det`.`ganancia_tot`) AS `Ganancia100` from (`v_cabecera` `cab` join `v_totaldetallepedido1linea` `tot_det` on((`cab`.`id` = `tot_det`.`id_cabecera`))) group by `tot_det`.`id_cabecera` */;
+
+/*View structure for view v_listadopedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_listadopedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_listadopedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_listadopedido` AS select `cab`.`id` AS `nro_pedido`,`cab`.`cli_nom` AS `nom_cliente`,`cab`.`est_esecuencia` AS `est_sec`,`cab`.`est_desc` AS `nom_estado`,`cab`.`est_fec_estactual` AS `dat_actualizacion`,sum(`tot_cta`.`tipo0`) AS `Cliente`,sum(`tot_cta`.`tipo1`) AS `Haber`,sum(`tot_cta`.`tipo2`) AS `Debe`,sum(`tot_det`.`det_costo`) AS `Costo`,sum(`tot_det`.`det_venta`) AS `Venta`,sum(`tot_det`.`det_ganancia`) AS `Ganancia` from ((`v_cabecera` `cab` join `v_totalcuentapedido` `tot_cta` on((`cab`.`id` = `tot_cta`.`id_cabecera`))) join `v_totaldetallepedido` `tot_det` on((`cab`.`id` = `tot_det`.`id_cabecera`))) group by `cab`.`id`,`cab`.`cli_nom`,`cab`.`est_desc`,`cab`.`est_fec_estactual`,`cab`.`est_esecuencia` */;
+
+/*View structure for view v_listadopedidoextendido */
+
+/*!50001 DROP TABLE IF EXISTS `v_listadopedidoextendido` */;
+/*!50001 DROP VIEW IF EXISTS `v_listadopedidoextendido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_listadopedidoextendido` AS select `cab`.`id` AS `numeroPedido`,`cab`.`cli_id` AS `cli_id`,`cab`.`cli_nom` AS `cli_nom`,`cab`.`est_esecuencia` AS `estado_sec`,`cab`.`est_desc` AS `est_desc`,`cab`.`est_fec_estactual` AS `est_fec_estactual`,`cab`.`est_fec_ing` AS `est_fec_ing`,`cab`.`comision` AS `comision`,`cab`.`ConFactura` AS `confactura`,`ind`.`Subtotal` AS `Subtotal`,`ind`.`iva` AS `iva`,`ind`.`totalAPagar` AS `totalAPagar`,sum((case `dh`.`tipo` when 0 then `dh`.`haber` else 0 end)) AS `PagadoCLiente`,sum((case `dh`.`tipo` when 0 then (`dh`.`debe` - `dh`.`haber`) else 0 end)) AS `SaldoCLiente`,ifnull(`ind`.`CostoTotal`,0) AS `CostoTotal`,sum((case `dh`.`tipo` when 2 then (`dh`.`debe` - `dh`.`haber`) else 0 end)) AS `SaldoFabrica`,ifnull(`ind`.`Ganancia100`,0) AS `Ganancia100`,(to_days(now()) - to_days(`cab`.`est_fec_ing`)) AS `diastranscurridos`,sum((case `dh`.`tipo` when 1 then (case `dh`.`id_cuenta` when 1 then (`dh`.`debe` - `dh`.`haber`) else 0 end) else 0 end)) AS `SaldoVendedor1`,sum((case `dh`.`tipo` when 1 then (case `dh`.`id_cuenta` when 3 then (`dh`.`debe` - `dh`.`haber`) else 0 end) else 0 end)) AS `SaldoVendedor2` from ((`v_cabecera` `cab` join `v_indicador_lite` `ind` on((`cab`.`id` = `ind`.`id_cabecera`))) join `v_cuentasdebehaber` `dh` on((`cab`.`id` = `dh`.`id_cabecera`))) group by `cab`.`id`,`cab`.`cli_id`,`cab`.`cli_nom`,`cab`.`est_esecuencia`,`cab`.`est_desc`,`cab`.`est_fec_estactual`,`cab`.`est_fec_ing`,`cab`.`comision`,`cab`.`ConFactura`,`ind`.`Subtotal`,`ind`.`iva`,`ind`.`totalAPagar` */;
+
+/*View structure for view v_resumenclientepedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_resumenclientepedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_resumenclientepedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_resumenclientepedido` AS select `cli`.`id` AS `id`,`cli`.`nombre` AS `nom_cliente`,`cli`.`correo1` AS `adr_cliente`,count(`cab`.`id`) AS `cant_pedidos` from (`cliente` `cli` left join `cabecera` `cab` on((`cli`.`id` = `cab`.`id_cliente`))) group by `cli`.`id` */;
+
+/*View structure for view v_saldoscuentapedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_saldoscuentapedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_saldoscuentapedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_saldoscuentapedido` AS select `ctas_ped`.`id_cabecera` AS `id_cabecera`,`ctas_ped`.`id_cuenta` AS `id`,`cta`.`Nombre` AS `nombre_cta`,`cta`.`Tipo` AS `tipo_cta`,`cta`.`Entidad` AS `Entidad`,`ctas_ped`.`porcentaje` AS `porcentaje`,sum(ifnull(`mov`.`monto`,0)) AS `saldo` from ((`v_cuentas_pedido` `ctas_ped` left join `movimiento_cta` `mov` on(((`ctas_ped`.`id_cabecera` = `mov`.`id_cabecera`) and (`mov`.`id_cuenta` = `ctas_ped`.`id_cuenta`)))) join `cuenta` `cta` on((`cta`.`id` = `ctas_ped`.`id_cuenta`))) group by `ctas_ped`.`id_cabecera`,`ctas_ped`.`id_cuenta`,`cta`.`Nombre`,`cta`.`Tipo`,`cta`.`Entidad`,`ctas_ped`.`porcentaje` order by `cta`.`Tipo` */;
+
+/*View structure for view v_totalcuentapedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_totalcuentapedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_totalcuentapedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_totalcuentapedido` AS (select `mov`.`id_cabecera` AS `id_cabecera`,sum((case `cta1`.`Tipo` when 0 then `mov`.`monto` else 0 end)) AS `tipo0`,sum((case `cta1`.`Tipo` when 1 then `mov`.`monto` else 0 end)) AS `tipo1`,sum((case `cta1`.`Tipo` when 2 then `mov`.`monto` else 0 end)) AS `tipo2` from (`movimiento_cta` `mov` join `cuenta` `cta1` on((`mov`.`id_cuenta` = `cta1`.`id`))) group by `mov`.`id_cabecera`) */;
+
+/*View structure for view v_totaldetallepedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_totaldetallepedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_totaldetallepedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_totaldetallepedido` AS select `det`.`id` AS `id`,`det`.`id_cabecera` AS `id_cabecera`,`det`.`id_producto` AS `id_prod`,`pro`.`Codigo` AS `cod_prod`,`pro`.`Nombre` AS `nom_prod`,`pro`.`Descripcion` AS `des_prod`,`det`.`costo` AS `costo_un`,`det`.`valor_cli` AS `venta_un`,sum(`det`.`cantidad`) AS `cantidad`,sum((`det`.`costo` * `det`.`cantidad`)) AS `det_costo`,sum((`det`.`valor_cli` * `det`.`cantidad`)) AS `det_venta`,sum(((`det`.`valor_cli` * `det`.`cantidad`) - (`det`.`costo` * `det`.`cantidad`))) AS `det_ganancia` from ((`detalle` `det` join `producto` `pro` on((`det`.`id_producto` = `pro`.`id`))) join `cabecera` `cab` on((`cab`.`id` = `det`.`id_cabecera`))) group by `det`.`id_cabecera`,`det`.`id_producto`,`pro`.`Codigo`,`pro`.`Nombre`,`pro`.`Descripcion`,`det`.`id`,`det`.`costo`,`det`.`valor_cli` */;
+
+/*View structure for view v_totaldetallepedido1linea */
+
+/*!50001 DROP TABLE IF EXISTS `v_totaldetallepedido1linea` */;
+/*!50001 DROP VIEW IF EXISTS `v_totaldetallepedido1linea` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED  SQL SECURITY DEFINER VIEW `v_totaldetallepedido1linea` AS select `v_det`.`id_cabecera` AS `id_cabecera`,sum(`v_det`.`det_costo`) AS `costo_tot`,sum(`v_det`.`det_venta`) AS `venta_tot`,sum((case `cab`.`ConFactura` when 1 then (`v_det`.`det_venta` * 0.19) else 0 end)) AS `iva_tot`,sum(`v_det`.`det_ganancia`) AS `ganancia_tot` from (`v_totaldetallepedido` `v_det` join `v_cabecera` `cab` on((`v_det`.`id_cabecera` = `cab`.`id`))) group by `v_det`.`id_cabecera` */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

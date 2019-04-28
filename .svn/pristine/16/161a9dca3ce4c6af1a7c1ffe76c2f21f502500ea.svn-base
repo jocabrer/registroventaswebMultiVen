@@ -1,0 +1,20 @@
+DELIMITER $$
+
+USE `ef3c71v0_rvweb`$$
+
+DROP FUNCTION IF EXISTS `comision`$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `comision`( pid_cabecera INT) RETURNS INT(11)
+BEGIN
+  DECLARE cantpor INT;
+  
+  
+  
+   SELECT COUNT(mc.id)-1 INTO cantpor FROM movimiento_cab mc
+INNER JOIN cuenta ct ON mc.`id_cuenta` = ct.`id`
+  WHERE mc.id_cabecera = pid_cabecera
+AND ct.`Tipo` = 1;
+  RETURN cantpor;
+END$$
+
+DELIMITER ;

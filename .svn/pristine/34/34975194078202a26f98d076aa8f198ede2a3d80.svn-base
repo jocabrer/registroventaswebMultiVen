@@ -1,0 +1,31 @@
+ALTER VIEW v_listadopedidoextendido AS
+SELECT 
+        cab.`id` numeroPedido
+       ,cab.`cli_id`
+       ,cab.`cli_nom`
+       ,cab.`est_desc`
+       ,cab.`est_fec_estactual`
+       ,cab.comision
+       ,cab.confactura
+       ,ind.`Subtotal`
+       ,ind.`iva`
+       ,ind.`totalAPagar`
+       ,ind.`PagadoCLiente`
+       ,ind.`SaldoCLiente`
+       ,ind.`CostoTotal`
+       ,ind.`SaldoFabrica`
+       ,ind.`Ganancia100`
+       /*,((ind.`Ganancia100`ind.`SaldoFabrica`)-ind.iva) SaldoGanancia*/
+       ,DATEDIFF(NOW(),cab.est_fec_ing ) diastranscurridos
+       ,(ind.`Ganancia100`-(ind.`recibidoVendedor1`+ind.`recibidoVendedor2`))     SaldoGanancia
+       ,ind.`recibidoVendedor1`
+       ,ind.`recibidoVendedor2`
+       ,ind.`SaldoVendedor1`
+       ,ind.`SaldoVendedor2`
+FROM 
+    `v_indicadorespedido` ind
+ INNER JOIN v_cabecera cab ON cab.id = ind.`id_cabecera`
+
+ 
+ 
+ 

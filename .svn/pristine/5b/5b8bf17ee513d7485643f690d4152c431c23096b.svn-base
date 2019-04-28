@@ -1,0 +1,24 @@
+ALTER VIEW v_detallecuentas AS 
+
+SELECT 
+   mov.`id` id_transaccion,
+   cta.`id` id_cuenta,
+   cta.`nombre` nombre_cuenta,
+   mov.`id_cabecera` nro_pedido,
+   mov.`glosa`,
+   mov.`fecha_ingreso`,
+   CASE WHEN mov.`monto`> 0 THEN 
+       mov.`monto`
+	ELSE 0
+   END debe,   
+   CASE WHEN mov.`monto`< 0 THEN 
+       mov.`monto`
+	ELSE 0
+   END haber
+   
+FROM 
+	movimiento_ctas mov 
+	INNER JOIN cuenta cta ON  cta.`id` = mov.`id_cuenta` 
+
+ORDER BY mov.`id_cabecera`, mov.`fecha_ingreso` DESC
+

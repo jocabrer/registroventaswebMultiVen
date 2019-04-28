@@ -1,0 +1,21 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Comun {
+
+	/*public function procesaFecha($fechaActual)
+	{
+		return date('Y/m/d H:i:s', strtotime ( $fechaActual ['year'] . "/" . $fechaActual ['mon'] . "/" . $fechaActual ['mday']. " ".
+				$fechaActual ['hours'] . ":".$fechaActual ['minutes'].":".$fechaActual ['seconds']  ) );
+	}*/
+	
+	
+	/*public function jsonEncode($data)
+	{
+		// Transformo los nombres para evitar problemas entre JSON y los tildes y otros caracteres
+		foreach ( $data as $key => $value ) {
+			$data [$key] ['nombre'] = utf8_encode ( $value ['nombre'] );
+		}
+		return json_encode ( $data );
+	}*/
+}

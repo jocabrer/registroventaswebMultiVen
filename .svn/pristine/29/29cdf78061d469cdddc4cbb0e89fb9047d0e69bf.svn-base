@@ -1,0 +1,158 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
+<section class="content-header">
+  <h1><?php echo $titleHeader; ?><small><?php echo $descHeader ?></small></h1>
+  <ol class="breadcrumb">
+	<li><a href="<?php echo base_url(); ?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
+	<li><a href="<?php echo base_url($currentClass); ?>"><?php echo $currentClass ?></a></li>
+	<li class="active"><?php echo $currentAction ?></li>
+  </ol>
+</section>
+
+<section class="content">
+ <div class="box">
+ 	<div class="box-header with-border">
+ 			<div class="row">
+ 				<div class="col-lg-6 col-md-6 col-xs-12 text-left">
+ 						<?php 
+                 			$url = "Comprobante/verComprobanteCliente/". (string)$id_cabecera."/".(string)$cliente['id'];
+                 			?>
+                  			<i class="fa fa-fw fa-inbox"></i><h3 class="box-title"><b>Pedido</b> <a href="<?php echo base_url($url); ?>"><b>#<?php echo $id_cabecera; ?></b></a></h3>
+                  			<br>
+                  			<i class="fa fa-fw fa-user"></i><h3 class="box-title"><b>Cliente</b>  <?php echo $cliente['id']."-".$cliente['nombre']; ?></h3>
+                  			<br>
+                  			<i class="fa fa-fw fa-calendar"></i><h3 class="box-title"><b>Fecha Consulta:</b>  <?php echo $fecha_consulta; ?></h3>	
+				</div><!-- Col  -->
+				<div class="col-lg-6 col-md-6 col-xs-12 text-right">
+						<a class="btn btn-default" href="<?php echo base_url('Comprobante/verComprobanteCliente/'.$id_cabecera.'/'.$cliente['id']); ?>"><i class="fa fa-fw fa-print"></i>Imprimir Comprobante</a>
+  						<?php if($this->ion_auth->logged_in()){?>
+  						<a class="btn btn-default"  href="<?php echo base_url('Pedido/editarPedido/'.$id_cabecera); ?>"><i class="fa fa-fw fa-edit"></i>Editar Pedido</a><br>
+  						<?php }?>	
+				</div>
+			</div><!-- row -->
+ 			
+  			
+  			
+  			
+  	</div><!-- Box Header -->
+  	<div class="box-body">		
+		<div class="row">
+			<div class="col-lg-8 col-md-10 col-xs-12 text-left">
+				<div class="box">
+            			<div class="box-header with-border"><h3 class="box-title">Seguimiento de Pedido</h3></div>
+                        <!-- /.box-header -->
+            			<div class="box-body">
+                          <table class="table table-bordered">
+                            <tbody><tr>
+                              <th style="width:100px;">Fecha</th>
+                              <th>Hora</th>
+                              <th style="width:140px;">Tipo</th>
+                              <th>Indicador</th>
+                              <th>Mensaje</th>
+                              <th style="width:100px;">Progreso</th>
+                            </tr>
+                            <?php foreach($datos_seguimiento as $dato) {?> 
+                            <tr>
+                              
+                              <td><?php echo $dato["fecha_mod"];?></td>
+                              <td><?php echo $dato["fecha_mod_hora"];?></td>
+                              <td><?php echo $dato["tipo"]; ?></td>
+                              <td><?php echo $dato["nom_indicador"];?></td>
+                              <td><?php echo $dato["des_indicador"];?></td>
+                              <td>
+                              	<script>document.write(diasTranscurridosFormater('<?php echo $dato["cuentadias_fecha_mod"]; ?>'))</script>
+                              	
+                              </td>
+                            </tr>
+                            <?php }?>
+                          </tbody>
+                          </table>
+                        </div>
+                        <!-- /.box-body -->
+				</div><!-- div box -->		
+			</div><!-- col -->	
+<!-- ============================================================================================================================================ -->
+				<div class="col-lg-4 col-md-2 col-xs-12 text-right">
+					<h4 class="modal-title">Detalle pedido <label id="iddetallepedido"><?php echo $id_cabecera;?></label> :</h4>
+					<br/>
+					<table id="tbl_detallepedido" class="table"
+        			   				   data-method="post"
+        			   				   data-toggle="table"
+        			   				   data-query-params="queryParamsDetalle"
+        							   data-url="<?php echo base_url('Seguimiento/ObtieneDetallePedidoCliente'); ?>"
+        							   
+        							   data-response-handler="responseHandler">
+        							   <thead>
+        									<tr class="d-flex" >
+        										 <th data-field="cantidad"  data-sortable="false" data-align="center" class="col-1">cantidad</th>
+        										 <th data-field="nom_prod"  data-sortable="false" data-align="left" class="col-3">Producto</th>
+        										 <th data-field="costo_un"  data-sortable="false" data-align="center" data-formatter="PriceFormatter" class="col-1" data-visible="false">Costo c/u</th>
+        										 <th data-field="venta_un"  data-sortable="false" data-align="center" data-formatter="PriceFormatter" class="col-1" data-visible="true">Venta c/u</th>
+        										 <th data-field="det_costo"  data-sortable="false" data-align="center" data-formatter="PriceFormatter" class="col-1"  data-visible="false">Costo tot</th>
+        										 <th data-field="det_venta"  data-sortable="false" data-align="center" data-formatter="PriceFormatter" class="col-1">Venta Tot</th>
+        									</tr>
+        								</thead>
+        			</table>
+					
+				</div>         <!-- col -->         
+			
+		</div>
+	</div><!-- Div class box body -->
+	<div class="box-footer" style="text-align:left;">
+              <a href="<?php echo base_url('seguimiento'); ?>" class="btn btn-default"><li class="fa fa-rotate-left"></li> Volver</a>
+	</div>
+	
+	<!--  Whatsapp Widget 
+	<div class="whatsapp fixed-bottom rounded-left border-left-0 animated flash">
+	<?php 
+	
+	   $urlmensaje = "www.latasymoldes.cl/sistema/seguimiento/".$cliente['id']."/".$id_cabecera;
+		?>
+		
+		<a href="https://api.whatsapp.com/send?phone=56984846490&text=Quiero saber algo acerca de mi pedido <?php echo $urlmensaje; ?>">
+		
+			<img src="http://www.armatuweb.cl/versionestatica/img/ws.png">
+				Contacto v&iacute;a Whatsapp
+			</a>
+	</div> -->
+	
+</div><!-- .div box -->
+
+</section><!-- /.content -->
+
+</div><!-- /.content-wrapper -->
+
+
+
+<script type="text/javascript">
+/*
+	 * Funcion que setea los parametros de la tabla de detalle
+	 */
+	function queryParamsDetalle(params) {
+		console.log(params);
+			  params['idPed'] = <?php echo $id_cabecera;?>;
+			  params['idcli'] = <?php echo $cliente['id']?>;
+	    return params;
+	}
+
+	/**
+	 * Procesa la respuesta del metodo que carga vía ajax los datos a la tabla.
+	 */
+	function responseHandler(res){
+
+		//console.log(res);
+		return res.rows;
+	}
+
+
+	$(document).ready(function(){
+
+	$table = $('#tabla_resultado');
+	$table.bootstrapTable('refresh');
+
+	});
+
+	
+
+</script>

@@ -1,0 +1,25 @@
+ALTER VIEW v_saldoscuentapedido AS 
+/**
+   24-09-2017 Vista utilizada para mostrar cuanto saldo tiene cada cuenta, sin detalle.
+**/
+SELECT 
+    mov.`id_cabecera`,
+    cta.`id`,
+    cta.`Nombre` nombre_cta,
+    cta.`Tipo` tipo_cta,
+    cta.Entidad,
+    SUM(mov.`monto`) saldo
+FROM 
+	`movimiento_ctas` mov 
+	INNER JOIN cuenta cta  ON mov.`id_cuenta` = cta.`id`
+GROUP BY 
+    mov.`id_cabecera`,
+    cta.`id`,
+    cta.`Nombre`,
+    cta.`Tipo`,
+    cta.Entidad
+ORDER BY Tipo    
+
+
+
+SELECT *, (p.valor_venta- p.costo) ganancia FROM producto p WHERE ( p.codigo LIKE '%bande%' OR p.`descripcion`'%bande%' );

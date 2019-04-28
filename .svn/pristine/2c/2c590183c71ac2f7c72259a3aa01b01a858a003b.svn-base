@@ -1,0 +1,72 @@
+DELIMITER $$
+
+USE `registroventasweb_des`$$
+
+DROP PROCEDURE IF EXISTS `SPListadoPedidoss`$$
+
+/*
+create temporary table ids( id int ) ;
+insert into ids SELECT id FROM estado
+select * from ids					
+CALL SPListadoPedidoss(-1,100)
+
+*/
+/*
+
+*/
+/*   
+	Retorna los pedidos de un cliente, SINO muestra los ultimos  pedidos 
+*/
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SPListadoPedidoss`(IN idpedido INT, IN limite INT)
+BEGIN
+SET NAMES utf8;
+
+SET @sele = "SELECT cab.id,
+		cli.nombre,
+		es.descripcion estado,
+		ce.fecha,
+		res.venta,
+		res.costo,
+		(res.venta-res.costo) 'ganancia',
+		res.debe,
+		res.haber,
+		(res.debe-res.haber) 'debevshaber'
+		";
+SET @fro = "FROM cabecera cab    
+		INNER JOIN  cliente cli    
+			ON cli.id = cab.id_cliente   
+		INNER JOIN cambioestado ce 
+			ON cab.estadoActual = ce.id 
+			AND cab.id = ce.id_cabecera  
+		INNER JOIN estado es 
+			ON ce.estado = es.id 
+		INNER JOIN ids i ON es.id = i.id
+		LEFT JOIN Resumen_pedido res ON cab.id = res.id_cabecera
+		";
+SET @were = "WHERE";
+
+IF (idpedido <> -1) THEN
+	SET @were = CONCAT (@were," cab.id = " , idpedido , " AND ");
+END IF;
+
+
+
+SET @orde = " ORDER BY cab.id desc ";
+SET @were = CONCAT(@were ," 1 = 1 ");	
+SET @limite = CONCAT("LIMIT ", limite);
+	   
+		   /*select CONCAT(@sele,@fro,@were,@limite);*/
+		   
+		   
+/*SET @were = @were + " ORDER BY cab.id DESC"; */
+SET @queri = CONCAT(@sele,@fro,@were,@orde,@limite);
+
+
+PREPARE stmt FROM @queri;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+	
+    END$$
+
+DELIMITER ;

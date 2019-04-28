@@ -1,0 +1,38 @@
+SELECT 
+	'Saldo' AS tipo,
+	lp.`est_fec_ing` AS fechaingreso,
+	dp.id_cabecera AS pedido,
+	dp.`cantidad` AS cantidad,
+	dp.nom_prod AS producto,
+	dp.`costo_un` costo_cu,
+	dp.`det_costo` AS tot_costo,
+	dh.haber AS pagado,
+	lp.`SaldoFabrica` AS Saldo,
+	lp.`iva`,
+	lp.`SaldoFabrica` AS "A pagar"
+FROM `v_totaldetallepedido` dp
+/*INNER JOIN `v_totaldetallepedido1linea` sc ON dp.`id_cabecera` = sc.`id_cabecera`*/
+INNER JOIN `v_listadopedidoextendido` lp ON dp.`id_cabecera` = lp.`numeroPedido`
+LEFT JOIN v_cuentasdebehaber dh ON dp.id_cabecera = dh.id_cabecera  AND dh.id_cuenta = 2
+WHERE dp.id_cabecera  IN (6062,6063,6065,6070,6079,6081,6084,6082,6066)
+
+
+
+
+SELECT 
+	'Nuevo' AS tipo,
+	lp.`est_fec_ing` AS fechaingreso,
+	dp.id_cabecera AS pedido,
+	dp.`cantidad` AS cantidad,
+	dp.nom_prod AS producto,
+	dp.`costo_un` costo_cu,
+	dp.`det_costo` AS tot_costo,
+	dh.haber AS pagado,
+	lp.`SaldoFabrica` AS Saldo,
+	lp.`iva`,
+	lp.`SaldoFabrica` AS "A pagar"
+FROM `v_totaldetallepedido` dp
+/*INNER JOIN `v_totaldetallepedido1linea` sc ON dp.`id_cabecera` = sc.`id_cabecera`*/
+INNER JOIN `v_listadopedidoextendido` lp ON dp.`id_cabecera` = lp.`numeroPedido`
+LEFT JOIN v_cuentasdebehaber dh ON dp.id_cabecera = dh.id_cabecera  AND dh.id_cuenta = 2
+WHERE dp.id_cabecera  IN (6086,6087,6088,6089,6090,6091)

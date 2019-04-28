@@ -1,0 +1,16 @@
+DELIMITER $$
+
+ALTER ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_fecha_ingreso` AS (
+
+SELECT 
+MIN(ce.`id`) id,
+ce.`id_cabecera`,
+ce.`fecha` 
+FROM `cambioestado` ce 
+INNER JOIN estado e ON e.`id` = ce.`estado`
+AND e.`secuencia` = 0
+GROUP BY 
+ce.`id_cabecera`,
+ce.`fecha`$$
+
+DELIMITER ;

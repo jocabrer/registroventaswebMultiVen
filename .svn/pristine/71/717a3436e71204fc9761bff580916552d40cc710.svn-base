@@ -1,0 +1,287 @@
+<?php
+
+class M_pedido extends CI_Model {
+
+  	function __construct()
+    {
+        // Call the Model constructor
+        parent::__construct();
+		
+    }
+    
+    /**
+	 * Obtiene las líneas de detalle tabla:detalle  de cada pedido tabla:cabecera
+	 *  
+	 */
+	function get_detalle_pedido($id_cabecera)
+	{
+		$this->db->where('id_cabecera',$id_cabecera);
+		$query = $this->db->get('v_totaldetallepedido');
+		return $query->result();
+	}
+    
+	function get_ListadoPedidoFormatoHoja($idpedidos)
+	{
+	    $query = "SELECT
+                            	
+                            	lp.`est_fec_ing` AS fechaingreso,
+                            	dp.id_cabecera AS pedido,
+                            	dp.`cantidad` AS cantidad,
+                            	dp.nom_prod AS producto,
+                            	dp.`costo_un` costo_cu,
+                            	dp.`det_costo` AS tot_costo,
+                            	dh.haber AS pagado,
+                            	lp.`SaldoFabrica` AS saldo,
+                            	lp.`iva`
+                            FROM `v_totaldetallepedido` dp
+                            /*INNER JOIN `v_totaldetallepedido1linea` sc ON dp.`id_cabecera` = sc.`id_cabecera`*/
+                            INNER JOIN `v_listadopedidoextendido` lp ON dp.`id_cabecera` = lp.`numeroPedido`
+                            LEFT JOIN v_cuentasdebehaber dh ON dp.id_cabecera = dh.id_cabecera  AND dh.id_cuenta = 2
+                            WHERE dp.id_cabecera  IN (".$idpedidos.");";
+
+        //echo $query;
+	   return  $this->db->query($query)->result_array();
+	    //echo $this->db->last_query();
+	    //exit(0);
+	    
+	}
+	/***
+	 * Listado de pedido en base a criterios
+	 */
+	function get_ListadoPedido($criterio,$limit,$estados,$ordenarpor,$orden,$slcomision,$cliente)
+	{
+		
+		/*$this->db->select('*');
+		 $this->db->from('producto');
+		 $this->db->where('id',$idProd);
+		 $query = $this->db->get();*/
+		
+		
+		$data = $this->db->select('*')->from('v_listadopedidoextendido');
+		$data = $this->db->where_in(' estado_sec', $estados);
+		
+		if($cliente!="todos")
+			$data = $this->db->where(' cli_id', $cliente);
+		
+		if($slcomision <> -1){
+			$data = $this->db->where(' comision', $slcomision);
+		}
+		if($criterio!=""){
+		    
+		$data = $this->db->group_start();
+		$data = $this->db->or_where(' numeroPedido =', $criterio);
+		$data = $this->db->or_like(' cli_nom', $criterio);
+		$data = $this->db->or_where(' cli_nom =', $criterio);
+		$data = $this->db->group_end();
+		}
+		$data = $this->db->limit($limit);
+		$data = $this->db->order_by($ordenarpor, $orden);
+		return $this->db->get()->result_array();
+		
+		//echo $this->db->last_query();
+		//exit(0);
+		
+	}
+	function get_indicadores_pedido($idpedido)
+	{
+		$query = $this->db->query("SELECT 
+                                        ind.*,
+                                        IFNULL(dh.haber,0) AS PagadoCliente,
+                                        (IFNULL(dh.debe,0)-IFNULL(dh.haber,0)) SaldoCliente
+                                    FROM 
+                                        v_indicador_lite ind 
+                                        LEFT JOIN v_cuentasdebehaber dh  ON ind.id_cabecera = dh.id_cabecera AND dh.tipo = 0
+                                    WHERE ind.id_cabecera 	= " . $idpedido);
+                                    		
+		return $query->result();
+	}
+	
+	
+	function drop_line($id)
+	{
+		return $this->db->simple_query("DELETE FROM  `detalle` WHERE `id` = ".$id);
+	}
+	/**
+	 * Actualiza la propiedad ConFactura
+	 * @param unknown $id_pedido cabecera a actualizar
+	 * @param unknown $chkiva valor a actualizar
+	 */
+	function update_factura($id_pedido,$chkiva)
+	{
+		
+		$this->db->simple_query("UPDATE `cabecera` SET `ConFactura` = ".(int)$chkiva." WHERE `id` = '".$id_pedido."'");
+		
+	}
+	
+	/*function update_comision($id_pedido,$chkcomision)
+	{
+	
+		$this->db->simple_query("UPDATE `cabecera` SET `comision` = ".(int)$chkcomision." WHERE `id` = '".$id_pedido."'");
+	
+	}*/
+	
+	
+	function eliminaPedido($id_pedido){
+    
+	    
+	    
+	    $this->db->trans_start();
+	    $this->db->query("DELETE FROM comentarios WHERE id_cabecera = ".$id_pedido.";");
+	    $this->db->query("DELETE FROM movimiento_cab WHERE id_cabecera = ".$id_pedido.";");
+	    $this->db->query("DELETE FROM movimiento_cta WHERE id_cabecera = ".$id_pedido.";");
+	    $this->db->query("DELETE FROM cambioestado WHERE id_cabecera = ".$id_pedido.";");
+	    $this->db->query("DELETE FROM detalle WHERE id_cabecera = ".$id_pedido.";");
+	    $this->db->query("DELETE FROM cabecera WHERE id = ".$id_pedido.";");
+	    $this->db->trans_complete(); 
+	    
+	    if ($this->db->trans_status() === FALSE)
+	    {
+	       return false;
+	    }else 
+	        return true;
+	        
+	}
+	
+    /***
+     * 
+     * @param unknown $id_cabecera
+     * @param unknown $id_estado
+     * @param unknown $fec_ing
+     */
+	function update_entry_cab($id_cabecera,$id_estado, $fec_ing,$id_user,$fecha_mod)
+	{
+	    //extrañamente poniendo y d m funcion no asi y-m-d
+	    $fec_ing = date_format(DateTime::createFromFormat('Y-m-d', $fec_ing),'Y-m-d H:i:s');
+		 
+		$this->estadoActual   = $id_estado;
+		$this->fecha_ingreso  = $fec_ing;
+		if($id_user<>-1){
+		    $this->id_user = $id_user;
+		}
+		    
+		
+		$this->fecha_mod = $fecha_mod->format('Y-m-d H:i:s');;
+		
+		$this->db->update('cabecera', $this, array('id' => $id_cabecera));
+	}
+	
+	
+	function insert_entry_cab($id_cliente,$fecha,$id_user,$fecha_mod)
+    {
+    	
+        // extrañamente poniendo y d m funcion no asi y-m-d
+        
+       // echo $fecha;
+        //var_dump(DateTime::createFromFormat('d/m/Y', $fecha));
+        
+        //echo date('Y-d-m h:i:s', strtotime($fecha));
+        //echo " // ".date('Y-m-d h:i:s', strtotime($fecha));
+        
+        $fecha = date_format(DateTime::createFromFormat('Y-m-d', $fecha),'Y-m-d');
+    	
+    	
+        $this->id_cliente    = $id_cliente;
+        $this->fecha_ingreso  = $fecha ;
+        $this->conFactura = 0;
+        $this->id_user = $id_user;
+        $this->fecha_mod = $fecha_mod->format('Y-m-d H:i:s');;
+        
+        
+        $this->db->insert('cabecera', $this);
+        $insert_id = $this->db->insert_id();
+        return  $insert_id;
+        
+        
+        
+    }
+    
+    
+    function limpia_hoja($nombre_hoja,$tipo_hoja){
+        return $this->db->simple_query("DELETE FROM  `hoja` WHERE `nombre_hoja` = '".$nombre_hoja."' and tipo = '".$tipo_hoja."';");
+    }
+    
+    function insert_entry_hoja($tipo,$fechaingreso,$pedido,$cantidad,$producto,$costo_cu,$tot_costo,$pagado,$saldo,$iva,$fecha_proceso,$nombre_hoja,$orden)
+    {
+        
+        //$fecha = date('Y-m-d H:i:s', strtotime($fecha));
+        
+        
+        
+        
+        $this->tipo = $tipo;
+        $this->fechaingreso = $fechaingreso;  
+        $this->pedido= $pedido;
+        $this->cantidad  = $cantidad;
+        $this->producto  = $producto;
+        $this->costo_cu  = $costo_cu;
+        $this->tot_costo  = $tot_costo;
+        $this->pagado  =$pagado;
+        $this->saldo  = $saldo;
+        $this->iva  = $iva;
+        $this->fecha_proceso  = $fecha_proceso->format('Y-m-d H:i:s');;
+        $this->nombre_hoja  =$nombre_hoja;
+        $this->orden = $orden;
+        $this->db->insert('hoja', $this);
+        $insert_id = $this->db->insert_id();
+        return  $insert_id;
+    }
+    
+ 	function insert_entry_det($idpedido,$cant,$idprod,$cos,$pri)
+    {
+    	unset( $this->id_cliente);
+    	unset($this->estadoActual);
+    	
+        $this->cantidad    = $cant;
+        $this->id_cabecera = $idpedido;
+        $this->valor_cli   = $pri;
+        $this->costo 	   = $cos;
+		$this->id_producto = $idprod;
+        $this->db->insert('detalle', $this);
+        $insert_id = $this->db->insert_id();
+        
+        return  $insert_id;
+    }
+	/**
+	 * Obtiene un registro de cabecera para el id 
+	 * @param int $idcabecera 
+	 */
+	function get_Pedido($idcabecera)
+	{
+		$this->db->where('id',$idcabecera);
+		$query = $this->db->get('v_cabecera');
+		return $query->result_array();
+	}
+	
+	function get_Hoja($hoja)
+	{
+	    $query = $this->db->where('nombre_hoja',$hoja);
+	    $query =$this->db->order_by('orden', 'asc');
+	    $query =$this->db->get('hoja');
+	    return $query->result_array();
+	}
+	
+	function get_Hojas()
+	{
+	    $query =$this->db->order_by('orden', 'asc');
+	    $query =$this->db->get('hoja');
+	    return $query->result_array();
+	}
+	
+	
+	
+	function existePedido($idcabecera)
+	{
+		$this->db->where('id', $idcabecera);
+		$this->db->from('cabecera');
+		$cant =  $this->db->count_all_results();
+		if ($cant>0)
+			return true;
+		else 
+			return false;
+	}
+	
+	
+
+}
+
+?>

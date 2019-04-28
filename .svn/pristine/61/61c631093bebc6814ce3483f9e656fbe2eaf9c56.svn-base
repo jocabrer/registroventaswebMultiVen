@@ -1,0 +1,33 @@
+ALTER VIEW v_listadopedido AS 
+/*
+   Vista que muestra la informacion completa de un pedido	
+*/
+SELECT
+     cab.id nro_pedido
+    ,cab.`cli_nom` AS nom_cliente
+    ,cab.`est_esecuencia`  AS est_sec
+    ,cab.`est_desc` AS  nom_estado
+    ,cab.`est_fec_estactual` AS  dat_actualizacion
+    
+    ,SUM(tot_cta.`tipo0`) AS Cliente
+    ,SUM(tot_cta.`tipo1`) AS Cobrado
+    ,SUM(tot_cta.`tipo2`) AS Abonado
+    ,SUM(tot_det.`det_costo`) AS Costo
+    ,SUM(tot_det.`det_venta`) AS Venta
+    ,SUM(tot_det.`det_ganancia`) AS Ganancia
+FROM 
+    v_cabecera cab 
+    /*inner join movimiento_ctas mov ON cab.`id` = mov.`id_cabecera`*/
+    INNER JOIN v_totalcuentapedido tot_cta ON cab.`id` = tot_cta.`id_cabecera` 
+    INNER JOIN v_totaldetallepedido tot_det ON cab.`id` = tot_det.`id_cabecera`
+    
+GROUP BY 
+     cab.id
+    ,cab.`cli_nom`
+    ,cab.`est_desc`
+    ,cab.`est_fec_estactual`
+    ,cab.`est_esecuencia` 
+   
+   
+
+   

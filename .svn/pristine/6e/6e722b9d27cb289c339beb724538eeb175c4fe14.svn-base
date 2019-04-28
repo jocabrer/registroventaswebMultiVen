@@ -1,0 +1,72 @@
+<?php
+
+
+class M_Comentarios extends CI_Model {
+    function __construct()
+    {
+        // Call the Model constructor
+        parent::__construct();
+		
+    }
+    function get_countultimosComentariosSinver($lastlogin){
+        
+        
+        $date = new DateTime();
+        $date->setTimestamp($lastlogin);
+                
+        $fecha = $date->format('Y-m-d H:i:s');
+        
+        $query =$this->db->order_by('fecha_mod', 'desc');
+        $query =$this->db->where('fecha_mod >=', $fecha);
+        return $this->db->count_all_results('comentarios');
+        
+        
+        
+    }
+    
+    
+    function get_ultimosComentarios($limit){
+        
+        
+        
+        
+        $query =$this->db->order_by('fecha_mod', 'desc');
+        $query =$this->db->get('comentarios',$limit);
+        return $query->result_array();
+        
+        
+    }
+    
+    
+    function get_Comments($id)
+    {
+    	$query = $this->db->query(
+    			"SELECT c.*, u.first_name nombre FROM comentarios c
+					INNER JOIN users u ON c.id_user = u.id
+						WHERE c.id_cabecera = ". $id);
+    	return $query->result_array();
+    }
+    function insert_entry($idcabecera,$id_user,$estado,$com,$fecha)
+    {
+//    	$fecha_creacion = date('Y/m/d H:i:s', strtotime(new DateTime('America/Argentina/Mendoza')));
+    	
+    	
+        $this->id_cabecera  = $idcabecera;
+        $this->estado 		= $estado;
+        $this->id_user      = $id_user;
+		$this->fecha_mod = $fecha->format('Y-m-d H:i:s');
+		$this->comentario   = $com;
+		
+        $this->db->insert('comentarios', $this);
+		// El id del nuevo estado.
+        $insert_id = $this->db->insert_id();
+        return  $insert_id;
+    }
+	
+    
+    
+}
+
+
+
+?>

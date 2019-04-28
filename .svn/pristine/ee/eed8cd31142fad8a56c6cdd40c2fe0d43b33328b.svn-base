@@ -1,0 +1,571 @@
+/*
+SQLyog Ultimate v12.09 (64 bit)
+MySQL - 5.7.9 : Database - registroventasweb_des
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`registroventasweb_des` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci */;
+
+USE `registroventasweb_des`;
+
+/*Table structure for table `cabecera` */
+
+DROP TABLE IF EXISTS `cabecera`;
+
+CREATE TABLE `cabecera` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cliente` int(11) DEFAULT NULL,
+  `estadoActual` int(11) DEFAULT NULL,
+  `fecha_ingreso` datetime DEFAULT NULL,
+  `conFactura` tinyint(1) DEFAULT '1' COMMENT '0 false 1 true',
+  `comision` tinyint(1) DEFAULT '0' COMMENT '0 false 1 true',
+  PRIMARY KEY (`id`),
+  KEY `id_cliente` (`id_cliente`),
+  KEY `estadoActual` (`estadoActual`),
+  CONSTRAINT `cabecera_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6024 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cambioestado` */
+
+DROP TABLE IF EXISTS `cambioestado`;
+
+CREATE TABLE `cambioestado` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'identificador',
+  `id_cabecera` int(11) NOT NULL COMMENT 'Cabecera a la cual pertenece',
+  `estado` int(11) NOT NULL COMMENT 'estado que representa',
+  `fecha` datetime NOT NULL COMMENT 'fecha de inserccion',
+  `id_usuario` int(11) unsigned NOT NULL COMMENT 'identificacion del pc que actualizo',
+  PRIMARY KEY (`id`,`id_cabecera`),
+  KEY `id_cabecera` (`id_cabecera`),
+  KEY `cambioestado_fk` (`estado`),
+  KEY `ce_user` (`id_usuario`),
+  CONSTRAINT `cambioestado_fk` FOREIGN KEY (`estado`) REFERENCES `estado` (`id`),
+  CONSTRAINT `cambioestado_ibfk_1` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`),
+  CONSTRAINT `ce_user` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cliente` */
+
+DROP TABLE IF EXISTS `cliente`;
+
+CREATE TABLE `cliente` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'numero de cliente',
+  `nombre` varchar(100) CHARACTER SET latin1 DEFAULT NULL COMMENT 'nombre cliente',
+  `nombre2` varchar(250) CHARACTER SET latin1 DEFAULT NULL,
+  `correo1` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `correo2` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `fono1` varchar(15) CHARACTER SET latin1 DEFAULT NULL,
+  `fono2` varchar(15) CHARACTER SET latin1 DEFAULT NULL,
+  `giro` varchar(60) CHARACTER SET latin1 DEFAULT NULL,
+  `rut` varchar(10) CHARACTER SET latin1 DEFAULT NULL,
+  `domicilio` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `comuna` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `observaciones` text CHARACTER SET latin1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `comentarios` */
+
+DROP TABLE IF EXISTS `comentarios`;
+
+CREATE TABLE `comentarios` (
+  `id_comentario` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id_comentario',
+  `id_cabecera` int(11) NOT NULL COMMENT 'Pedido de los comentarios.',
+  `id_user` int(11) unsigned NOT NULL COMMENT 'Creador del comentario.',
+  `estado` int(11) NOT NULL COMMENT 'Estado del comentario activado o desactivado',
+  `fecha_creacion` datetime NOT NULL COMMENT 'Fecha de creaciòn',
+  `comentario` text COMMENT 'Comentario',
+  PRIMARY KEY (`id_comentario`),
+  KEY `56gffg` (`id_cabecera`),
+  KEY `fkusercomentario` (`id_user`),
+  CONSTRAINT `56gffg` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`),
+  CONSTRAINT `fkusercomentario` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `cuenta` */
+
+DROP TABLE IF EXISTS `cuenta`;
+
+CREATE TABLE `cuenta` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(200) DEFAULT NULL,
+  `Numero` varchar(50) DEFAULT NULL,
+  `Entidad` varchar(50) DEFAULT NULL,
+  `Tipo` varchar(20) DEFAULT NULL,
+  `Obs` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `detalle` */
+
+DROP TABLE IF EXISTS `detalle`;
+
+CREATE TABLE `detalle` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cabecera` int(11) NOT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `valor_cli` double DEFAULT NULL,
+  `costo` double DEFAULT NULL,
+  `id_producto` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_cabecera` (`id_cabecera`),
+  KEY `detalle_prod` (`id_producto`),
+  CONSTRAINT `detalle_ibfk_1` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`),
+  CONSTRAINT `detalle_prod` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=719 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `estado` */
+
+DROP TABLE IF EXISTS `estado`;
+
+CREATE TABLE `estado` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(50) DEFAULT NULL,
+  `vigente` int(11) DEFAULT NULL,
+  `secuencia` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `feriados` */
+
+DROP TABLE IF EXISTS `feriados`;
+
+CREATE TABLE `feriados` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(500) CHARACTER SET latin1 DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `diadelagno` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `groups` */
+
+DROP TABLE IF EXISTS `groups`;
+
+CREATE TABLE `groups` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `login_attempts` */
+
+DROP TABLE IF EXISTS `login_attempts`;
+
+CREATE TABLE `login_attempts` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(15) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `time` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `movimiento_cab` */
+
+DROP TABLE IF EXISTS `movimiento_cab`;
+
+CREATE TABLE `movimiento_cab` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_cabecera` int(11) DEFAULT NULL,
+  `id_cuenta` int(11) DEFAULT NULL,
+  `porcentaje` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_cabecera_mov_cab` (`id_cabecera`),
+  KEY `fk_mov_cab_cuenta` (`id_cuenta`),
+  CONSTRAINT `fk_cabecera_mov_cab` FOREIGN KEY (`id_cabecera`) REFERENCES `cabecera` (`id`),
+  CONSTRAINT `fk_mov_cab_cuenta` FOREIGN KEY (`id_cuenta`) REFERENCES `cuenta` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Table structure for table `movimiento_cta` */
+
+DROP TABLE IF EXISTS `movimiento_cta`;
+
+CREATE TABLE `movimiento_cta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_mov_cab` int(11) DEFAULT NULL,
+  `id_cuenta` int(11) DEFAULT NULL,
+  `monto` double DEFAULT NULL,
+  `fecha_ingreso` datetime DEFAULT NULL,
+  `glosa` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_cabecera` (`id_mov_cab`),
+  KEY `movimiento_ctas_ctas1` (`id_cuenta`),
+  CONSTRAINT `fk_mov_cta_mov_cab` FOREIGN KEY (`id_mov_cab`) REFERENCES `movimiento_cab` (`id`),
+  CONSTRAINT `movimiento_ctas_ctas11` FOREIGN KEY (`id_cuenta`) REFERENCES `cuenta` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1138 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `producto` */
+
+DROP TABLE IF EXISTS `producto`;
+
+CREATE TABLE `producto` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Codigo` varchar(10) NOT NULL,
+  `Nombre` varchar(100) DEFAULT NULL,
+  `Descripcion` varchar(1000) DEFAULT NULL,
+  `valor_venta` double DEFAULT NULL,
+  `costo` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `users` */
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(15) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `salt` varchar(255) DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `activation_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_time` int(11) unsigned DEFAULT NULL,
+  `remember_code` varchar(40) DEFAULT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `last_login` int(11) unsigned DEFAULT NULL,
+  `active` tinyint(1) unsigned DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `users_groups` */
+
+DROP TABLE IF EXISTS `users_groups`;
+
+CREATE TABLE `users_groups` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `group_id` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uc_users_groups` (`user_id`,`group_id`),
+  KEY `fk_users_groups_users1_idx` (`user_id`),
+  KEY `fk_users_groups_groups1_idx` (`group_id`),
+  CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `usuariocliente` */
+
+DROP TABLE IF EXISTS `usuariocliente`;
+
+CREATE TABLE `usuariocliente` (
+  `id_usuario` int(11) unsigned NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  PRIMARY KEY (`id_usuario`,`id_cliente`),
+  KEY `clienteusuario_cliente` (`id_cliente`),
+  CONSTRAINT `clienteusuario_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`),
+  CONSTRAINT `clienteusuario_user1` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `v_cabecera` */
+
+DROP TABLE IF EXISTS `v_cabecera`;
+
+/*!50001 DROP VIEW IF EXISTS `v_cabecera` */;
+/*!50001 DROP TABLE IF EXISTS `v_cabecera` */;
+
+/*!50001 CREATE TABLE  `v_cabecera`(
+ `id` int(11) ,
+ `est_esecuencia` int(11) ,
+ `est_desc` varchar(50) ,
+ `est_fec_estactual` datetime ,
+ `est_fec_ing` datetime ,
+ `diastranscurridos` int(7) ,
+ `cli_id` int(11) ,
+ `cli_nom` varchar(100) ,
+ `ConFactura` tinyint(1) ,
+ `comision` tinyint(1) 
+)*/;
+
+/*Table structure for table `v_cuentasdebehaber` */
+
+DROP TABLE IF EXISTS `v_cuentasdebehaber`;
+
+/*!50001 DROP VIEW IF EXISTS `v_cuentasdebehaber` */;
+/*!50001 DROP TABLE IF EXISTS `v_cuentasdebehaber` */;
+
+/*!50001 CREATE TABLE  `v_cuentasdebehaber`(
+ `id_cabecera` int(11) ,
+ `nombre_cta` varchar(200) ,
+ `tipo` varchar(20) ,
+ `debe` double ,
+ `haber` double ,
+ `saldo` double 
+)*/;
+
+/*Table structure for table `v_detallecuentas` */
+
+DROP TABLE IF EXISTS `v_detallecuentas`;
+
+/*!50001 DROP VIEW IF EXISTS `v_detallecuentas` */;
+/*!50001 DROP TABLE IF EXISTS `v_detallecuentas` */;
+
+/*!50001 CREATE TABLE  `v_detallecuentas`(
+ `id_transaccion` int(11) ,
+ `id_cuenta` int(10) ,
+ `nombre_cuenta` varchar(200) ,
+ `nro_pedido` int(11) ,
+ `glosa` varchar(250) ,
+ `fecha_ingreso` datetime ,
+ `debe` double ,
+ `haber` double 
+)*/;
+
+/*Table structure for table `v_indicadorespedido` */
+
+DROP TABLE IF EXISTS `v_indicadorespedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_indicadorespedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_indicadorespedido` */;
+
+/*!50001 CREATE TABLE  `v_indicadorespedido`(
+ `id_cabecera` int(11) ,
+ `Subtotal` double ,
+ `iva` double ,
+ `totalAPagar` double ,
+ `PagadoCLiente` double ,
+ `SaldoCLiente` double ,
+ `CostoTotal` double ,
+ `AbonadoFabrica` double ,
+ `SaldoFabrica` double ,
+ `Ganancia100` double ,
+ `recibidoVendedor1` double ,
+ `gananciaVendedor1` double ,
+ `SaldoVendedor1` double ,
+ `recibidoVendedor2` double ,
+ `gananciaVendedor2` double ,
+ `SaldoVendedor2` double 
+)*/;
+
+/*Table structure for table `v_listadopedido` */
+
+DROP TABLE IF EXISTS `v_listadopedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_listadopedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_listadopedido` */;
+
+/*!50001 CREATE TABLE  `v_listadopedido`(
+ `nro_pedido` int(11) ,
+ `nom_cliente` varchar(100) ,
+ `est_sec` int(11) ,
+ `nom_estado` varchar(50) ,
+ `dat_actualizacion` datetime ,
+ `Cliente` double ,
+ `Haber` double ,
+ `Debe` double ,
+ `Costo` double ,
+ `Venta` double ,
+ `Ganancia` double 
+)*/;
+
+/*Table structure for table `v_listadopedidoextendido` */
+
+DROP TABLE IF EXISTS `v_listadopedidoextendido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_listadopedidoextendido` */;
+/*!50001 DROP TABLE IF EXISTS `v_listadopedidoextendido` */;
+
+/*!50001 CREATE TABLE  `v_listadopedidoextendido`(
+ `numeroPedido` int(11) ,
+ `cli_id` int(11) ,
+ `cli_nom` varchar(100) ,
+ `estado_sec` int(11) ,
+ `est_desc` varchar(50) ,
+ `est_fec_estactual` datetime ,
+ `est_fec_ing` datetime ,
+ `comision` tinyint(1) ,
+ `confactura` tinyint(1) ,
+ `Subtotal` double ,
+ `iva` double ,
+ `totalAPagar` double ,
+ `PagadoCLiente` double ,
+ `SaldoCLiente` double ,
+ `CostoTotal` double ,
+ `SaldoFabrica` double ,
+ `Ganancia100` double ,
+ `diastranscurridos` int(7) ,
+ `SaldoGanancia` double ,
+ `recibidoVendedor1` double ,
+ `recibidoVendedor2` double ,
+ `SaldoVendedor1` double ,
+ `SaldoVendedor2` double 
+)*/;
+
+/*Table structure for table `v_resumenclientepedido` */
+
+DROP TABLE IF EXISTS `v_resumenclientepedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_resumenclientepedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_resumenclientepedido` */;
+
+/*!50001 CREATE TABLE  `v_resumenclientepedido`(
+ `id` int(11) ,
+ `nom_cliente` varchar(100) ,
+ `adr_cliente` varchar(100) ,
+ `cant_pedidos` bigint(21) 
+)*/;
+
+/*Table structure for table `v_saldoscuentapedido` */
+
+DROP TABLE IF EXISTS `v_saldoscuentapedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_saldoscuentapedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_saldoscuentapedido` */;
+
+/*!50001 CREATE TABLE  `v_saldoscuentapedido`(
+ `id_cabecera` int(11) ,
+ `id` int(10) ,
+ `nombre_cta` varchar(200) ,
+ `tipo_cta` varchar(20) ,
+ `Entidad` varchar(50) ,
+ `saldo` double 
+)*/;
+
+/*Table structure for table `v_totalcuentapedido` */
+
+DROP TABLE IF EXISTS `v_totalcuentapedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_totalcuentapedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_totalcuentapedido` */;
+
+/*!50001 CREATE TABLE  `v_totalcuentapedido`(
+ `id_cabecera` int(11) ,
+ `tipo0` double ,
+ `tipo1` double ,
+ `tipo2` double 
+)*/;
+
+/*Table structure for table `v_totaldetallepedido` */
+
+DROP TABLE IF EXISTS `v_totaldetallepedido`;
+
+/*!50001 DROP VIEW IF EXISTS `v_totaldetallepedido` */;
+/*!50001 DROP TABLE IF EXISTS `v_totaldetallepedido` */;
+
+/*!50001 CREATE TABLE  `v_totaldetallepedido`(
+ `id` int(11) ,
+ `id_cabecera` int(11) ,
+ `id_prod` int(11) ,
+ `cod_prod` varchar(10) ,
+ `nom_prod` varchar(100) ,
+ `des_prod` varchar(1000) ,
+ `costo_un` double ,
+ `venta_un` double ,
+ `cantidad` decimal(32,0) ,
+ `det_costo` double ,
+ `det_venta` double ,
+ `det_ganancia` double ,
+ `det_ganancia_2` double 
+)*/;
+
+/*Table structure for table `v_totaldetallepedido1linea` */
+
+DROP TABLE IF EXISTS `v_totaldetallepedido1linea`;
+
+/*!50001 DROP VIEW IF EXISTS `v_totaldetallepedido1linea` */;
+/*!50001 DROP TABLE IF EXISTS `v_totaldetallepedido1linea` */;
+
+/*!50001 CREATE TABLE  `v_totaldetallepedido1linea`(
+ `id_cabecera` int(11) ,
+ `costo_tot` double ,
+ `venta_tot` double ,
+ `iva_tot` double ,
+ `ganancia_tot` double ,
+ `ganancia2_tot` double 
+)*/;
+
+/*View structure for view v_cabecera */
+
+/*!50001 DROP TABLE IF EXISTS `v_cabecera` */;
+/*!50001 DROP VIEW IF EXISTS `v_cabecera` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_cabecera` AS select `cab`.`id` AS `id`,`est`.`secuencia` AS `est_esecuencia`,`est`.`descripcion` AS `est_desc`,`ce`.`fecha` AS `est_fec_estactual`,`cab`.`fecha_ingreso` AS `est_fec_ing`,(to_days(now()) - to_days(`cab`.`fecha_ingreso`)) AS `diastranscurridos`,`cli`.`id` AS `cli_id`,`cli`.`nombre` AS `cli_nom`,`cab`.`conFactura` AS `ConFactura`,`cab`.`comision` AS `comision` from (((`cabecera` `cab` join `cambioestado` `ce` on(((`cab`.`estadoActual` = `ce`.`id`) and (`cab`.`id` = `ce`.`id_cabecera`)))) join `estado` `est` on((`ce`.`estado` = `est`.`secuencia`))) join `cliente` `cli` on((`cab`.`id_cliente` = `cli`.`id`))) */;
+
+/*View structure for view v_cuentasdebehaber */
+
+/*!50001 DROP TABLE IF EXISTS `v_cuentasdebehaber` */;
+/*!50001 DROP VIEW IF EXISTS `v_cuentasdebehaber` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_cuentasdebehaber` AS select `dp`.`id_cabecera` AS `id_cabecera`,`sal`.`nombre_cta` AS `nombre_cta`,`cta`.`Tipo` AS `tipo`,sum((case `cta`.`Tipo` when '0' then (`dp`.`venta_tot` + `dp`.`iva_tot`) when '1' then (case when (`cta`.`id` = `sal`.`id`) then `dp`.`ganancia2_tot` else 0 end) when '2' then (`dp`.`costo_tot` + `dp`.`iva_tot`) else 0 end)) AS `debe`,sum((case `cta`.`Tipo` when '0' then `sal`.`saldo` when '1' then (case when (`cta`.`id` = `sal`.`id`) then `sal`.`saldo` else 0 end) when '2' then `sal`.`saldo` else 0 end)) AS `haber`,sum(((case `cta`.`Tipo` when '0' then (`dp`.`venta_tot` + `dp`.`iva_tot`) when '1' then (case when (`cta`.`id` = `sal`.`id`) then `dp`.`ganancia2_tot` else 0 end) when '2' then (`dp`.`costo_tot` + `dp`.`iva_tot`) else 0 end) - (case `cta`.`Tipo` when '0' then `sal`.`saldo` when '1' then (case when (`cta`.`id` = `sal`.`id`) then `sal`.`saldo` else 0 end) when '2' then `sal`.`saldo` else 0 end))) AS `saldo` from ((`v_totaldetallepedido1linea` `dp` join `v_saldoscuentapedido` `sal` on((`dp`.`id_cabecera` = `sal`.`id_cabecera`))) join `cuenta` `cta` on((`sal`.`id` = `cta`.`id`))) group by `dp`.`id_cabecera`,`sal`.`nombre_cta` */;
+
+/*View structure for view v_detallecuentas */
+
+/*!50001 DROP TABLE IF EXISTS `v_detallecuentas` */;
+/*!50001 DROP VIEW IF EXISTS `v_detallecuentas` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_detallecuentas` AS select `mov`.`id` AS `id_transaccion`,`cta`.`id` AS `id_cuenta`,`cta`.`Nombre` AS `nombre_cuenta`,`cab`.`id_cabecera` AS `nro_pedido`,`mov`.`glosa` AS `glosa`,`mov`.`fecha_ingreso` AS `fecha_ingreso`,(case when (`mov`.`monto` > 0) then `mov`.`monto` else 0 end) AS `debe`,(case when (`mov`.`monto` < 0) then `mov`.`monto` else 0 end) AS `haber` from ((`movimiento_cab` `cab` join `movimiento_cta` `mov` on((`cab`.`id` = `mov`.`id_mov_cab`))) join `cuenta` `cta` on((`cta`.`id` = `mov`.`id_cuenta`))) order by `cab`.`id_cabecera`,`mov`.`fecha_ingreso` desc */;
+
+/*View structure for view v_indicadorespedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_indicadorespedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_indicadorespedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_indicadorespedido` AS select `tot_det`.`id_cabecera` AS `id_cabecera`,sum(`tot_det`.`venta_tot`) AS `Subtotal`,sum((case `cab`.`ConFactura` when 1 then (`tot_det`.`venta_tot` * 0.19) else 0 end)) AS `iva`,sum((`tot_det`.`venta_tot` + (case `cab`.`ConFactura` when 1 then (`tot_det`.`venta_tot` * 0.19) else 0 end))) AS `totalAPagar`,sum(`cta_tipo0`.`saldo`) AS `PagadoCLiente`,sum(((`tot_det`.`venta_tot` + (case `cab`.`ConFactura` when 1 then (`tot_det`.`venta_tot` * 0.19) else 0 end)) - `cta_tipo0`.`saldo`)) AS `SaldoCLiente`,sum(`tot_det`.`costo_tot`) AS `CostoTotal`,sum(ifnull(`cta_tipo2`.`saldo`,0)) AS `AbonadoFabrica`,sum(((`tot_det`.`costo_tot` - ifnull(`cta_tipo2`.`saldo`,0)) + (case `cab`.`ConFactura` when 1 then (`tot_det`.`venta_tot` * 0.19) else 0 end))) AS `SaldoFabrica`,sum(`tot_det`.`ganancia_tot`) AS `Ganancia100`,sum(ifnull(`cta_tipo1_1`.`saldo`,0)) AS `recibidoVendedor1`,sum((case `cab`.`comision` when 0 then `tot_det`.`ganancia_tot` else `tot_det`.`ganancia2_tot` end)) AS `gananciaVendedor1`,sum(((case `cab`.`comision` when 0 then `tot_det`.`ganancia_tot` else `tot_det`.`ganancia2_tot` end) - ifnull(`cta_tipo1_1`.`saldo`,0))) AS `SaldoVendedor1`,sum(ifnull(`cta_tipo1_2`.`saldo`,0)) AS `recibidoVendedor2`,sum((case `cab`.`comision` when 1 then `tot_det`.`ganancia2_tot` else 0 end)) AS `gananciaVendedor2`,sum(((case `cab`.`comision` when 1 then `tot_det`.`ganancia2_tot` else 0 end) - ifnull(`cta_tipo1_2`.`saldo`,0))) AS `SaldoVendedor2` from (((((`v_cabecera` `cab` join `v_totaldetallepedido1linea` `tot_det` on((`cab`.`id` = `tot_det`.`id_cabecera`))) left join `v_saldoscuentapedido` `cta_tipo0` on(((`tot_det`.`id_cabecera` = `cta_tipo0`.`id_cabecera`) and (`cta_tipo0`.`tipo_cta` = 0)))) left join `v_saldoscuentapedido` `cta_tipo2` on(((`tot_det`.`id_cabecera` = `cta_tipo2`.`id_cabecera`) and (`cta_tipo2`.`tipo_cta` = 2)))) left join `v_saldoscuentapedido` `cta_tipo1_1` on(((`tot_det`.`id_cabecera` = `cta_tipo1_1`.`id_cabecera`) and (`cta_tipo1_1`.`tipo_cta` = 1) and (`cta_tipo1_1`.`Entidad` = 'VEN1')))) left join `v_saldoscuentapedido` `cta_tipo1_2` on(((`tot_det`.`id_cabecera` = `cta_tipo1_2`.`id_cabecera`) and (`cta_tipo1_2`.`tipo_cta` = 1) and (`cta_tipo1_2`.`Entidad` = 'VEN2')))) group by `tot_det`.`id_cabecera` */;
+
+/*View structure for view v_listadopedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_listadopedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_listadopedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_listadopedido` AS select `cab`.`id` AS `nro_pedido`,`cab`.`cli_nom` AS `nom_cliente`,`cab`.`est_esecuencia` AS `est_sec`,`cab`.`est_desc` AS `nom_estado`,`cab`.`est_fec_estactual` AS `dat_actualizacion`,sum(`tot_cta`.`tipo0`) AS `Cliente`,sum(`tot_cta`.`tipo1`) AS `Haber`,sum(`tot_cta`.`tipo2`) AS `Debe`,sum(`tot_det`.`det_costo`) AS `Costo`,sum(`tot_det`.`det_venta`) AS `Venta`,sum(`tot_det`.`det_ganancia`) AS `Ganancia` from ((`v_cabecera` `cab` join `v_totalcuentapedido` `tot_cta` on((`cab`.`id` = `tot_cta`.`id_cabecera`))) join `v_totaldetallepedido` `tot_det` on((`cab`.`id` = `tot_det`.`id_cabecera`))) group by `cab`.`id`,`cab`.`cli_nom`,`cab`.`est_desc`,`cab`.`est_fec_estactual`,`cab`.`est_esecuencia` */;
+
+/*View structure for view v_listadopedidoextendido */
+
+/*!50001 DROP TABLE IF EXISTS `v_listadopedidoextendido` */;
+/*!50001 DROP VIEW IF EXISTS `v_listadopedidoextendido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_listadopedidoextendido` AS select `cab`.`id` AS `numeroPedido`,`cab`.`cli_id` AS `cli_id`,`cab`.`cli_nom` AS `cli_nom`,`cab`.`est_esecuencia` AS `estado_sec`,`cab`.`est_desc` AS `est_desc`,`cab`.`est_fec_estactual` AS `est_fec_estactual`,`cab`.`est_fec_ing` AS `est_fec_ing`,`cab`.`comision` AS `comision`,`cab`.`ConFactura` AS `confactura`,`ind`.`Subtotal` AS `Subtotal`,`ind`.`iva` AS `iva`,`ind`.`totalAPagar` AS `totalAPagar`,ifnull(`ind`.`PagadoCLiente`,0) AS `PagadoCLiente`,ifnull(`ind`.`SaldoCLiente`,0) AS `SaldoCLiente`,ifnull(`ind`.`CostoTotal`,0) AS `CostoTotal`,ifnull(`ind`.`SaldoFabrica`,0) AS `SaldoFabrica`,ifnull(`ind`.`Ganancia100`,0) AS `Ganancia100`,(to_days(now()) - to_days(`cab`.`est_fec_ing`)) AS `diastranscurridos`,(ifnull(`ind`.`Ganancia100`,0) - (ifnull(`ind`.`recibidoVendedor1`,0) + ifnull(`ind`.`recibidoVendedor2`,0))) AS `SaldoGanancia`,ifnull(`ind`.`recibidoVendedor1`,0) AS `recibidoVendedor1`,ifnull(`ind`.`recibidoVendedor2`,0) AS `recibidoVendedor2`,ifnull(`ind`.`SaldoVendedor1`,0) AS `SaldoVendedor1`,ifnull(`ind`.`SaldoVendedor2`,0) AS `SaldoVendedor2` from (`v_indicadorespedido` `ind` join `v_cabecera` `cab` on((`cab`.`id` = `ind`.`id_cabecera`))) order by `cab`.`id` desc */;
+
+/*View structure for view v_resumenclientepedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_resumenclientepedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_resumenclientepedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_resumenclientepedido` AS select `cli`.`id` AS `id`,`cli`.`nombre` AS `nom_cliente`,`cli`.`correo1` AS `adr_cliente`,count(`cab`.`id`) AS `cant_pedidos` from (`cliente` `cli` left join `cabecera` `cab` on((`cli`.`id` = `cab`.`id_cliente`))) group by `cli`.`id` */;
+
+/*View structure for view v_saldoscuentapedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_saldoscuentapedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_saldoscuentapedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_saldoscuentapedido` AS select `cab`.`id_cabecera` AS `id_cabecera`,`cta`.`id` AS `id`,`cta`.`Nombre` AS `nombre_cta`,`cta`.`Tipo` AS `tipo_cta`,`cta`.`Entidad` AS `Entidad`,sum(`mov`.`monto`) AS `saldo` from ((`movimiento_cab` `cab` join `movimiento_cta` `mov` on((`cab`.`id` = `mov`.`id_mov_cab`))) join `cuenta` `cta` on((`mov`.`id_cuenta` = `cta`.`id`))) group by `cab`.`id_cabecera`,`cta`.`id`,`cta`.`Nombre`,`cta`.`Tipo`,`cta`.`Entidad` order by `cta`.`Tipo` */;
+
+/*View structure for view v_totalcuentapedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_totalcuentapedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_totalcuentapedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_totalcuentapedido` AS (select `cab`.`id_cabecera` AS `id_cabecera`,sum((case `cta1`.`Tipo` when 0 then `mov`.`monto` else 0 end)) AS `tipo0`,sum((case `cta1`.`Tipo` when 1 then `mov`.`monto` else 0 end)) AS `tipo1`,sum((case `cta1`.`Tipo` when 2 then `mov`.`monto` else 0 end)) AS `tipo2` from ((`movimiento_cab` `cab` join `movimiento_cta` `mov` on((`cab`.`id` = `mov`.`id_mov_cab`))) join `cuenta` `cta1` on((`mov`.`id_cuenta` = `cta1`.`id`))) group by `cab`.`id_cabecera`) */;
+
+/*View structure for view v_totaldetallepedido */
+
+/*!50001 DROP TABLE IF EXISTS `v_totaldetallepedido` */;
+/*!50001 DROP VIEW IF EXISTS `v_totaldetallepedido` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_totaldetallepedido` AS select `det`.`id` AS `id`,`det`.`id_cabecera` AS `id_cabecera`,`det`.`id_producto` AS `id_prod`,`pro`.`Codigo` AS `cod_prod`,`pro`.`Nombre` AS `nom_prod`,`pro`.`Descripcion` AS `des_prod`,`det`.`costo` AS `costo_un`,`det`.`valor_cli` AS `venta_un`,sum(`det`.`cantidad`) AS `cantidad`,sum((`det`.`costo` * `det`.`cantidad`)) AS `det_costo`,sum((`det`.`valor_cli` * `det`.`cantidad`)) AS `det_venta`,sum(((`det`.`valor_cli` * `det`.`cantidad`) - (`det`.`costo` * `det`.`cantidad`))) AS `det_ganancia`,sum((((`det`.`valor_cli` * `det`.`cantidad`) - (`det`.`costo` * `det`.`cantidad`)) / (case `cab`.`comision` when 1 then 2 when 0 then 1 end))) AS `det_ganancia_2` from ((`detalle` `det` join `producto` `pro` on((`det`.`id_producto` = `pro`.`id`))) join `cabecera` `cab` on((`cab`.`id` = `det`.`id_cabecera`))) group by `det`.`id_cabecera`,`det`.`id_producto`,`pro`.`Codigo`,`pro`.`Nombre`,`pro`.`Descripcion`,`det`.`id`,`det`.`costo`,`det`.`valor_cli` */;
+
+/*View structure for view v_totaldetallepedido1linea */
+
+/*!50001 DROP TABLE IF EXISTS `v_totaldetallepedido1linea` */;
+/*!50001 DROP VIEW IF EXISTS `v_totaldetallepedido1linea` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_totaldetallepedido1linea` AS select `v_det`.`id_cabecera` AS `id_cabecera`,sum(`v_det`.`det_costo`) AS `costo_tot`,sum(`v_det`.`det_venta`) AS `venta_tot`,sum((case `cab`.`ConFactura` when 1 then (`v_det`.`det_venta` * 0.19) else 0 end)) AS `iva_tot`,sum(`v_det`.`det_ganancia`) AS `ganancia_tot`,sum(`v_det`.`det_ganancia_2`) AS `ganancia2_tot` from (`v_totaldetallepedido` `v_det` join `v_cabecera` `cab` on((`v_det`.`id_cabecera` = `cab`.`id`))) group by `v_det`.`id_cabecera` */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

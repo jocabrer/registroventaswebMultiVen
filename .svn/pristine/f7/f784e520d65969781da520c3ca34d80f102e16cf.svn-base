@@ -1,0 +1,95 @@
+ALTER VIEW v_cuentasdebehaber AS 
+/*
+ RETORNA N lineas por pedido.
+ Hago el JOIN con cuenta por que necesito por separado el tipo, debo usarla junto con v_saldoscuentapedido 
+ que me muestra una vista consolidada d elos montos.
+*/
+
+SELECT 
+	 dp.`id_cabecera`
+	,sal.`nombre_cta`
+	,cta.tipo
+	/*,sUM(dp.`costo_tot`)  Costo
+	,SUM(dp.`venta_tot`) Venta
+	,SUM(dp.`ganancia_tot`) Ganancia*/
+	,
+	/*
+		El debe es como l meta de cada cuenta en este pedido
+	        Para las tipo 0 = Ingreso, es el monto de venta
+	        para las tipo 1 = Vendedores es la ganancia / el numero de vendedores
+	        para las tipo 2 = Proveedores  es el costo de la venta 
+	*/	
+	SUM(CASE cta.tipo
+	      WHEN '0' THEN dp.`venta_tot`+dp.iva_tot
+	      WHEN '1' THEN 
+		   CASE
+			WHEN cta.`id` = sal.id THEN dp.ganancia2_tot
+			ELSE 0
+	           END
+	      WHEN '2' THEN dp.`costo_tot`+dp.iva_tot
+	      ELSE 0  
+	 END) debe
+	 /*
+	     El haber es cuanta plata se ha distribuido a cada cuenta 
+	     
+	     *Para las tipo 0 y 2 lo saco del saldo
+	     *Para las tipo 1 lo saco del saldo de cada cuenta tipo 1 ya que estas hay mas ( 2 vendedores)
+	 */
+	,SUM(CASE cta.`Tipo`
+		WHEN '0' THEN sal.`saldo`
+		WHEN '1' THEN 
+		   CASE
+			WHEN cta.`id` = sal.id THEN sal.`saldo`
+			ELSE 0
+	           END
+		
+		WHEN '2' THEN sal.`saldo`
+		ELSE 0
+	    END) haber
+	  /*
+		El saldo es la diferencia de las 2 anteriores
+	  */
+	,SUM(
+		 (CASE cta.tipo
+		      WHEN '0' THEN dp.`venta_tot`+dp.iva_tot
+		      WHEN '1' THEN 
+			   CASE
+				WHEN cta.`id` = sal.id THEN dp.ganancia2_tot
+				ELSE 0
+			   END
+		      WHEN '2' THEN dp.`costo_tot`+dp.iva_tot /*Al proveedor se le paga el costo y el iva */
+		      ELSE 0   
+		 END)-
+		/*haber*/
+		 (CASE cta.`Tipo`
+			WHEN '0' THEN sal.`saldo`
+			WHEN '1' THEN 
+			   CASE
+				WHEN cta.`id` = sal.id THEN sal.`saldo`
+				ELSE 0
+			   END
+			
+			WHEN '2' THEN sal.`saldo`
+			ELSE 0
+		 END)
+		 
+	) saldo
+	
+FROM `v_totaldetallepedido1linea` dp
+/*inner join `v_totalcuentapedido` cp ON dp.`id_cabecera` = cp.`id_cabecera`*/
+INNER JOIN `v_saldoscuentapedido` sal ON dp.`id_cabecera` = sal.`id_cabecera`
+INNER JOIN `cuenta` cta ON sal.`id` = cta.`id`
+
+GROUP BY 
+	 dp.`id_cabecera`
+	,sal.`nombre_cta`
+
+/*select * from `v_totalcuentapedido`
+SELECT * FROM `v_totaldetallepedido`
+select * from v_lineapedido*/
+
+
+
+SELECT * FROM v_saldoscuentapedido WHERE id_cabecera = 5866
+SELECT * FROM v_totaldetallepedido1linea  WHERE id_cabecera = 5866
+

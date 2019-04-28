@@ -1,0 +1,30 @@
+/*v_totalcuentapedido*/
+-- SELECT dt.id_cabecera AS id_cabecera,
+--        Sum(dt.debe)   AS Debe,
+--        Sum(dt.haber)  AS haber
+-- FROM (
+
+SELECT 
+	mov.id_cabecera AS id_cabecera,
+	/*Cuenta tipo 1 Es activo*/
+	SUM(CASE cta_des.tipo  
+		WHEN 1 THEN 
+			CASE cta.numero
+                        WHEN 0 THEN mov.monto
+                        ELSE 0
+                        END
+                ELSE 0
+                END
+	    )AS Debe,/*La cuenta 0 suma al debe ya que es la cuenta de ingreso de dinero al sistema*/
+               Sum(( CASE cta_des.t|ipo
+                       WHEN 0 THEN mov.monto
+                       ELSE 0
+                     end ))        AS haber
+        FROM   (movimiento_ctas mov
+                 JOIN cuenta cta_des
+                   ON(( mov.id_cuenta_destino = cta_des.id )))
+                JOIN cuenta cta
+                  ON(( mov.id_cuenta_origen = cta.id )))
+        GROUP  BY mov.id_cabecera
+-- ) dt
+-- GROUP  BY dt.id_cabecera 
