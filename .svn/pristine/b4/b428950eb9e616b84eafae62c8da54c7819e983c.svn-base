@@ -1,1 +1,0 @@
- SELECT * FROM v_listadopedidoextendido  WHERE cli_nom LIKE '%%'AND estado_sec IN (0,1,2,3) ORDER BY numeroPedido ASC LIMIT 20
