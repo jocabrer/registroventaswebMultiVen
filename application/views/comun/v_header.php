@@ -77,7 +77,11 @@ date_default_timezone_set('America/Santiago');
   	
   	<script type="text/javascript" src="<?php echo base_url('Template/plugins/comun.js');?>"></script>
   	<script type="text/javascript" src="<?php echo base_url('Template/plugins/jquery.rut.chileno.min.js');?>"></script>
-  	
+
+    <!-- LIGHTBOX-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
+  		
   	
   	
 	<script src="<?php echo base_url('Template/plugins/bootstrap-multiselect/dist/js/bootstrap-multiselect.js')?>" type="text/javascript"></script>
@@ -179,7 +183,7 @@ date_default_timezone_set('America/Santiago');
           
           
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">Esconder Navegación</span>
+            <span class="sr-only">Esconder Navegaciï¿½n</span>
           </a>
           <!-- Navbar Right Menu -->
             <!-- --------------------------------------------------------------------------------------------------------------------------------------------------- -->

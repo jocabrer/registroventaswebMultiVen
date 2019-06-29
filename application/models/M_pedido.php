@@ -37,7 +37,7 @@ class M_pedido extends CI_Model {
 	        
 	}
 	/**
-	 * Elimina línea de detalle de pedido
+	 * Elimina lï¿½nea de detalle de pedido
 	 */
 	function eliminaLineaDetallePedido($id)
 	{
@@ -62,7 +62,7 @@ class M_pedido extends CI_Model {
      */
 	function actualizaPedidosDatosCabecera($id_cabecera,$id_estado,$id_user,$fecha_mod)
 	{
-	    //extrañamente poniendo y d m funcion no asi y-m-d
+	    //extraï¿½amente poniendo y d m funcion no asi y-m-d
 	    //$fec_ing = date_format(DateTime::createFromFormat('Y-m-d', $fec_ing),'Y-m-d H:i:s');
 	    if($id_estado!=-1)
 		  $this->estadoActual   = $id_estado;
@@ -124,30 +124,27 @@ class M_pedido extends CI_Model {
         return  $insert_id;
     }
     /**
-     * Inserta una nota al pedido
+     * Inserta adjunto
      * @param int $id_pedido
      * @param varchar $nota
      * @param date $fecha_ing
      * @param int $userid
      */
-    function insertaAdjuntoPedido($id_pedido, $userid, $tipo,$nombre,$url,$mensaje,$fecha,$publico){
-        
+    function insertaAdjuntoPedido($id_pedido, $userid, $tipo,$url,$fecha,$filename,$publico){
+		
+		
         $fecha = date_format(DateTime::createFromFormat('Y-m-d H:i:s', $fecha),'Y-m-d H:i:s');
         
         $this->id_cabecera    = $id_pedido;
         $this->id_user        = $userid;
-        $this->tipo           = $tipo;
-        $this->nombre         = $nombre;
-        $this->url            = $url;
-        $this->mensaje        = $mensaje;
-        //var_dump($publico);
-        if($publico=="true")
-            $this->publico = 0;
-        else 
-            $this->publico = 1;
-        
-        $this->fecha_creacion = $fecha ;
-        
+        $this->id_tipo           = $tipo;
+        $this->pathurl            = $url;
+		$this->fecha_subida = $fecha ;
+		$this->filename = $filename ;
+		if($publico=="on")
+			$this->publico = 0;
+		else 
+			$this->publico = 1;
         
         $result = $this->db->insert('adjuntos', $this);
         //echo $this->db->last_query();
@@ -174,7 +171,7 @@ class M_pedido extends CI_Model {
 		return $query->result_array();
 	}
 	/**
-	 * Obtiene las líneas de detalle tabla:detalle  de cada pedido tabla:cabecera
+	 * Obtiene las lï¿½neas de detalle tabla:detalle  de cada pedido tabla:cabecera
 	 * @param int $id_cabecera
 	 * @return Detalles del pedido
 	 */
@@ -278,6 +275,29 @@ class M_pedido extends CI_Model {
 	    return $query->result();
 	}
 	
+	function obtenerTiposAdjuntos(){
+		$query = $this->db->get('tipoadjunto');
+		return $query->result_array();
+	}
+	/**
+	 * 
+	 */
+	function obtenerPedidoAdjuntosListado($idpedido,$userid,$order){
+		
+		$this->db->select('a.*,tipoadjunto.nombre as nombretipo');
+    	$this->db->from('adjuntos as a ');
+    	$this->db->join('tipoadjunto', 'a.id_tipo = tipoadjunto.id');
+    	$this->db->where('id_cabecera',$idpedido);
+	    if($userid==-1){
+			 //Significa que el usuario es publico x tanto solo debe ver los 0
+			 $this->db->where('publico',0);
+		}
+		$this->db->order_by('a.id',$order);
+		$query = $this->db->get();
+
+		return $query->result_array(); 
+	}
+
 	/**
 	 * Obtiene los indicadores de un pedido al detalle en varias lineas dependiendo los vendedores involucrados.
 	 * @param unknown $idpedido

@@ -10,12 +10,12 @@
   </h1>
   <ol class="breadcrumb">
 	<li><a href="<?php echo base_url(); ?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-	
+
 	<li><a href="<?php echo base_url($currentClass); ?>"><?php echo $currentClass ?></a></li>
-	
+
 	<li class="active"><?php echo $currentAction ?></li>
   </ol>
-</section>	  
+</section>
 
 <!-- Main content -->
 <section class="content">
@@ -36,17 +36,17 @@
 				</div><!-- col.1 -->
 				<div class="col-lg-5 col-md-6  col-xs-12">
 					<div class="form-group">
-						<input type="text" class="form-control" id="txt_nombre" placeholder="Nombre completo cliente" required>	
+						<input type="text" class="form-control" id="txt_nombre" placeholder="Ingresar nombre completo" required>
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 				<div class="col-lg-1 col-md-6  col-xs-12">
 					<div class="form-group">
-						<label for="txt_correo" class="control-label">Correo</label>	
+						<label for="txt_correo" class="control-label">Correo</label>
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 				<div class="col-lg-5 col-md-6  col-xs-12">
 					<div class="form-group">
-						<input type="text" class="form-control" id="txt_correo" placeholder="Correo electr&oacute;nico." required>	
+						<input type="text" class="form-control" id="txt_correo" placeholder="Ingresar correo electronico." required>
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 			</div> <!-- row.1 -->
@@ -58,17 +58,17 @@
 				</div><!-- col.1 -->
 				<div class="col-lg-5 col-md-6  col-xs-12">
 					<div class="form-group">
-						<input type="text" class="form-control" id="txt_nombre2" placeholder="Nombre completo cliente">	
+						<input type="text" class="form-control" id="txt_nombre2" placeholder="Nombre completo cliente">
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 				<div class="col-lg-1 col-md-6  col-xs-12">
 					<div class="form-group">
-						<label for="txt_correo2" class="control-label">Correo Secundario</label>	
+						<label for="txt_correo2" class="control-label">Correo Secundario</label>
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 				<div class="col-lg-5 col-md-6  col-xs-12">
 					<div class="form-group">
-						<input type="text" class="form-control" id="txt_correo2" placeholder="Correo electr&oacute;nico.">	
+						<input type="text" class="form-control" id="txt_correo2" placeholder="Correo electr&oacute;nico." required>
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 			</div> <!-- row.2 -->
@@ -80,17 +80,17 @@
 				</div><!-- col.1 -->
 				<div class="col-lg-5 col-md-6  col-xs-12">
 					<div class="form-group">
-						<input type="text" class="form-control" id="txt_fono1" placeholder="Fono 1">	
+						<input type="text" class="form-control" id="txt_fono1" placeholder="Fono 1">
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 				<div class="col-lg-1 col-md-6  col-xs-12">
 					<div class="form-group">
-						<label for="txt_fono2" class="control-label">Fono 2</label>	
+						<label for="txt_fono2" class="control-label">Fono 2</label>
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 				<div class="col-lg-5 col-md-6  col-xs-12">
 					<div class="form-group">
-						<input type="text" class="form-control" id="txt_fono2" placeholder="Fono 2">	
+						<input type="text" class="form-control" id="txt_fono2" placeholder="Fono 2">
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 			</div> <!-- row.2 -->
@@ -102,17 +102,17 @@
 				</div><!-- col.1 -->
 				<div class="col-lg-5 col-md-6  col-xs-12">
 					<div class="form-group">
-						<input type="text" class="form-control" id="txt_rut" placeholder="Rut Cliente">	
+						<input type="text" class="form-control" id="txt_rut" placeholder="Rut Cliente">
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 				<div class="col-lg-1 col-md-6  col-xs-12">
 					<div class="form-group">
-						<label for="txt_giro" class="control-label">Giro</label>	
+						<label for="txt_giro" class="control-label">Giro</label>
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 				<div class="col-lg-5 col-md-6  col-xs-12">
 					<div class="form-group">
-						<input type="text" class="form-control" id="txt_giro" placeholder="Giro">	
+						<input type="text" class="form-control" id="txt_giro" placeholder="Giro">
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 			</div> <!-- row.3 -->
@@ -124,17 +124,17 @@
 				</div><!-- col.1 -->
 				<div class="col-lg-5 col-md-6  col-xs-12">
 					<div class="form-group">
-						<input type="text" class="form-control" id="txt_domicilio" placeholder="Direcci&oacute;n">	
+						<input type="text" class="form-control" id="txt_domicilio" placeholder="Direcci&oacute;n">
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 				<div class="col-lg-1 col-md-6  col-xs-12">
 					<div class="form-group">
-						<label for="txt_comuna" class="control-label">Comuna</label>	
+						<label for="txt_comuna" class="control-label">Comuna</label>
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 				<div class="col-lg-5 col-md-6  col-xs-12">
 					<div class="form-group">
-						<input type="text" class="form-control" id="txt_comuna" placeholder="Comuna">	
+						<input type="text" class="form-control" id="txt_comuna" placeholder="Comuna">
 					</div><!-- Form group -->
 				</div><!-- col.2 -->
 			</div> <!-- row.4 -->
@@ -152,27 +152,27 @@
                        	 <button id="btn_guardar_cab" type="submit" class="btn btn-default" title="Guardar Cliente" ><i class="fa fa-save"></i> Guardar </button>
                       </span>
 				</div>
-				
+
 				<div class="col-lg-4 col-md-4 col-xs-12 text-right">
 						<span class="input-group-btn">
                       	&nbsp;
                       </span>
 				</div>
-				
+
 				<div class="col-lg-4 col-md-4 col-xs-8 text-right">
 				   <button  id="btn_agregar_pedido" type="button" class="btn bg-olive" title="Agregar nuevo pedido" ><i class="fa fa-edit"></i> Nuevo Pedido </button></span>
 				 </div>
-				
+
 			</div><!--  row 6 -->
 		</form>
 		</div><!-- body -->
   </div>
-  
- 
-  
-  
+
+
+
+
   <!--  detalle de pedidos cliente  -->
-  
+
   <div class="box" id="bx_clientepedidos">
   		<div class="box-header with-border">
 			<h3 class="box-title">Pedidos del cliente</h3>
@@ -187,21 +187,21 @@
 					<table id="tabla_resultado"
 						   data-toolbar="#toolbar"
 						   data-method="post"
-						   
+
 			       		   data-show-footer="false"
 			               data-show-columns="true"
 			               data-show-refresh="true"
 						   data-show-export="true"
 						   data-side-pagination="server"
-						   
+
 						   data-pagination="true"
 						   data-page-list="[10, 25, 50, 100, Todos]"
-			               
+
 						   data-toggle="table"
 						   data-query-params="queryParams"
-						   
-						   
-						   data-url="<?php echo base_url(); ?>Pedido/listadoPedidos/">
+
+
+						   data-url="<?php echo base_url('Pedido/listadoPedidos/'); ?>">
 				     <thead>
 			         <tr>
 			                 <th data-field="numeroPedido"  data-sortable="true" data-formatter="f_idpedido">Nro.</th>
@@ -217,7 +217,7 @@
 							 <th data-field="SaldoCLiente" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo Cliente</th>
 							 <th data-field="SaldoVendedor1"  data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo VEN1</th>
 							 <th data-field="SaldoVendedor2"  data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo VEN2</th>
-							 <th data-field="SaldoFabrica" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo F&aacute;brica</th>	
+							 <th data-field="SaldoFabrica" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo F&aacute;brica</th>
 			            </tr>
 			         </thead>
 					</table>
@@ -225,7 +225,7 @@
 			</div>
 		</div>
 		</div><!-- body -->
-  
+
   <div class="box-footer">
   	<div class="row">
 				<div class="col-lg-12 col-md-12 col-xs-12 text-left">
@@ -233,14 +233,14 @@
   				</div>
   	</div>
   </div>
-  
-  
-  
+
+
+
   </div><!-- box 2 -->
-  
-  
-  
-  
+
+
+
+
 </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 
@@ -260,79 +260,67 @@
       </div>
       <div class="modal-body">
         <p id="pclientes">
-        
+
         </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline pull-left" data-dismiss="modal" id="btn_cerrar">Cerrar</button>
-        
+
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-          
+
             	<?php echo $cliEdit['observaciones']?>
-          
-          
-          
+
+
+
 
 <script type="text/javascript">
 
 $(document).ready(function() {
-	$("#txt_correo").change(function() {validaCliente($("#txt_correo").val());});
+  //Validadores
+  $("#txt_correo").change(function() {validaCliente($("#txt_correo").val());});
 	$("#txt_nombre2").change(function() {validaCliente($("#txt_nombre2").val());});
 	$("#txt_nombre").change(function() {validaCliente($("#txt_nombre").val());});
 	$("#txt_correo2").change(function() {validaCliente($("#txt_correo2").val());});
 	$("#txt_fono1").change(function() {validaCliente($("#txt_fono1").val());});
 	$("#txt_fono2").change(function() {validaCliente($("#txt_fono2").val());});
-	$("#btn_cerrar").click(function(){$("#divclientes").hide()});
+  $("#txt_rut").change(function(){$('#txt_rut').rut();});
 
 
-	$("#txt_rut").change(function(){
+  //Seteo eventos botones
+  $('#btnback').click(function () {window.history.back();});
+  $("#btn_cerrar").click(function(){$("#divclientes").hide()});
 
-		$('#txt_rut').rut();
-		
-		
-		
-		//var valido = $.rut.validar(valor);
-		//alert($.rut.validar($('#txt_rut').val()));
-		
-		/*if(largo>11)
-			MuestraMensaje("Módulo Clientes","El rut está bien, pero debe ir sin puntos");
-		else
-		{*/
-    		//$('#txt_rut').rut();
-    		//if(!valido){
-    			//MuestraMensaje("Módulo Clientes","El rut no es válido");
-    
-    		//}
-		//}
-		
-		//alert($.rut.quitar_formato(valor));
-		//alert($.rut.formatear(valor));
-
-		
-
-		});
-	
-
-	
-	$('#btnback').click(function () {window.history.back();});
+  //Nuevo pedido hacemos llamada ajax a controlador de Pedidos
 	$("#btn_agregar_pedido").click(function(){
-		$('#btn_agregar_pedido').prop("disabled",true);1
+		$('#btn_agregar_pedido').prop("disabled",true);
 		$.ajax({
 			  type: "POST",
-			  url: "<?php echo base_url(); ?>Pedido/grabaCabecera/",
+			  url: "<?php echo base_url('Pedido/grabaCabecera/'); ?>",
 			  data: {idpedido:-1,idcliente: '<?php echo $cliEdit['id']?>',idestado:0},
 			  success: pedidoGrabadoCall,
 			  dataType: 'json'
 			});
 	});
-	
-	 <?php 
+  //Callback del grabar pedido
+  function pedidoGrabadoCall(res){
+  	if (res.estado!=-1){
+      	MuestraMensaje("Módulo Pedidos",res.mensaje);
+      	$('#modalDinamico').on('hidden.bs.modal', function () {window.location.href = "<?php echo base_url(); ?>pedido/editarPedido/"+res.id;});
+  	}else{
+  		$('#btn_agregar_pedido').prop("disabled",false);
+  		alert(res.mensaje);
+  	}
+  }
+
+
+
+	 <?php
 	  if ($cliEdit['id'] == -1)
-	  {?>$('#btn_agregar_pedido').prop("disabled",true);<?php 
+	  {?>$('#btn_agregar_pedido').prop("disabled",true);<?php
 	  }else{
 	  ?>
 	  	$('#lbl_id_cliente').text(<?php echo $cliEdit['id']?>);
@@ -344,22 +332,14 @@ $(document).ready(function() {
 	  	$('#txt_fono2').val("<?php echo $cliEdit['fono2']?>");
 	  	$('#txt_rut').val("<?php echo $cliEdit['rut']?>");
 	  	$('#txt_giro').val("<?php echo $cliEdit['giro']?>");
-		$('#txt_domicilio').val("<?php echo $cliEdit['domicilio']?>"); 
+		  $('#txt_domicilio').val("<?php echo $cliEdit['domicilio']?>");
 	  	$('#txt_comuna').val("<?php echo $cliEdit['comuna']?>");
-
-	
-
-	  	
-	  	
-
-	  	
-       <?php }?>
-
+ <?php }?>
 		$("#frm_cliente").validate({
-		submitHandler: function(form){
+		    submitHandler: function(form){
     		event.preventDefault();
     		$(':input[type="submit"]').prop('disabled', true);
-			var idcliente   = $("#lbl_id_cliente").text();
+			    var idcliente   = $("#lbl_id_cliente").text();
         	var txt_nombre 	=  capitalizeFirstLetter($("#txt_nombre").val());
         	var txt_correo = $("#txt_correo").val();
         	var txt_nombre2 = capitalizeFirstLetter($("#txt_nombre2").val());
@@ -371,15 +351,11 @@ $(document).ready(function() {
         	var txt_domicilio = $("#txt_domicilio").val();
         	var txt_comuna = $("#txt_comuna").val();
         	var txt_observaciones = $("#txt_observaciones").val();
-
-			//valido rut
+			    //valido rut
         	if($.rut.validar(txt_rut)|| txt_rut.length==0 )
         	{
-            
-
-                	
-        	jQuery.ajax({
-        		method: "POST",
+        	    jQuery.ajax({
+        		  method: "POST",
         			url: "<?php echo base_url(); ?>Cliente/grabaCliente",
         			dataType: 'json',
         			data: {idcliente,txt_nombre,txt_correo,txt_nombre2,txt_correo2,txt_fono1,txt_fono2,txt_rut,txt_giro,txt_domicilio,txt_comuna,txt_observaciones},
@@ -387,38 +363,40 @@ $(document).ready(function() {
         						$(':input[type="submit"]').prop('disabled', false);
         						if (res)
         						{
-        							  MuestraMensaje("Módulo Clientes",res.mensaje); 
+        							  MuestraMensaje("Módulo Clientes",res.mensaje);
         							  $('#modalDinamico').on('hidden.bs.modal', function () {window.location.href = "<?php echo base_url(); ?>Cliente/edicion/"+res.id;});
         						}else
         						{
-        							  MuestraMensaje("Módulo Clientes","Error al grabar mensaje ".res.mensaje); 
+        							  MuestraMensaje("Módulo Clientes","Error al grabar mensaje ".res.mensaje);
         							  $(':input[type="submit"]').prop('disabled', false);
         						}
         				}
         		}); //jqueryajax
 			}//if rut
 			else{
-				MuestraMensaje("Corregir Rut Cliente", txt_rut); 
+				MuestraMensaje("Corregir Rut Cliente", txt_rut);
 				$(':input[type="submit"]').prop('disabled', false);
 			}
 
 		}
-		});//form validate 			
+		});//form validate
 
 /* Valida si cliente existe en base a criterio que puede ser*/
 function validaCliente($criterio)
 {
 	//posible input x correo
-	var criterio=$criterio;
-	obj = {search: criterio, order: "asc", limit: "20", offset: 0};
+  if($criterio.length>4){
 
-	$.ajax({
-		  type: "POST",
-		  url: base_url+'Cliente/ajax_getClientes/',
-		  data: JSON.stringify(obj),
-		  success: clientesExistentesCall,
-		  dataType: 'json'
-		});
+    var criterio=$criterio;
+  	obj = {search: criterio, order: "asc", limit: "20", offset: 0};
+  	$.ajax({
+  		  type: "POST",
+  		  url: base_url+'Cliente/ajax_getClientes/',
+  		  data: JSON.stringify(obj),
+  		  success: clientesExistentesCall,
+  		  dataType: 'json'
+  		});
+  }
 }
 
 function clientesExistentesCall(res){
@@ -426,10 +404,10 @@ function clientesExistentesCall(res){
 	var url = base_url+"Cliente/edicion/";
 
 	$("#pclientes").html("");
-	
+
 	var jsonData = res.rows;
 
-	
+
 	if(jsonData.length>0){
     	for (var i = 0; i < jsonData.length; i++) {
     	    var idcliente = jsonData[i].id;
@@ -440,21 +418,8 @@ function clientesExistentesCall(res){
 	$("#divclientes").modal('show');
 	}
 }
-//calls ajax
-function pedidoGrabadoCall(res)
-{
-	if (res.estado!=-1)
-	{
-    	MuestraMensaje("Módulo Pedidos",res.mensaje); 
-    	$('#modalDinamico').on('hidden.bs.modal', function () {window.location.href = "<?php echo base_url(); ?>pedido/editarPedido/"+res.id;});
-	}else
-	{
-		$('#btn_agregar_pedido').prop("disabled",false);
-		alert(res.mensaje);
-	}
-}
-}); //Function ready
 
+}); //Function ready
 /**
  * Funcion que setea los parametros.
  */

@@ -89,6 +89,10 @@ function diasTranscurridosFormater(data)
 		return "<small class='label label-success pull-right'><i class='fa fa-clock-o'></i> "+data+" días</small>";
 }
 
+function f_archivoadjunto(data){
+	return "<a href="+base_url+"uploads/"+data+" data-toggle='lightbox'>"+data+"</a>";
+
+}
 /*
  * Fomatea el formato del valor en BD de si es comisión o no
  */
@@ -228,6 +232,5 @@ function MuestraMensaje(titulo,mensaje){
 	  modal.find('.modal-body').html(mensaje)
 	  modal.modal('show');
 }
-
 
 

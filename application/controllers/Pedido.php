@@ -15,22 +15,7 @@ class Pedido extends CI_Controller
         $this->Listado();
     }
 
-    /**
-     * *
-     * AJAX : Graba un nuevo registro en tabla CABECERA
-     *
-     * @return Obj. JSOn con el id del objeto recien ingresado.
-     *         $id_pedido,$id_cliente,$fecha_ing,$estadoactual
-     */
-    /*public function insertCabecera($id_cliente, $fecha, $userid, $fecha_mod)
-    {
-        if (! $this->ion_auth->logged_in())
-            redirect('auth/login');
-        
-        $idnuevocabecera = $this->M_pedido->insertaPedidoCabecera($id_cliente, $fecha, $userid, $fecha_mod);
-        return $idnuevocabecera;
-    }*/
-
+    
     /**
      * Retorna si un periodo está en la base de datos.
      *
@@ -60,17 +45,7 @@ class Pedido extends CI_Controller
         return $this->M_Cuenta->porcentajeTotalPedido($idpedido);
     }
 
-   /* public function Conta()
-    {
-        if (! $this->ion_auth->logged_in()) {
-            redirect('auth/login');
-        }
-        $idpedido = $this->input->post('idpedido');
-        $data = $this->M_pedido->obtenerPedidoIndicadores($idpedido);
-        echo json_encode($data);
-    }*/
-
-    
+     
     public function obtieneIndicadoresExtendidos(){
         
         if (! $this->ion_auth->logged_in()) {
@@ -186,7 +161,7 @@ class Pedido extends CI_Controller
     }
 
     /*
-     * SALIDA listado de pedidos
+   `  * SALIDA listado de pedidos
      */
     public function Listado()
     {
@@ -311,74 +286,48 @@ class Pedido extends CI_Controller
      */
     public function grabaAdjunto()
     {
+        //Verificamos seguridad
         if (! $this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
         $user = $this->ion_auth->user()->row();
-        $userid = $user->id;
+
+
+        //Se lee el pedido al que se le grabará el adjunto.
+        $id_pedido = $this->input->post('cabecera');
         
-        $id_pedido = $this->input->post('idcabecera');
-        
-        $tipo =  $this->input->post('sl_tipo');
-        $nombre =  $this->input->post('txt_nombre');
-        $url =  $this->input->post('txt_url');
-        $mensaje =  $this->input->post('mensaje');
-        $publico =  $this->input->post('chk_publico');
-        $userfile =  $this->input->post('userfile');
-        
-        $fecha  = (new DateTime('America/Argentina/Mendoza'))->format('Y-m-d H:i:s');
-        
-        var_dump($userfile);
-        $arr = array('id' => $id_pedido);
-        
-        if ($id_pedido != null) {
-            
-            $res = null;
-            $data= null;
-            $error=null;
-            
-            $config['upload_path']          = './uploads/';
-            $config['allowed_types']        = 'gif|jpg|png|pdf';
-            $config['max_size']             = 100;
-            $config['max_width']            = 1024;
-            $config['max_height']           = 768;
-            
-            
-            $this->load->helper(array('form', 'url'));
-            $this->load->library('upload', $config);
-            
-            
-            
-            
-            $this->upload->do_upload($userfile);
-            if ( ! $this->upload->do_upload($userfile))
-            {
-                //$error = array('error' => $this->upload->display_errors());
-                $error =$this->upload->display_errors();
-                //$this->load->view('upload_form', $error);
-            }
-            else
-            {
-                $data = $this->upload->data();
-               // echo $this->upload->data();
-                $res =  $this->M_pedido->insertaAdjuntoPedido($id_pedido, $userid, $tipo,$nombre,$url,$mensaje,$fecha,$publico);
-                //$this->load->view('upload_success', $data);
-            }
-            
-            
-            
-            if(is_numeric($res))
-                $arr = array('id' => $res,'mensaje' => 'Adjunto Subido correctamente');
-            else 
-            {
-                $arr = array('id' => -1, 'mensaje' => $res ." ". $error );
-            }
-        }else {
-            $arr = array('id' => -1, 'mensaje' => "Pedido error ".$id_pedido );
+        //Configuracion de los parámetros de subida de archivos
+        $config['upload_path']          = './uploads/';
+        $config['allowed_types']        = 'gif|jpg|png|pdf';
+
+        //Cargamos librerias
+        $this->load->library('upload', $config);
+        $this->load->helper(array('form', 'url'));
+       
+        //Realizamos la subida y preguntamos si hubo error preparamos salida de error.
+        if (!$this->upload->do_upload('userfile')){
+            $error =$this->upload->display_errors();
+            $arr = array('id' => -1, 'mensaje' => "Pedido error ".$id_pedido. " - ".$error);
         }
-        
-        echo json_encode($arr);
+        else{
+            //Si la subida fue correcta obtenemos los datos para grabar el registro.
+            $tipo =  $this->input->post('sl_tipoAdjunto');
+            $userid = $user->id;
+            $url  = $this->upload->data('file_path');
+            $filename = $this->upload->data('file_name');
+            $fecha  = (new DateTime('America/Argentina/Mendoza'))->format('Y-m-d H:i:s');
+            $publico = $this->input->post('publico');
+            //Grabamos en la base de datos
+            $res =  $this->M_pedido->insertaAdjuntoPedido($id_pedido, $userid, $tipo,$url,$fecha,$filename,$publico);
+
+            if(is_numeric($res))
+                $arr = array('id' => $res,'mensaje' => 'Archivo subido correctamente.');
+            else
+                $arr = array('id' => -1, 'mensaje' => $res ." ". $error );
+     
+        }
+        //Redireccionamos a la página del pedido.
+        redirect('/Pedido/editarPedido/'.$id_pedido);
     }
 
     /*
@@ -605,6 +554,45 @@ class Pedido extends CI_Controller
         echo json_encode($data);
     }
 
+    
+    /*
+     * AJAX : Obtiene las lineas de detalle de un pedido
+     *
+     * @return Obj. JSON con las lineas de detalle
+     */
+    public function ObtenerListadoAdjuntos()
+    {
+        if (! $this->ion_auth->logged_in()) {
+            redirect('auth/login');
+        }
+
+        //Obtengo datos del usuario conectado
+        $user = $this->ion_auth->user()->row();
+        $idusuario = $user->id;
+        
+
+        //Leo las variables del post
+        $json = file_get_contents('php://input');
+        $obj = json_decode($json);
+        isset($obj->pedidoid) ? $pedidoid = $obj->pedidoid : $pedidoid = "";
+        isset($obj->order) ? $order = $obj->order : $order = "asc";
+
+        If ($pedidoid == "")
+            $pedidoid = "-1"; 
+        
+        $data = $this->M_pedido->obtenerPedidoAdjuntosListado($pedidoid,$idusuario,$order);
+        
+        echo json_encode($data);
+    }
+
+    public function obtieneTipoAdjunto(){
+        if (! $this->ion_auth->logged_in()) {
+            redirect('auth/login');
+        }
+        $data = $this->M_pedido->obtenerTiposAdjuntos();
+        
+        echo json_encode($data);
+    }
     
     /**
      * Obtiene el detalle del pedido 

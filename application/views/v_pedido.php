@@ -302,8 +302,9 @@
 	<?php } //fin loop foreach ?>
 	
 		 </div><!--/.direct-chat-messages-->
-		 	               
 </div><!-- /.box-body -->
+
+
 <div class="box-footer">
   <form role="form" data-toggle="validator" id="frm_shout">
   <div class="input-group">
@@ -316,6 +317,57 @@
 </div><!-- /.box-footer-->
 </div>
 
+<!-- -------------------------- Adjuntos -------------------------------------------------------------->
+<div class="box">
+<div class="box-header with-border">
+	<h3 class="box-title">Adjuntos</h3>
+    <div class="box-tools pull-right">
+         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    </div><!-- tools -->
+</div><!-- /.box-header -->
+<div class="box-body" style="width:70%">
+		
+		<table id="tbl_adjuntos"
+			   data-method="post"
+       		   data-toggle="table"
+			   data-url="<?php echo base_url('Pedido/ObtenerListadoAdjuntos/'); ?>"
+			   data-query-params="queryParamsTablaAdjuntos"
+			   data-response-handler="responseHandlerTablaAdjuntos">
+	     <thead>
+         <tr >
+         		 <th data-field="id" data-align="center">Id</th>
+				 <th data-field="nombretipo">Tipo</th>
+                 <th data-field="filename" data-formatter="f_archivoadjunto">Archivo</th>
+				 <th data-field="fecha_subida">Subido</th>
+         </tr>
+         </thead>
+      
+		</table>
+		
+		<br>
+		<form action="<?php echo base_url(); ?>Pedido/grabaAdjunto/" enctype="multipart/form-data" role="form"  id="frm_nota" method="post">
+		<input type="hidden" id="cabecera" name="cabecera" value="<?php echo $pedEdit['id'];?>">
+		<div class="row">
+			<div class="col-lg-2 col-md-12  col-xs-12">
+				<input type="checkbox" id="publico" name="publico" class="form">Publico</th>
+			</div>
+			<div class="col-lg-2 col-md-12  col-xs-12">
+				<select id="sl_tipoAdjunto" name="sl_tipoAdjunto" class="form-control"></select>
+			</div>
+			<div class="col-lg-8 col-md-12  col-xs-12">
+				<input type="file" name="userfile" id="userfile" size="20 class="form-control" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4 col-md-12  col-xs-12">
+			<button  id="btn_subir_adjunto" type="submit" class="btn btn-default" title="Subir archivo adjunto al pedido" >
+			<i class="fa fa-save"></i> Grabar Adjunto</button>
+			</div>
+		</div>
+		</form>
+</div>
+</div>
+<!-- -------------------------- Fin Adjuntos -------------------------------------------------------------->
 
 </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
@@ -433,102 +485,63 @@
   </div><!-- /.modal-dialog -->
   </form><!-- frm caja -->
 </div><!-- /.modal -->
-		
 
 
-
-
-<!-- Modal nota -->
-<div class="modal fade" tabindex="1" role="dialog" id="div_agregarnota">
-
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-     <!--  <form  data-toggle="validator" id="frm_nota" >-->
-     <!--<form  enctype="multipart/form-data" accept-charset="utf-8" id="frm_nota">-->
-     <form enctype="multipart/form-data" role="form" data-toggle="validator" id="frm_nota" method="post">
-     
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Agregar adjunto</h4>
-      </div>
-      <div class="modal-body">
-	       
-	       <div class="form-group">
-	       	<input type="checkbox" id="chk_publico">Publico</th>
-	       </div>
-	       
-	       
-	       <div class="form-group">
-    	       <select id="sl_tipo">
-    	       		<option value="FACT">Factura</option>
-    	       </select>
-	       </div>
-	       <br>
-	       	
-	       
-			
-			<div class="form-group">
-						<input type="text" class="form-control" id="txt_nombre" placeholder="Nombre">	
-			</div><!-- Form group -->
-			
-			
-			<div class="form-group">
-						<input type="text" class="form-control" id="txt_url" placeholder="url">	
-			</div><!-- Form group -->
-			
-			<div class="form-group">
-				<textarea id="txt_mensaje" name="txt_mensaje" rows="10" cols="80" placeholder="mensaje"></textarea>
-			</div>
-			
-			<div class="form-group">
-			<input type="file" name="userfile" id="userfile" size="20" />
-			</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-       <button  id="btn_guardar_nota" type="submit" class="btn btn-default" title="Guardar Nota" ><i class="fa fa-save"></i> Grabar Nota</button>
-      </div>
-      </form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-  
-</div><!-- /.modal -->		
-            
 <script type="text/javascript">
+	/*
+	 * Funcion que setea los parametros.
+	 */
+	function queryParamsTablaAdjuntos(params) {
+		var pedidoid = <?php echo $pedEdit['id'];?>;
+		params['pedidoid'] = pedidoid;
+	    return params;
+	}
+
+	function responseHandlerTablaAdjuntos(res){
+		return res;
+	}
+
+
+
 $(document).ready(function() {
 
 	$.fn.editable.defaults.mode = 'inline';
-	$("#btn_agregar_comision").click(function(){
-	    $("#div_comision").modal('show');
-	});
-	
-	$("#btn_agregar_caja").click(function(){
-	    $("#div_agregarcaja").modal('show');
-	});
 
+	
+	// E    V    E    N   T   O   S   -------------------------------------------------------------------------------------------------
+
+	//Seteamos el id del comprobante que estamos editando
+	$('#lbl_id_pedido').text(<?php echo $pedEdit['id']?>);
+	var idglobal = <?php echo $pedEdit['id']?>;
+	
+	//Seteamos eventos de los botons que abren ventanas modals
+	$("#btn_agregar_comision").click(function(){$("#div_comision").modal('show');});
+	$("#btn_agregar_caja").click(function(){$("#div_agregarcaja").modal('show');});
 	$("#btn_agregar_nota").click(function(){
 		$(':input[type="submit"]').prop('disabled', false);
 	    $("#div_agregarnota").modal('show');
 	});
 
-	$("#sl_estado").change(function () {
-
-		var estado = $('#sl_estado').val();
-		var idpedido 	=   <?php echo $pedEdit['id'];?>;
-		jQuery.ajax({
-					method: "POST",
-						url: "<?php echo base_url(); ?>Pedido/cambiadEstadoPedidoPost",
-						dataType: 'json',
-						data: {idpedido,estado},
-						success: function(){
-							MuestraMensaje("Módulo Pedidos","Estado cambiado correctamente "); 
-						}
-			}); //jqueryajax				
-	 });
-
+	//Seteamos eventos para mostrar imagenes adjunto
+	$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+	});
 	
-	$('#lbl_id_pedido').text(<?php echo $pedEdit['id']?>);
+	//Seteamos evento del control de estado para que grabe cada vez que se cambia de estado 
+	$("#sl_estado").change(function(){cambiaEstadoPedido();});
+	$('#chk_iva').change(function (){actualizaFactura();});
+	$('#cntrl_id_producto').change(function(){buscaProducto();});
+	
+	$('#table_comision').on('editable-save.bs.table', actualizarComision);
+	window.eventosTablaComision = {'click .remove': function (e, value, row, index) {eliminaComision(row);}	};
+	//I    N     I    C   I  A   L  I   Z   A   D  O   R   E    S  ----------------------------------------------------------------------
 
+	//Cargamos controles con informacion
+	buscaLineaDetalle ();
+	buscaComisiones();
+	cargaTipoAdjuntos();   
+	
 	<?php if ($pedEdit['ConFactura']==1){ ?>
 	  		$('#chk_iva').prop('checked', true);
     <?php } //else confactura ?>
@@ -537,100 +550,33 @@ $(document).ready(function() {
   		$('#chk_comision').prop('checked', true);
    	<?php } ?>
 
-	$('#bx_infooter').show();
-		
-	$('#lbl_id_pedido').show();
-	$('#bx_detalle').show();
-	$('#bx_agregardetalle').show();
-	$('#bx_seguimiento').show();
-	$('#bx_caja').show();
-		
-	buscaLineaDetalle ();
-	buscaComisiones();
-		
-	//Foprmateop de divisas para inputs
-	$('#txt_costoventa').priceFormat({
-	    prefix: '$ ',
-	    centsSeparator: ',',
-	    thousandsSeparator: '.',
-	    centsLimit: 0
-	});
-	$('#txt_precioventa').priceFormat({
-	    prefix: '$ ',
-	    centsSeparator: ',',
-	    thousandsSeparator: '.',
-	    centsLimit: 0
-	});
+	//Formateo de divisas para inputs
+	$('#txt_costoventa').priceFormat({prefix: '$ ',centsSeparator: ',',thousandsSeparator: '.',centsLimit: 0});
+	$('#txt_precioventa').priceFormat({prefix: '$ ',centsSeparator: ',',thousandsSeparator: '.',centsLimit: 0});
+	$('#txt_monto').priceFormat({prefix: '$ ',centsSeparator: ',',thousandsSeparator: '.',centsLimit: 0});
 
-	$('#txt_monto').priceFormat({
-	    prefix: '$ ',
-	    centsSeparator: ',',
-	    thousandsSeparator: '.',
-	    centsLimit: 0
-	});
+	//F    U   N   C   I   O   N   E   S  -------------------------------------------------------------------------------------------------
 
-    function serverContaCall()
-    {
-        var idpedido = <?php echo $pedEdit['id'];?> ;
-    	jQuery.ajax({
-			method: "POST",
-				url: "<?php echo base_url(); ?>Pedido/obtieneIndicadoresExtendidos",
-				dataType: 'json',
-				data: {idpedido},
-				success: function(res){serverContaBack(res);}
-		}); //jqueryajax				
-    } 
-
-    function serverContaBack(res)
-    {
-$("#p_comisiones").html('');
-		
-		if(res!=null)
-        {
-
-			for (var i = 0; i < res.length; i++){
-				
-			    var r = res[i];
-
-			    if(i==0){
-			    	$('#lbl_subtotal').text(PriceFormatter(r.Subtotal));
-		        	$('#lbl_iva').text(PriceFormatter(r.iva));
-		        	$('#lbl_totalapagar').text(PriceFormatter(r.totalAPagar));
-		        	$('#lbl_totalabonocliente').text(PriceFormatter(r.PagadoCliente));
-		        	$('#lbl_totalsaldocliente').text(PriceFormatter(r.SaldoCliente));
-		    
-		        	$('#lbl_totalCosto').text(PriceFormatter(r.CostoTotal));
-		        	
-		        	$('#lbl_totalganancia').text(PriceFormatter(r.Ganancia100));
-		        	
-			    }
-
-			    	$("#p_comisiones").append("<b>"+r.NombreVendedor+"</b>&nbsp;<i>Quedan </i>"+PriceFormatter(r.SaldoVendedor)+"<i> de</i> " +PriceFormatter(r.TotalVendedor)+" <br>");
-			    
-			}
-	        
-        	
-        }
-        /*if(res[0]!=null)
-        {
-        	$('#lbl_subtotal').text(PriceFormatter(res[0].Subtotal));
-        	$('#lbl_iva').text(PriceFormatter(res[0].iva));
-        	$('#lbl_totalapagar').text(PriceFormatter(res[0].totalAPagar));
-        	$('#lbl_totalabonocliente').text(PriceFormatter(res[0].PagadoCliente));
-        	$('#lbl_totalsaldocliente').text(PriceFormatter(res[0].SaldoCliente));
-    
-    
-        	$('#lbl_totalCosto').text(PriceFormatter(res[0].CostoTotal));
-        	
-        	$('#lbl_totalganancia').text(PriceFormatter(res[0].Ganancia100));
-        }*/
-    }
-
+	/**
+	 * Funcion que cambia el estado de un pedido según el estado seleccionado en el control sl_estado
+	 */
+	function cambiaEstadoPedido(){
+		estado = $('#sl_estado').val();
+		idpedido = '<?php echo $pedEdit['id'];?>';
+		jQuery.ajax({
+					method: "POST",
+						url: "<?php echo base_url(); ?>Pedido/cambiadEstadoPedidoPost",
+						dataType: 'json',
+						data: {idpedido,estado},
+						success: function(){
+							MuestraMensaje("Módulo Pedidos","Estado cambiado correctamente "); 
+						}
+			}); //jqueryajax			
+	}
 	/*
 	* Evento que controla la opcion de pedido con factura.
 	*/
-	$('#chk_iva').change(function () {
-		
+	function actualizaFactura(){
 		var idpedido 	=   <?php echo $pedEdit['id'];?> //$("#numeroPedido").val();
 		var chk_iva_val 	=  $("#chk_iva").is(':checked');
 		
@@ -640,32 +586,29 @@ $("#p_comisiones").html('');
 						dataType: 'json',
 						data: {idpedido,chk_iva_val},
 						success: function(res){buscaLineaDetalle ();}
-			}); //jqueryajax				
-	 });
-	/* Control busqueda de producto */ 
-	$( "#cntrl_id_producto" ).change(function() {
+			}); //jqueryajax		
+	 }
+
+	/*
+	* Control busqueda de producto 
+	*/ 
+	function buscaProducto(){
 		
 		var idprod = $( "#cntrl_id_producto" ).val();
-		
 		jQuery.ajax({
-					method: "GET",
-						url: "<?php echo base_url(); ?>Productos/ObtieneProductoPorId/"+idprod,
-						dataType: 'json',
-						
-						success: function(res) {
-									
-									$('#txt_precioventa').val(PriceFormatter(res[0].valor_venta));
-									$('#txt_costoventa').val(PriceFormatter(res[0].costo));
-									
-									
-									
-							}
-			}); //jqueryajax		  
-	});
-	// FIN inicio-----------------------------------------------------------------
-	
-	function eliminaComision(row)
-	{
+				method: "GET",
+					url: "<?php echo base_url(); ?>Productos/ObtieneProductoPorId/"+idprod,
+					dataType: 'json',
+					success: function(res) {
+								$('#txt_precioventa').val(PriceFormatter(res[0].valor_venta));
+								$('#txt_costoventa').val(PriceFormatter(res[0].costo));
+						}
+		}); //jqueryajax
+	}
+	/**
+	 * Función que elimina registro de comisión
+	 */
+	function eliminaComision(row){
 		var id = row['id'];
 		jQuery.ajax({
 			method: "POST",
@@ -673,10 +616,12 @@ $("#p_comisiones").html('');
 				data:{id},
 				dataType: 'json',
 				success: function(res) {buscaComisiones ();buscaLineaDetalle();}
-	}); //jqueryajax	
+		}); //jqueryajax	
 	}
-	
-	/*Funcion elimina linea de detalle de un pedido.*/
+
+	/** 
+	 * Funcion elimina linea de detalle de un pedido.
+	*/
 	function eliminaDetallePedido(row)
 	{
 		var id_detalle = row['id'];
@@ -695,36 +640,45 @@ $("#p_comisiones").html('');
 			}); //jqueryajax		
 		}
 	}
+	/**
+	 * Función que carga el control de slección de tipo de documento adjunto
+	 */
+	function cargaTipoAdjuntos(){
+		
+		var options = $("#sl_tipoAdjunto");
+		jQuery.ajax({
+					method: "POST",
+						url: "<?php echo base_url('Pedido/obtieneTipoAdjunto/'); ?>",
+						dataType: 'json',
+						success: function(data){
+							$.each(data, function() 
+							{
+								options.append(new Option(this.nombre, this.id));
+							});
+						}
+			}); 		
+	}
 
-
-	
- 
-
-	
+	/**
+	 * Función que carga las lineas del detalle del pedido.
+	 */
 	function buscaLineaDetalle ()
 	{
-		
+		var idpedido = <?php echo $pedEdit['id'];?>
+
+		//Oculto div de movimiento de caja
 		$("#div_agregarcaja").modal('hide');
+		//Seteo eventos de la tabla 
+		window.eventosTablaDetalle = {'click .remove': function (e, value, row, index) {eliminaDetallePedido(row);}	};
+
 		
-		window.eventosTablaDetalle = {
-		        'click .remove': function (e, value, row, index) {
-						eliminaDetallePedido(row);
-		        }	
-				};
-	   /*window.eventosTablaCaja = {
-	    'click .remove': function (e, value, row, index) {
-		        eliminaMovCaja(row);
-        }
-		};*/
-	  var idpedido 	=  <?php echo $pedEdit['id'];?> //$("#numeroPedido").val();
-   	  $('#tabla_detalle').bootstrapTable('destroy').bootstrapTable
-   	  ({
-			    url: '<?php echo base_url(); ?>Pedido/ajax_getLinesPedido/' + idpedido,
-			    onLoadSuccess: function (res) {serverContaCall();},
+		$('#tabla_detalle').bootstrapTable('destroy').bootstrapTable({
+			    url: "<?php echo base_url('Pedido/ajax_getLinesPedido/'); ?>" + "/"+idpedido,
+			    onLoadSuccess: function (res) {cargaLineasPedidoCallback();},
 			    data:{idpedido:idpedido},
 				method: "GET",
 				columns:[
-							{field: 'id',title: 'ID'},
+							
 							{field: 'cantidad',title: 'Qty'},
 							{field: 'nom_prod',title: 'Desc.'}, 
 							{field: 'venta_un',title: 'Venta',align: 'right',formatter: PriceFormatter},
@@ -733,16 +687,12 @@ $("#p_comisiones").html('');
 							{field: 'det_costo',title: 'Total Costo',align: 'right',formatter: PriceFormatter},
 							{field: 'det_ganancia',title: 'Ganancia',align: 'right',formatter: PriceFormatter},
 							{field: 'operate',title: 'Acción',align: 'center',events: eventosTablaDetalle,formatter:operateFormatter}
-                    
-							
 				]
         });
-		
-	
-   	  $('#tb_resumen_cta').bootstrapTable('destroy').bootstrapTable
- 	  ({
+	 	 $('#tb_resumen_cta').bootstrapTable('destroy').bootstrapTable
+ 	  	({
 			    url: '<?php echo base_url(); ?>Cuenta/ResumenCuentaPedido/' + idpedido,
-				onLoadSuccess: function (res) {serverContaCall();},
+				onLoadSuccess: function (res) {cargaLineasPedidoCallback();},
 			    data:{idpedido:idpedido},
 				method: "GET",
 				columns:[
@@ -751,77 +701,43 @@ $("#p_comisiones").html('');
 							{field: 'haber',title: 'Haber',formatter: PriceFormatter},
 							{field: 'saldo',title: 'Saldo',formatter: PriceFormatter}
 				]
-       });
-   	
+       	});
 	}
-
-	/*==============================================================================================================================================================================*/
-	/*==============================================================================================================================================================================*/
-	/*==============================================================================================================================================================================*/
-	/*==============================================================================================================================================================================*/
-	$('#table_comision').on('editable-save.bs.table', actualizarComision);
 	
+	/**
+	 * Funcion que carga la tabla de comisiones
+	 */
 	function buscaComisiones(){
-		window.eventosTablaComision = {
-		        'click .remove': function (e, value, row, index) {
-						eliminaComision(row);
-		        }	
-				};
 		
-		 $("#div_comision").modal('hide');
-		 var idpedido 	=  <?php echo $pedEdit['id'];?> //$("#numeroPedido").val();
-	   	  $('#table_comision').bootstrapTable('destroy').bootstrapTable
-	   	  ({
-				    url: '<?php echo base_url(); ?>Cuenta/MuestraComision/'+idpedido,
-				    method:"GET",
-					dataType: 'json',
-					columns:[
-								{field: 'id',title: 'id.', visible:false},
-								{field: 'nom_cta',title: 'Cuenta.'}, 
-								{field: 'porcentaje',title: 'Porcentaje',align: 'right',editable:true},
-								{field: 'operate',title: 'Acción',align: 'center',events: eventosTablaComision,formatter:operateFormatter}
-					]
-	        }
-        	);
-	}
-	
-	$("#frm_comision").validate({
-		submitHandler: function(form){
-			//TODO validacion antes de grabar
-			$(':input[type="submit"]').prop('disabled', true);
-			var porcentaje 	=  $("#txt_porcentaje").val();
-			var cta = $("#cntrl_id_cta_comision_ingcomi").val();
-			
-			//alert(cta_des);
-			var idcabecera =   <?php echo $pedEdit['id'];?>//$("#numeroPedido").val();
-			
-			jQuery.ajax({
-				method: "POST",
-					url: "<?php echo base_url(); ?>Cuenta/insertaComision",
-					dataType: 'json',
-					data: {cta,porcentaje,idcabecera},
-					success:comisionActualizada
-				}); //jqueryajax
-			
-			}//function				
-	});//frm_comision	
+		$("#div_comision").modal('hide');
+		var idpedido 	=  <?php echo $pedEdit['id'];?> //$("#numeroPedido").val();
+			$('#table_comision').bootstrapTable('destroy').bootstrapTable
+			({
+				   url: '<?php echo base_url(); ?>Cuenta/MuestraComision/'+idpedido,
+				   method:"GET",
+				   dataType: 'json',
+				   columns:[
+							   {field: 'id',title: 'id.', visible:false},
+							   {field: 'nom_cta',title: 'Cuenta.'}, 
+							   {field: 'porcentaje',title: 'Porcentaje',align: 'right',editable:true},
+							   {field: 'operate',title: 'Acción',align: 'center',events: eventosTablaComision,formatter:operateFormatter}
+				   ]
+		   }
+	   );
+    }
 
-
-	//Evento editable de la comision
+	/**
+	 * Evento editable de la comision.
+	 */
 	function actualizarComision(editable, field, row, oldValue, $el){
-
-		/*console.log(row);
-		console.log(field);
-		console.log(oldValue);
-		console.log($el);*/
 
 		var idcomision 	=   row.id;
 		var nuevoPorcentaje	= row.porcentaje;
-		var idcabecera =   <?php echo $pedEdit['id'];?>//$("#numeroPedido").val();
+		var idcabecera =   <?php echo $pedEdit['id'];?>
 
 		if(nuevoPorcentaje > 100)	
 			//alert("El porcentaje ingresado es mayor a 100!, favor corregir.");
-		    MuestraMensaje("Error en la comisión","El porcentaje ingresado es mayor a 100!, favor corregir."); 
+			MuestraMensaje("Error en la comisión","El porcentaje ingresado es mayor a 100!, favor corregir."); 
 		else{
 				jQuery.ajax({
 					method: "POST",
@@ -831,9 +747,11 @@ $("#p_comisiones").html('');
 						success: comisionActualizada
 						});
 		}
-	};
+	}
 
-
+	/**
+		Funcion que actualiza la comisión
+	 */
 	function comisionActualizada(res)
 	{
 		$(':input[type="submit"]').prop('disabled', false);
@@ -849,12 +767,63 @@ $("#p_comisiones").html('');
 		buscaComisiones();
 		buscaLineaDetalle();
 	}
+
+	// C    A    L   L   B   A    C   K  S  -------------------------------------------------------------------------------------------------
+    function cargaLineasPedidoCallback(){
+        var idpedido = <?php echo $pedEdit['id'];?> ;
+    	jQuery.ajax({
+			method: "POST",
+				url: "<?php echo base_url(); ?>Pedido/obtieneIndicadoresExtendidos",
+				dataType: 'json',
+				data: {idpedido},
+				success: function(res){obtieneIndicadoresExtendidosCallBack(res);}
+		}); //jqueryajax				
+    } 
+
+    function obtieneIndicadoresExtendidosCallBack(res){
+		$("#p_comisiones").html('');
+		if(res!=null){
+
+			for (var i = 0; i < res.length; i++){
+				
+			    var r = res[i];
+				if(i==0){
+			    	$('#lbl_subtotal').text(PriceFormatter(r.Subtotal));
+		        	$('#lbl_iva').text(PriceFormatter(r.iva));
+		        	$('#lbl_totalapagar').text(PriceFormatter(r.totalAPagar));
+		        	$('#lbl_totalabonocliente').text(PriceFormatter(r.PagadoCliente));
+		        	$('#lbl_totalsaldocliente').text(PriceFormatter(r.SaldoCliente));
+		        	$('#lbl_totalCosto').text(PriceFormatter(r.CostoTotal));
+		        	$('#lbl_totalganancia').text(PriceFormatter(r.Ganancia100));
+			    }
+		    	$("#p_comisiones").append("<b>"+r.NombreVendedor+"</b>&nbsp;<i>Quedan </i>"+PriceFormatter(r.SaldoVendedor)+"<i> de</i> " +PriceFormatter(r.TotalVendedor)+" <br>");
+			}
+        }
+    }
+
 	
-	/*==============================================================================================================================================================================*/
-	/*==============================================================================================================================================================================*/
-	/*==============================================================================================================================================================================*/
-	/*==============================================================================================================================================================================*/	
-	// formulario caja , movimieno
+	// V   A   L    I  D   A   D   O   R   E    S  ------------------------------------------------------------------------------------------------------------
+	$("#frm_comision").validate({
+		submitHandler: function(form){
+			//TODO validacion antes de grabar
+			$(':input[type="submit"]').prop('disabled', true);
+			var porcentaje 	=  $("#txt_porcentaje").val();
+			var cta = $("#cntrl_id_cta_comision_ingcomi").val();
+			
+			//alert(cta_des);
+			var idcabecera =   <?php echo $pedEdit['id'];?>
+			
+			jQuery.ajax({
+				method: "POST",
+					url: "<?php echo base_url(); ?>Cuenta/insertaComision",
+					dataType: 'json',
+					data: {cta,porcentaje,idcabecera},
+					success:comisionActualizada
+				}); //jqueryajax
+			
+			}//function				
+	});//frm_comision	
+
 	$("#frm_caja").validate({
   				submitHandler: function(form){
 				//TODO validacion antes de grabar
@@ -888,61 +857,6 @@ $("#p_comisiones").html('');
   				}
 				}				
 	});	
-	/*==============================================================================================================================================================================*/
-	/*==============================================================================================================================================================================*/
-	/*==============================================================================================================================================================================*/
-	/*==============================================================================================================================================================================*/	
-	// formulario nota
-	$("#frm_nota").validate({
-  				submitHandler: function(form){
-				//TODO validacion antes de grabar
-				event.preventDefault();
-			
-				var txt_mensaje = $("#txt_mensaje").val();
-				var txt_nombre = $("#txt_nombre").val();
-				//var txt_url = $("#txt_url").val();
-				var sl_tipo = $("#sl_tipo").val();
-				var chk_publico = $("#chk_publico").is(':checked');
-				var userfile =$("#userfile").val();
-
-				
-				var idcabecera =   <?php echo $pedEdit['id'];?>;
-
-
-				 var form_data = new FormData();                  
-				form_data.append('txt_mensaje', txt_mensaje);
-				form_data.append('txt_nombre', txt_nombre);
-				//form_data.append('txt_url', txt_url);
-				form_data.append('sl_tipo', sl_tipo);
-				form_data.append('idcabecera', idcabecera);
-				form_data.append('chk_publico', chk_publico);
-				form_data.append('userfile', userfile);
-
-				    
-				$(':input[type="submit"]').prop('disabled', true);
-				
-
-
-
-				 $.ajax({
-		                url: "<?php echo base_url(); ?>Pedido/grabaAdjunto",
-		                type: "post",
-		                dataType: "html",
-		                data: form_data,
-		                cache: false,
-		                contentType: false,
-			     processData: false
-		            })
-		                .done(function(res){
-		                   alert(res);
-		                });
-
-
-	                
-  				}
-						
-	});	
-	
 	//formulario seguimiento, comentarios
 	$("#frm_shout").validate({
   				submitHandler: function(form){
@@ -978,7 +892,6 @@ $("#p_comisiones").html('');
   				}
 				}				
 	});	
-	
 	//Submit formulario detalle		
 	$("#frm_det_pedido").validate({
   				submitHandler: function(form){
@@ -1016,8 +929,10 @@ $("#p_comisiones").html('');
 					}); //jqueryajax
   				}	
 	});
-			//********** Control Producto **************************************			
-			$("#cntrl_id_producto").select2({
+			
+
+
+	$("#cntrl_id_producto").select2({
 				ajax: {
 				        url: "<?php echo base_url(); ?>Productos/listadoControlProductos/",
 				        dataType: 'json',
@@ -1039,10 +954,8 @@ $("#p_comisiones").html('');
 				        }
 				    },
 				    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
-				});
-
-
-			$("#cntrl_id_cta_comision_ingcomi").select2({
+	});
+	$("#cntrl_id_cta_comision_ingcomi").select2({
 				ajax: {
 				        url: "<?php echo base_url(); ?>Cuenta/listadoControlCuenta/1",
 				        dataType: 'json',
@@ -1064,12 +977,9 @@ $("#p_comisiones").html('');
 				        }
 				    },
 				    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
-				});
-			
-
-			
-			//********** Control cta comisi�n **************************************			
-			$("#cntrl_id_cta_comision").select2({
+	});
+	
+	$("#cntrl_id_cta_comision").select2({
 				ajax: {
 				        url: "<?php echo base_url(); ?>Cuenta/listadoControlCuenta/",
 				        dataType: 'json',
@@ -1091,11 +1001,10 @@ $("#p_comisiones").html('');
 				        }
 				    },
 				    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
-				});
+	});
 
 			
-			//********** Control cta1 **************************************			
-			$("#cntrl_id_cta").select2({
+	$("#cntrl_id_cta").select2({
 				ajax: {
 				        url: "<?php echo base_url(); ?>Cuenta/listadoControlCuenta/",
 				        dataType: 'json',
@@ -1117,9 +1026,8 @@ $("#p_comisiones").html('');
 				        }
 				    },
 				    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
-				});	
-			//********** Control cta2 **************************************			
-			$("#cntrl_id_cta_destino").select2({
+	});	
+	$("#cntrl_id_cta_destino").select2({
 				ajax: {
 				        url: "<?php echo base_url(); ?>Cuenta/listadoControlCuenta/",
 				        dataType: 'json',
@@ -1145,7 +1053,7 @@ $("#p_comisiones").html('');
 
 			$('#btnback').click(function () {
 				window.history.back();
-			});
+	});
 				
 }); //Function ready
 </script>
