@@ -213,9 +213,7 @@ class Pedido extends CI_Controller
         
         $this->M_pedido->actualizaPedidoPropiedadFactura($id_pedido, $chkiva);
         
-        $arr = array(
-            'id' => $id_pedido
-        );
+        $arr = array('id' => $id_pedido);
         echo json_encode($arr);
     }
 
@@ -268,17 +266,11 @@ class Pedido extends CI_Controller
         $id_cliente = $this->input->post('idcliente');
         $idestado = $this->input->post('idestado');
         
-        $arr = array('id' => '-', 'mensaje'=>'-');
-        
-        $arr['id'] = $this->_grabaCabecera($id_pedido, $id_cliente,$idestado);
+        $idnuevo = $this->_grabaCabecera($id_pedido, $id_cliente,$idestado);
 
-        if($arr['id']!=-1)
-            $arr['mensaje'] = "Pedido grabado correctamente, número de pedido ".$arr['id'] ;
-        else
-            $arr['mensaje'] = "Ha ocurrido un error al grabar el pedido." ;
-        
-        
-        echo json_encode($arr);
+        //Salida por modulo
+        $this->load->salidaRetornoAjax($idnuevo,"pedido","L","grabado",$idnuevo);
+      
     }
 
     /**
@@ -521,7 +513,9 @@ class Pedido extends CI_Controller
         return $idestado;
     }
 
-
+    /**
+     * Metodo que elimina un pedido
+     */
     public function eliminaPedido()
     {
         if (! $this->ion_auth->logged_in()) {
@@ -529,13 +523,11 @@ class Pedido extends CI_Controller
         }
         
         $id_pedido = $this->input->post('id');
-        
-        $arr['estado'] = $this->M_pedido->eliminaPedido($id_pedido);
-        $arr['mensaje'] = "Pedido ".$id_pedido." eliminado correctamente";
-        
 
+        
+        $resultado = $this->M_pedido->eliminaPedido($id_pedido);
 
-        echo json_encode($arr);
+        $this->load->salidaRetornoAjax($id_pedido,"pedido","L","eliminado",$resultado);
     }
 
     /**
@@ -576,7 +568,7 @@ class Pedido extends CI_Controller
         }
         
         If ($id_cabecera == "")
-            $id_cabecera = "-1"; // Criterio para despistar
+            $id_cabecera = "-1"; 
         
             $data = $this->M_pedido->obtenerPedidoDetalle($id_cabecera);
         

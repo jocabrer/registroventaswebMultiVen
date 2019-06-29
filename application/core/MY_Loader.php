@@ -143,7 +143,7 @@ class MY_Loader extends CI_Loader {
             $arr = array ('id' => -1, 'mensaje' => $mensajeError);
         }elseif ($estado=="L") {
             //Listo
-            $mensajeListo = "Se ha ".$accion." el ".$objeto. " correctamente - Cod. ". $mensaje;
+            $mensajeListo = "Se ha ".$accion." el ".$objeto." (".$id.") correctamente - Cod. ". $mensaje;
             $arr = array ('id' => $id, 'mensaje' => $mensajeListo );
             
         }
