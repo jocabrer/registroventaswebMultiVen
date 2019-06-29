@@ -21,14 +21,6 @@
 		<div class="box-header with-border">
 			<h3 class="box-title"><?php echo $descHeader; ?><label id="lbl_id_pedido"></label></h3>
 					<div class="box-tools pull-right">
-						<a href="#" class="btn btn-default" id="btn_agregar_nota" title="Agregar nota pedido">
-								
-								<?php if($pedEdit['nota']=="")
-								  echo '<i class="fa fa-fw  fa-file-o"></i>';
-								 else
-								 echo '<i class="fa fa-fw  fa-file-text-o"></i>';
-							     ?>	
-						</a>
 						<a class="btn btn-default"  title="Ver comprobante" href="<?php echo base_url(); ?>Comprobante/verComprobante/<?php echo $pedEdit['id'];?> " target="blank"><i class="fa fa-fw fa-print"></i> </a>
 						<a class="btn btn-default" title="Ver seguimiento de pedido" href="<?php echo base_url('seguimiento/ver/'.$pedEdit['id'].'/'.$pedEdit['cli_id']); ?>" target="blank"><i class="fa fa-fw fa-tasks"></i>Ver Seguimiento</a>
 						
@@ -44,13 +36,9 @@
 								        echo "</a>";
                                  ?>
                                  <br/>
-								 <?php 
-								 echo $cliente['correo1'];
-								 ?>
-								  <br/>
-								 <?php 
-								 echo $cliente['fono1'];
-								 ?>											        
+								 <?php echo $cliente['correo1'];?>
+								 <br/>
+								 <?php echo $cliente['fono1'];?>
 								 <br>
 								 Fecha Ingreso : <?php echo $pedEdit['est_fec_ing']; ?>
 								 <br>
@@ -325,7 +313,7 @@
          <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
     </div><!-- tools -->
 </div><!-- /.box-header -->
-<div class="box-body" style="width:70%">
+<div class="box-body" style="width:100%">
 		
 		<table id="tbl_adjuntos"
 			   data-method="post"
@@ -339,13 +327,14 @@
 				 <th data-field="nombretipo">Tipo</th>
                  <th data-field="filename" data-formatter="f_archivoadjunto">Archivo</th>
 				 <th data-field="fecha_subida">Subido</th>
+				 <th data-field= 'operate' data-events='eventoTablaAdjunto' data-formatter='operateFormatter'}
          </tr>
          </thead>
       
 		</table>
 		
 		<br>
-		<form action="<?php echo base_url(); ?>Pedido/grabaAdjunto/" enctype="multipart/form-data" role="form"  id="frm_nota" method="post">
+		<form action="<?php echo base_url(); ?>Pedido/grabaAdjunto/" enctype="multipart/form-data" role="form"  id="frm_adjunto" method="post">
 		<input type="hidden" id="cabecera" name="cabecera" value="<?php echo $pedEdit['id'];?>">
 		<div class="row">
 			<div class="col-lg-2 col-md-12  col-xs-12">
@@ -383,7 +372,6 @@
         <h4 class="modal-title">Agregar Comisi&oacute;n</h4>
       </div>
       <div class="modal-body">
-      
       		<div class="row">
 					<div class="col-lg-3 col-md-3  col-xs-12">
 						<label>Cuenta Comisi&oacute;n</label>
@@ -399,8 +387,6 @@
 						
 					</div>
 			</div><!-- row -->
-      
-      
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -517,11 +503,7 @@ $(document).ready(function() {
 	//Seteamos eventos de los botons que abren ventanas modals
 	$("#btn_agregar_comision").click(function(){$("#div_comision").modal('show');});
 	$("#btn_agregar_caja").click(function(){$("#div_agregarcaja").modal('show');});
-	$("#btn_agregar_nota").click(function(){
-		$(':input[type="submit"]').prop('disabled', false);
-	    $("#div_agregarnota").modal('show');
-	});
-
+	
 	//Seteamos eventos para mostrar imagenes adjunto
 	$(document).on('click', '[data-toggle="lightbox"]', function(event) {
                 event.preventDefault();
@@ -535,6 +517,7 @@ $(document).ready(function() {
 	
 	$('#table_comision').on('editable-save.bs.table', actualizarComision);
 	window.eventosTablaComision = {'click .remove': function (e, value, row, index) {eliminaComision(row);}	};
+	window.eventoTablaAdjunto = {'click .remove': function (e, value, row, index) {eliminaAdjunto(row);}	};
 	//I    N     I    C   I  A   L  I   Z   A   D  O   R   E    S  ----------------------------------------------------------------------
 
 	//Cargamos controles con informacion
@@ -618,6 +601,23 @@ $(document).ready(function() {
 				success: function(res) {buscaComisiones ();buscaLineaDetalle();}
 		}); //jqueryajax	
 	}
+
+	/**
+	* Se elimina el adjunto solicitado 
+ 	*/
+	function eliminaAdjunto(row){
+		var id = row['id'];
+		jQuery.ajax({
+			method: "POST",
+				url: "<?php echo base_url('Pedido/eliminaAdjunto/'); ?>",
+				data:{id},
+				dataType: 'json',
+				success: function(res){eliminaAdjuntoCallback(res);}
+						
+		}); //jqueryajax	
+	}
+
+
 
 	/** 
 	 * Funcion elimina linea de detalle de un pedido.
@@ -801,7 +801,10 @@ $(document).ready(function() {
         }
     }
 
-	
+	function eliminaAdjuntoCallback(res){
+		MuestraMensaje("Módulo Adjuntos",res.mensaje);
+		$('#tbl_adjuntos').bootstrapTable('refresh');
+	}
 	// V   A   L    I  D   A   D   O   R   E    S  ------------------------------------------------------------------------------------------------------------
 	$("#frm_comision").validate({
 		submitHandler: function(form){

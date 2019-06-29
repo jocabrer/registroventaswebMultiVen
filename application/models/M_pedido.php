@@ -2,6 +2,8 @@
 
 class M_pedido extends CI_Model {
 
+	
+
   	function __construct()
     {
         // Call the Model constructor
@@ -36,8 +38,18 @@ class M_pedido extends CI_Model {
 	        return true;
 	        
 	}
+
 	/**
-	 * Elimina l�nea de detalle de pedido
+	 * Funcion que elimina registro de adjunto.
+	 * @param int $id_adjunto el id del registro a elimina 
+	 */
+	function eliminaAdjunto($id_adjunto){
+		$ejecucion = $this->db->delete('adjuntos', array('id' => $id_adjunto)); 
+		return true;
+	}
+
+	/**
+	 * Elimina línea de detalle de pedido
 	 */
 	function eliminaLineaDetallePedido($id)
 	{
@@ -158,8 +170,16 @@ class M_pedido extends CI_Model {
             return $this->db->_error_message();
         }
     }
-    
-    
+	
+	/**
+	 * Funcion que obtiene un Adjunto
+	 */
+    function obtenerAdjunto($id){
+		$this->db->where('id',$id);
+		$query = $this->db->get('adjuntos');
+		$result =  $query->result();		
+		return $result[0];
+	}
 	/**
 	 * Obtiene un registro de cabecera para el id 
 	 * @param int $idcabecera 

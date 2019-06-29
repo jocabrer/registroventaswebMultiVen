@@ -14,7 +14,7 @@ class MY_Loader extends CI_Loader {
 		parent::__construct();
 	}
 	/*
-	* @template_name  nombre de la vista que se cargará en el wrapper
+	* @template_name  nombre de la vista que se cargarï¿½ en el wrapper
 	* @dataContent   datos para la vista solicitada a cargar.
 	*/
     public function template($template_name, $dataContent = array(), $return = FALSE)
@@ -38,7 +38,7 @@ class MY_Loader extends CI_Loader {
 		$dataheader['currentClass'] =  $CI->router->fetch_class();
 		
 		
-		//Autenticación
+		//Autenticaciï¿½n
 		if (!$CI->ion_auth->logged_in())
 		{
 		    redirect('auth/login');
@@ -81,7 +81,7 @@ class MY_Loader extends CI_Loader {
     
     
     /*
-     * @template_name  nombre de la vista que se cargará en el wrapper
+     * @template_name  nombre de la vista que se cargarï¿½ en el wrapper
      * @dataContent   datos para la vista solicitada a cargar.
      */
     public function templatepublic($template_name, $dataContent = array(), $return = FALSE)
@@ -130,4 +130,26 @@ class MY_Loader extends CI_Loader {
     	}
     	return $data;
     }
+
+    /**
+     * 
+     */
+    public function salidaRetornoAjax($id,$objeto,$estado,$accion,$mensaje){
+        
+        //Consulto estado de salida 
+        if($estado=="E"){
+            //Es Error
+            $mensajeError = "No se pudo ".$accion." el ".$objeto ." Error : Cod.". $mensaje;
+            $arr = array ('id' => -1, 'mensaje' => $mensajeError);
+        }elseif ($estado=="L") {
+            //Listo
+            $mensajeListo = "Se ha ".$accion." el ".$objeto. " correctamente - Cod. ". $mensaje;
+            $arr = array ('id' => $id, 'mensaje' => $mensajeListo );
+            
+        }
+        //$arr['estado'] = $estado;
+        echo json_encode ($arr);
+    }
+
+
 }

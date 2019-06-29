@@ -521,6 +521,7 @@ class Pedido extends CI_Controller
         return $idestado;
     }
 
+
     public function eliminaPedido()
     {
         if (! $this->ion_auth->logged_in()) {
@@ -532,7 +533,35 @@ class Pedido extends CI_Controller
         $arr['estado'] = $this->M_pedido->eliminaPedido($id_pedido);
         $arr['mensaje'] = "Pedido ".$id_pedido." eliminado correctamente";
         
+
+
         echo json_encode($arr);
+    }
+
+    /**
+     * Metodo que llama al modelo que elimina un adjunto
+     */
+    public function eliminaAdjunto(){
+
+        if (! $this->ion_auth->logged_in()) {
+            redirect('auth/login');
+        }
+        //Rescato id a eliminar
+        $id_adjunto = $this->input->post('id');
+        $adjunto = $this->M_pedido->obtenerAdjunto($id_adjunto);
+
+        //Cargo liberías necesaria
+        $this->load->helper('file');
+
+        //Debo rescatar el pathurl del archivo para eliminarlo
+        unlink($adjunto->pathurl.$adjunto->filename);
+    
+        //Eliminamos registro de la BD 
+        $estado = $this->M_pedido->eliminaAdjunto($adjunto->id);
+        
+        // Salida de respuesta 
+        //$id,$objeto,$estado,$accion,$mensaje
+        $this->load->salidaRetornoAjax($id_adjunto,"adjunto","L","eliminado",$estado);
     }
 
     /*

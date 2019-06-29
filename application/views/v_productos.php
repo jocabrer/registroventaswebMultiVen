@@ -21,7 +21,7 @@
 				<div class="box-header with-border" style="min-height:100px;">
 					<h3>Listado Productos</h3>
 					<div class="bg-teal color-palette" id="modalDinamicoIL" stuyle="display:block">
-                           Cuerpo  e e e e e e e e 
+                           Cuerpo  
                      </div>
 					<div class="box-tools pull-right">
 					       <!-- Modal inline -->
@@ -102,7 +102,7 @@
 
 
 /**
- * Procesa la respuesta del metodo que carga vía ajax los datos a la tabla.
+ * Procesa la respuesta del metodo que carga vï¿½a ajax los datos a la tabla.
  */
 function responseHandler(res){
 	return res;
@@ -144,7 +144,7 @@ function actualizarProducto(editable, field, row, oldValue, $el){
 
 function productoActualizado(res)
 {
-	MuestraMensajeIL("Módulo Pedidos",res.mensaje); 
+	MuestraMensajeIL("Mï¿½dulo Pedidos",res.mensaje); 
 }
 
 function MuestraMensajeIL(titulo,msje)
