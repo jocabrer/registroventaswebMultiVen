@@ -66,7 +66,7 @@ $db ['default'] = array (
 		'dsn' => '',
 		'hostname' => 'localhost',
 		'username' => 'root',
-		'password' => 'root',
+		'password' => 'april20C',
 		'database' => 'ef3c71v0_rvweb',
 		'dbdriver' => 'mysqli',
 		'dbprefix' => '',
@@ -81,6 +81,6 @@ $db ['default'] = array (
 		'compress' => FALSE,
 		'stricton' => FALSE,
 		'failover' => array (),
-		'save_queries' => TRUE
+		'save_queries' => TRUE 
 )
 ;
