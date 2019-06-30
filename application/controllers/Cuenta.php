@@ -291,7 +291,7 @@ class Cuenta extends CI_Controller {
 		    echo json_encode ($arr);
 		    
 		}else{
-		    $idregistro = $this->M_Cuenta->ActualizaComision($idcomision,$nuevoPorcentaje,$userid,new DateTime('America/Argentina/Mendoza'));
+		    $idregistro = $this->M_Cuenta->ActualizaComision($idcomision,$nuevoPorcentaje,$userid,$this->load->obtieneFechaActual());
     		
     		$arr = array ('estado'=> "0",'id' => $idregistro);
     		echo json_encode ( $arr );
