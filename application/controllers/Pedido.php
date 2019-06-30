@@ -111,7 +111,7 @@ class Pedido extends CI_Controller
 
             if ($this->existePedido($idPed)) {
                 // Editar
-                $dataContent['descHeader'] = "Editar pedido id ";
+                $dataContent['descHeader'] = "Modo Edición ";
                 $pededit = $this->M_pedido->obtenerPedido($idPed);
 
                 // Si no lo encuentro redirecciono a este mismo metodo
