@@ -13,7 +13,7 @@
 <section class="content">
 
 	<!-- hojas recientes -->
-	<div class="box box-primary collapsed-box">
+	<div class="box box-primary">
 		<div class="box-header with-border">
 				<h3 class="box-title">Hojas Recientes</h3>
 				<div class="box-tools pull-right">
@@ -116,7 +116,7 @@
 	</div><!-- class = table -->
         
 	
-	<div class="box collapsed-box">
+	<div class="box">
 				<div class="box-header with-border">
 				 <h3 class="box-title">Hoja proceso #<label id="lbl_nombrehoja"></label></h3>
 				<div class="box-tools pull-right">

@@ -56,11 +56,13 @@ class M_Hojas extends CI_Model {
      * @param [int] $userid Id del usuario
      * @return void
      */
-    function insertaHojaCabecera($nombrehoja,$fechaproceso,$fechamod,$userid)
+    function insertaHojaCabecera($nombrehoja,$fechaproceso,$userid)
     {
         //Seteamos nuevos valores
         $this->nombre_hoja = $nombrehoja;
         $this->userid  =$userid;
+        $this->fecha_mod = $fechaproceso;
+        $this->fecha_proceso = $fechaproceso;
        
         //insertamos 
         $this->db->insert('cabecera_hojas', $this);
@@ -155,8 +157,8 @@ class M_Hojas extends CI_Model {
         if(strlen($criterio)>0)
             $this->db->where('id',$criterio);
 
-            $this->db->limit($limit);
-            $this->db->order_by("fecha_proceso",$descasc);
+        $this->db->limit($limit);
+        $this->db->order_by("fecha_mod",$descasc);
 
         $query = $this->db->get('cabecera_hojas');
         

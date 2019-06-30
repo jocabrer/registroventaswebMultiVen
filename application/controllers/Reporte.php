@@ -138,7 +138,7 @@ class Reporte extends CI_Controller {
 			//Elimino de la hoja los pedidos que ahora voy a procesar para evitar duplicados.
 			$this->M_hojas->borrar_pedidos_hoja($nombre_hoja,$idpedidos);
 	    }else{
-	        $nombre_hoja =  $this->M_hojas->insertaHojaCabecera($nombre_hoja,$fecha_proceso,$fecha_proceso,$userid);
+	        $nombre_hoja =  $this->M_hojas->insertaHojaCabecera($nombre_hoja,$fecha_proceso,$userid);
 	    }
 
 		$id_reg = $this->calculoDeHoja($data,$tipo_hoja,$fecha_proceso,$nombre_hoja);
