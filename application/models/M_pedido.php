@@ -309,6 +309,8 @@ class M_pedido extends CI_Model {
     	$this->db->where('id_cabecera',$idpedido);
 	    if($userid==-1){
 			 //Significa que el usuario es publico x tanto solo debe ver los 0
+			 //0 es publico
+			 //1 es no publico 
 			 $this->db->where('publico',0);
 		}
 		$this->db->order_by('id',$order);
