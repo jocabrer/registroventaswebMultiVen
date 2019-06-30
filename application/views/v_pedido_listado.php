@@ -1,29 +1,23 @@
-
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-<!-- Content Header (Page header) -->
-<section class="content-header">
-  <h1>
-	<?php echo $titleHeader; ?>
-	<small>
-	<?php echo $descHeader ?>
-	</small>
-  </h1>
-  <ol class="breadcrumb">
-	<li><a href="<?php echo base_url(); ?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-	<li><a href="<?php echo base_url($currentClass); ?>"><?php echo $currentClass ?></a></li>
-	<li class="active"><?php echo $currentAction ?></li>
-  </ol>
-</section>
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+  	<h1>
+		<?php echo $titleHeader; ?>
+		<small><?php echo $descHeader ?></small>
+  	</h1>
+  	<ol class="breadcrumb">
+		<li><a href="<?php echo base_url(); ?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
+		<li><a href="<?php echo base_url($currentClass); ?>"><?php echo $currentClass ?></a></li>
+		<li class="active"><?php echo $currentAction ?></li>
+  	</ol>
+	</section>
 
-<section class="content">
-<div class="row">
-	<div class="col-md-6">
-	<!-- Resumen Pedidos ---------------------------------------------------------------------------------->
-	<?php
-			$totalactual=$ind_ingresado+$ind_enfabricacion+$ind_esperando+$ind_conproblema+$ind_calculando;
-	?>
+	<section class="content">
+	<div class="row">
+		<div class="col-md-6">
+		<!-- Resumen Pedidos ---------------------------------------------------------------------------------->
+			<?php $totalactual=$ind_ingresado+$ind_enfabricacion+$ind_esperando+$ind_conproblema+$ind_calculando;?>
 			<div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title"><a href="javascript:seleccionaEstadosActuales()">Total actual : <?php echo $totalactual;?></a></h3>
@@ -127,7 +121,7 @@
 		  
 		  <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Consulta Rápida</h3>
+              <h3 class="box-title">Consulta rapida</h3>
 	              <div class="box-tools pull-right">
                 		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                    </div>
@@ -144,7 +138,24 @@
 			</div>
             <!-- /.box-body -->
 
-          </div>
+		  </div>
+		  
+		  <?php if($this->ion_auth->is_admin()){ ?>
+			<!-- hojas recientes -->
+			<div class="box box-primary collapsed-box">
+				<div class="box-header with-border">
+						<h3 class="box-title">Hojas Recientes</h3>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+						</div>
+				</div> <!-- /.box-header -->
+				<div class="box-body">			  
+							<table id="tbl_ultimashojas" class="table"></table>	   
+				</div><!-- box body -->
+			</div><!-- box primary -->
+			<!-- / fin hojas recientes -->
+		 <?php }?>
+		
 	<!--  Cabecera Listado Pedidos----------------------------------------------------------------------------------> 
 						
 
@@ -250,9 +261,13 @@
 	</div><!-- ROW -->
 	</div><!-- Div class box body -->
 </div><!-- .div box -->
+
+
+
+
 </section><!-- /.content -->
 
-</div><!-- /.content-wrapper -->
+	</div><!-- /.content-wrapper -->
 
 
 <div class="modal fade" tabindex="-1" role="dialog" id="divpedidopreview">
@@ -356,18 +371,20 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
 <script type="text/javascript">
 
 	//http://davidstutz.github.io/bootstrap-multiselect/
 	//https://github.com/wenzhixin/bootstrap-table/blob/master/src/extensions/export/README.md
 	$(document).ready(function(){
 
+
+		//Widgets 
+		ultimasHojasProcesadas();
+
 		//manejador evento que elimina pedido.
 		window.eventosTabla = {'click .remove': function (e, value, row, index) {eliminaPedido(row);},
 				               'click .ver': function (e, value, row, index) {muestraPedidoVistaPreviaModalRow(row);}
 							  };
-		
 		
 		
 		$sl_comision = $('#sl_comision');
@@ -418,6 +435,23 @@
 		
 
 	});
+	
+
+	function ultimasHojasProcesadas(){
+	$('#tbl_ultimashojas').bootstrapTable('destroy').bootstrapTable
+	({
+		   url: base_url+'Reporte/ultimasHojasProcesadas/',
+		   method:"GET",
+		   dataType: 'json',
+		   columns:[
+					   {field: 'nombre_hoja',title: 'Hoja',formatter:'f_nombrehojalink'}, 
+					   {field: 'fecha_proceso',title: 'Fecha proceso'},
+					   {field: 'fecha_mod',title: 'Ult. Modificación'}
+					   
+		   ]
+   }
+	);
+}
 
 	/*
 	*  Usado para sacar el id del arreglo cuando es llamado desde una fila de la tabla de resultados,  para llamar a muestraPedidoVistaPreviaModal 
