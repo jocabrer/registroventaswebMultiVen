@@ -126,7 +126,7 @@ function f_nombrehoja(data){
 	return "<a href=\"javascript:actualizaHoja('"+data+"');\">"+data+"</a>";
 }
 function f_nombrehojalink(data){
-	return['<a href="'+base_url+'Reporta/Ver/',data,'">',data,'</a>'].join('');
+	return['<a href="'+base_url+'Reporte/hojas/',data,'">',data,'</a>'].join('');
 }
 
 /*
