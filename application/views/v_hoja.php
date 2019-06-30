@@ -219,28 +219,22 @@ function procesa() {
 	}); //jqueryajax		
 }
 
-	/**
-	 * Undocumented function
-	 *
-	 * @return void
-	 */
-	function ultimasHojasProcesadas(){
-		
-		
-			$('#tbl_ultimashojas').bootstrapTable('destroy').bootstrapTable
-			({
-				   url: "<?php echo base_url('Reporte/ultimasHojasProcesadas/'); ?>",
-				   method:"GET",
-				   dataType: 'json',
-				   columns:[
-							   {field: 'nombre_hoja',title: 'Hoja',formatter:'f_nombrehoja'}, 
-							   {field: 'fecha_proceso',title: 'Fecha proceso'},
-							   {field: 'fecha_mod',title: 'Ult. Modificación'}
-							   
-				   ]
-		   }
-	   );
-    }
+
+function ultimasHojasProcesadas(){
+	$('#tbl_ultimashojas').bootstrapTable('destroy').bootstrapTable
+	({
+		   url: base_url+'Reporte/ultimasHojasProcesadas/',
+		   method:"GET",
+		   dataType: 'json',
+		   columns:[
+					   {field: 'nombre_hoja',title: 'Hoja',formatter:'f_nombrehoja'}, 
+					   {field: 'fecha_proceso',title: 'Fecha proceso'},
+					   {field: 'fecha_mod',title: 'Ult. Modificación'}
+					   
+		   ]
+   }
+	);
+}
 
 
 /*function buscaComisiones($vartrue){
