@@ -15,15 +15,42 @@ class Reporte extends CI_Controller {
 	    {
 	        redirect('auth/login');
 	        
-	    }else
-	    {
-	        $this->load->template('v_blank', $dataContent);
-	    }
+		}
+		$this->hojas(-1);
 	}
 	
+	/*
+	 * Función que elimina una hoja.
+	 *
+	 * @return void
+	 */
+	public function eliminaHoja()
+	{
+		//Seguridad
+		if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login');
+		}
+		$this->load->model('M_hojas');
+
+        //Rescato id a eliminar
+        $nombre_hoja = $this->input->post('nombre_hoja');
+	
+		//Eliminamos registro de la BD 
+        $estado = $this->M_hojas->eliminaHojaCompleta($nombre_hoja);
+
+        // Salida de respuesta 
+        //$id,$objeto,$estado,$accion,$mensaje
+        $this->load->salidaRetornoAjax($nombre_hoja, "hoja", "L", "eliminada", $estado);
+	}
 
 	
-
+	
+	/**
+	 * Función que carga la pantalla de hojas.
+	 *
+	 * @param integer $hoja nombre id de la hoja que se desea cargar (opcional).
+	 * @return void Salida de pantalla.
+	 */
 	public function hojas($hoja=-1){
 	    
 	    $dataContent['titleHeader']        = "Sistema de reportes LYM";
@@ -37,6 +64,12 @@ class Reporte extends CI_Controller {
 	    }
 	}
 	
+	/**
+	 * Función que ontiene y devuelve una hoja y su detalle en formato Json para cargar en tabla.
+	 *
+	 * @param [type] $idhoja
+	 * @return void
+	 */
 	function muestraHoja($idhoja){
 	    
 	    $this->load->model('M_hojas');
@@ -51,7 +84,6 @@ class Reporte extends CI_Controller {
 	    $data2['total'] = count($data);
 	    
 	    echo json_encode($data);
-	    
 	}
 	
 	
@@ -104,8 +136,6 @@ class Reporte extends CI_Controller {
 		$id_reg = $this->calculoDeHoja($data,$tipo_hoja,$fecha_proceso,$nombre_hoja);
 
 		$this->load->salidaRetornoAjax($nombre_hoja,'registro','L','procesado','');
-		
-		
 	}
 
 	/**
@@ -140,9 +170,6 @@ class Reporte extends CI_Controller {
 			$iva = $pedido['iva'];
 			$saldocliente = $pedido['SaldoCliente'];
 			$saldovendedor2 = $pedido['SaldoVendedor2'];
-
-
-			
 			
 			//Solo se calculan por pedido , no por linea de detalle
             if($cab_ante == $pedido['pedido']){
@@ -178,7 +205,9 @@ class Reporte extends CI_Controller {
 	}
 	
 	/**
-	 * AJAX : Lista los productos
+	 * Función que devuelve un listado de nombres de las hojas del siste,a-
+	 *
+	 * @return void Salida Json 
 	 */
 	public function listadoControlHojas() {
 	    
