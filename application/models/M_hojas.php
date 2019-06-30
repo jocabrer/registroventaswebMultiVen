@@ -40,7 +40,6 @@ class M_Hojas extends CI_Model {
         $this->pagado  =$pagado;
         $this->saldo  = $saldo;
         $this->iva  = $iva;
-        $this->fecha_proceso  = $fecha_proceso->format('Y-m-d H:i:s');;
         $this->nombre_hoja  =$nombre_hoja;
         $this->orden = $orden;
         $this->saldovendedor2 = $SaldoVendedor2;
@@ -61,8 +60,6 @@ class M_Hojas extends CI_Model {
     {
         //Seteamos nuevos valores
         $this->nombre_hoja = $nombrehoja;
-        $this->fecha_proceso  = $fechaproceso->format('Y-m-d H:i:s');;
-        $this->fecha_mod  = $fechamod->format('Y-m-d H:i:s');;
         $this->userid  =$userid;
        
         //insertamos 
@@ -81,12 +78,10 @@ class M_Hojas extends CI_Model {
      * @param [type] $userid
      * @return void
      */
-    function update_entry_cab_hoja($nombrehoja,$fechaproceso,$fechamod,$userid)
+    function update_entry_cab_hoja($nombrehoja,$fechaproceso,$userid)
     {
-        $this->fecha_proceso  = $fechaproceso->format('Y-m-d H:i:s');;
-        $this->fecha_mod  = $fechamod->format('Y-m-d H:i:s');;
-        
         $this->userid  =$userid;
+        $this->fecha_mod = $fechaproceso;
         
         $this->db->where('nombre_hoja',$nombrehoja);
         $this->db->update('cabecera_hojas', $this);
@@ -145,6 +140,28 @@ class M_Hojas extends CI_Model {
         $this->db->where('nombre_hoja', $nombre_hoja);
         $this->db->where_in('id_cabecera', $idpedidos);
         $this->db->delete('hojas'); 
+    }
+
+    /**
+     * Función que busca hojas con diversos criterios y ordenamientos.
+     *
+     * @param [type] $limit
+     * @param [type] $descasc
+     * @param [type] $criterio
+     * @return void
+     */
+    function buscador_hojas($limit,$descasc,$criterio){
+
+        if(strlen($criterio)>0)
+            $this->db->where('id',$criterio);
+
+            $this->db->limit($limit);
+            $this->db->order_by("fecha_proceso",$descasc);
+
+        $query = $this->db->get('cabecera_hojas');
+        
+    	return $query->result_array();
+
     }
 }
 

@@ -215,7 +215,7 @@ class M_Cuenta extends CI_Model {
 	    $this->id_cuenta = $cta;
 	    $this->porcentaje = $porcentaje;
 	    $this->id_user = $id_user;
-	    $this->fecha_mod = $fecha_mod->format('Y-m-d H:i:s');
+	    $this->fecha_mod = $fecha_mod;
 	    
 	    $this->db->insert('movimiento_cab', $this);
 	    $insert_id = $this->db->insert_id();
@@ -223,9 +223,6 @@ class M_Cuenta extends CI_Model {
 	}
 	function ActualizaComision($id,$porcentaje,$id_user,$fecha_mod){
 	    
-	    $fecha_mod = $fecha_mod->format('Y-m-d H:i:s');
-	    //echo "UPDATE movimiento_cab set porcentaje = " . $porcentaje .", id_user = ".$id_user.", fecha_mod = '".$fecha_mod."' WHERE `id` = ".$id;
-	    //exit(0);
 	    
 	    $this->db->simple_query("UPDATE movimiento_cab set porcentaje = " . $porcentaje .", id_user = ".$id_user.", fecha_mod = '".$fecha_mod."' WHERE `id` = ".$id);
 	    

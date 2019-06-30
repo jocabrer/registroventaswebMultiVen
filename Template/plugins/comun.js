@@ -122,6 +122,10 @@ function f_idpedido(data){
 	return['<a href="'+base_url+'Pedido/editarPedido/',data,'">',data,'</a>'].join('');
 }
 
+function f_nombrehoja(data){
+	return "<a href=\"javascript:actualizaHoja('"+data+"');\">"+data+"</a>";
+}
+
 /*
  * Formateo de tabla el link hacia el detalle del pedido
  */

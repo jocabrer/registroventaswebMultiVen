@@ -12,125 +12,149 @@
 
 <section class="content">
 
+	<!-- hojas recientes -->
+	<div class="box box-primary collapsed-box">
+		<div class="box-header with-border">
+				<h3 class="box-title">Hojas Recientes</h3>
+				<div class="box-tools pull-right">
+			
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+            
+				
+				</div>
+		</div>	  <!-- /.box-header -->
+		<div class="box-body">			  
+					<table id="tbl_ultimashojas" class="table"></table>	   
+		</div><!-- box body -->
+	</div><!-- box primary -->
+	<!-- / fin hojas recientes -->
 
-	<div class="row">
-		<div class="col-md-3 col-sm-6 col-xs-12">
-			<div class="box">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Consultar</h3>
+	<div class="table">
+		<div class="row">
+		<div class="col-md-8 col-sm-6 col-xs-12">
+			<div class="box" id="cajaUltimasHojas">
+						<div class="box-header with-border">
+						<h3 class="box-title">Procesar</h3>
+							
+						</div>
+						<div class="box-body" style="width:100%;">
+						
+							<div class="row">
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<label>Pedidos</label>
+									<input type="text" class="form-control pull-right"	id="nrospedidos" />
+								</div>
+								<div class="col-md-2 col-sm-2 col-xs-12">
+									<label>Nombre Hoja</label>
+									<input type="text" class="form-control pull-right"	id="nombrehoja" />
+								</div>
+								<div class="col-md-2 col-sm-2 col-xs-12">
+									<label>Tipo</label>
+									<!-- <input type="text" class="form-control pull-right"	id="tipohoja" /> -->
+									<select class="form-control" id="tipohoja">
+										<option>-</option>
+										<option>Saldo</option>
+										<option>Abono</option>
+										<option>Reembolso</option>
+										<option>Otro</option>
+									</select>			
+								</div>
+								<div class="col-md-2 col-sm-2 col-xs-12">
+									<label>Procesar</label><br/>
+									<a class="btn btn-default" id="btn_proc"><i class="fa fa-gear"></i> Procesar </a>
+									<input type="hidden" id="flag_procesa" value="false">
+								</div>
+							
+							</div><!-- Row -->
+						
+						</div><!-- /.box-body -->
+
+						
+						<div class="box-footer">
+						
+						</div>
+						<!-- /.box-footer-->
+				</div><!-- box -->
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+					<div class="box">
+						<div class="box-header with-border">
+						<h3 class="box-title">Consultar</h3>
+				
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+							<i class="fa fa-minus"></i></button>
+							<button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove">
+							<i class="fa fa-times"></i></button>
+						</div>
+						</div>
+						<div class="box-body" style="width:100%;">
+						
+							<div class="row">
+							
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									
+									<select class="form-control" id="sl_hojas">
+										
+									
+									</select>			
+								</div>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+												<a class="btn btn-default" id="btn_cons"><i class="fa fa-search"></i> Consultar</a>
+								</div>
+							</div>
+						
+						</div>
+						<!-- /.box-body -->
+					
+						<!-- /.box-footer-->
+				</div><!-- box -->
+			</div>
+			
+		</div><!--row-->
+	</div><!-- class = table -->
         
-                  <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-                      <i class="fa fa-minus"></i></button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove">
-                      <i class="fa fa-times"></i></button>
-                  </div>
-                </div>
-                <div class="box-body" style="width:100%;">
-                 
-                 	<div class="row">
-                 	
-                 		<div class="col-md-6 col-sm-6 col-xs-12">
-                 			
-         					<select class="form-control" id="sl_hojas">
-                                
-                              
-                            </select>			
-                 		</div>
-                 		<div class="col-md-6 col-sm-6 col-xs-12">
-										<a class="btn btn-default" id="btn_cons"><i class="fa fa-search"></i> Consultar</a>
-                 		</div>
-                 	</div>
-                 
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-                  Footer
-                </div>
-                <!-- /.box-footer-->
-           </div><!-- box -->
-        </div>
-        
-        
-        <div class="col-md-9 col-sm-6 col-xs-12">
-			<div class="box">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Procesar</h3>
-        
-                  <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-                      <i class="fa fa-minus"></i></button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove">
-                      <i class="fa fa-times"></i></button>
-                  </div>
-                </div>
-                <div class="box-body" style="width:100%;">
-                 
-                 	<div class="row">
-                		<div class="col-md-4 col-sm-4 col-xs-12">
-                			<label>Pedidos</label>
-                			<input type="text" class="form-control pull-right"	id="nrospedidos" />
-                		</div>
-                		<div class="col-md-2 col-sm-2 col-xs-12">
-                			<label>Nombre Hoja</label>
-                			<input type="text" class="form-control pull-right"	id="nombrehoja" />
-                		</div>
-                		<div class="col-md-2 col-sm-2 col-xs-12">
-                			<label>Tipo</label>
-                			<!-- <input type="text" class="form-control pull-right"	id="tipohoja" /> -->
-            				<select class="form-control" id="tipohoja">
-                                <option>-</option>
-                                <option>Saldo</option>
-                                <option>Abono</option>
-                                <option>Reembolso</option>
-                                <option>Otro</option>
-                              </select>			
-                		</div>
-                		<div class="col-md-2 col-sm-2 col-xs-12">
-                			<label>Procesar</label><br/>
-                			<a class="btn btn-default" id="btn_proc"><i class="fa fa-gear"></i> Procesar </a>
-                			<input type="hidden" id="flag_procesa" value="false">
-                        </div>
-                       
-            		</div><!-- Row -->
-                 
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-                  
-                </div>
-                <!-- /.box-footer-->
-           </div><!-- box -->
-        </div>
-   </div>
-   
- <div class="box">
-	<form method="post" action="/">
-	<div class="box-body">
-		
-		  <div class="row" id="printable">
-			<div class="col-md-12 col-sm-12 col-xs-12">
-    			<table id="tbl_result_hoja"  
+	
+	<div class="box collapsed-box">
+				<div class="box-header with-border">
+				 <h3 class="box-title">Hoja proceso #<label id="lbl_nombrehoja"></label></h3>
+				<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+							<i class="fa fa-minus"></i></button>
+							
+						</div>
+						</div>
+						<div class="box-body" style="width:100%;">
+						
+						<table id="tbl_result_hoja"  
     					 data-show-columns="true"
     					 data-show-footer="false"    					 
     			 		 data-toggle="table"
 			   			 data-show-export="true">
     			
     			</table>
+						
+						</div>
+						<!-- /.box-body -->
+					
+						<!-- /.box-footer-->
+				</div><!-- box -->
 			</div>
-		</div>
-	</div><!-- Div class box body -->
-	</form>
-    </div><!-- .div box -->
+     
+ 
 <!-- <button class="print" id="btn_imprimir"> Print this </button> -->
 </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
 
 <<script type="text/javascript">
-$(document).ready(function() {
+	$(document).ready(function() {
 		$('#btn_proc').click(function(){procesa()});
 		$('#btn_cons').click(function(){muestraHoja()});
-});
+	
+
+		ultimasHojasProcesadas();
+	});
 function muestraHoja(){
 	var nombreHoja = $('#sl_hojas').val();	
 	actualizaHoja(nombreHoja);
@@ -160,6 +184,9 @@ function actualizaHoja(nombreHoja){
 	  			]
     }
 	);
+
+	$('#lbl_nombrehoja').text(nombreHoja);
+	$('#sl_hojas').text(nombrehoja);
 }
 function procesa() {
 
@@ -191,6 +218,29 @@ function procesa() {
 			
 	}); //jqueryajax		
 }
+
+	/**
+	 * Undocumented function
+	 *
+	 * @return void
+	 */
+	function ultimasHojasProcesadas(){
+		
+		
+			$('#tbl_ultimashojas').bootstrapTable('destroy').bootstrapTable
+			({
+				   url: "<?php echo base_url('Reporte/ultimasHojasProcesadas/'); ?>",
+				   method:"GET",
+				   dataType: 'json',
+				   columns:[
+							   {field: 'nombre_hoja',title: 'Hoja',formatter:'f_nombrehoja'}, 
+							   {field: 'fecha_proceso',title: 'Fecha proceso'},
+							   {field: 'fecha_mod',title: 'Ult. Modificación'}
+							   
+				   ]
+		   }
+	   );
+    }
 
 
 /*function buscaComisiones($vartrue){

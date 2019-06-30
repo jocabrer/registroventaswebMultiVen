@@ -119,7 +119,7 @@ class Reporte extends CI_Controller {
 	    $nombre_hoja = $this->input->post('nombrehoja');
 		$tipo_hoja = $this->input->post('tipohoja');
 		//fecha de ejecución
-	    $fecha_proceso  =new DateTime('America/Argentina/Mendoza');
+	    $fecha_proceso  = $this->load->obtieneFechaActual();
 		
 		//Obtengo todos los pedidos ingresados.
 	    $data = $this->M_pedido->ObtenerPedidosFormatoListaHja($idpedidos);
@@ -134,7 +134,7 @@ class Reporte extends CI_Controller {
 		
 		//Si existe actualizo fechas, sino inserto una cabecera de hoja.
 		if(count($obj_hoja_cabecera)>0){
-			$nombre_hoja =  $this->M_hojas->update_entry_cab_hoja($nombre_hoja,$fecha_proceso,$fecha_proceso,$userid);
+			$nombre_hoja =  $this->M_hojas->update_entry_cab_hoja($nombre_hoja,$fecha_proceso,$userid);
 			//Elimino de la hoja los pedidos que ahora voy a procesar para evitar duplicados.
 			$this->M_hojas->borrar_pedidos_hoja($nombre_hoja,$idpedidos);
 	    }else{
@@ -222,7 +222,7 @@ class Reporte extends CI_Controller {
 	 */
 	public function listadoControlHojas() {
 	    
-	    $this->load->model ( 'M_hojas' );
+	    $this->load->model('M_hojas');
 	    
 	    // Seguridad
 	    if (! $this->ion_auth->logged_in ()) {
@@ -246,5 +246,12 @@ class Reporte extends CI_Controller {
 	    }
 	    //$data = $this->load->myutfencode($data);
 	    echo json_encode ( $data );
+	}
+
+
+	public function ultimasHojasProcesadas(){
+		$this->load->model('M_hojas');
+		$datos = $this->M_hojas->buscador_hojas(5,"desc","");
+		echo json_encode ( $datos );
 	}
 }

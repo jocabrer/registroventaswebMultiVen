@@ -158,5 +158,10 @@ class MY_Loader extends CI_Loader {
         echo json_encode ($arr);
     }
 
+    public function obtieneFechaActual(){
+        return (new DateTime('America/Argentina/Mendoza'))->format('Y-m-d H:i:s');
+              
+    }
+
 
 }

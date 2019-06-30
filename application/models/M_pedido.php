@@ -74,15 +74,12 @@ class M_pedido extends CI_Model {
      */
 	function actualizaPedidosDatosCabecera($id_cabecera,$id_estado,$id_user,$fecha_mod)
 	{
-	    //extra�amente poniendo y d m funcion no asi y-m-d
-	    //$fec_ing = date_format(DateTime::createFromFormat('Y-m-d', $fec_ing),'Y-m-d H:i:s');
 	    if($id_estado!=-1)
 		  $this->estadoActual   = $id_estado;
-		//$this->fecha_ingreso  = $fec_ing;
-		if($id_user<>-1){
+
+		  if($id_user<>-1){
 		    $this->id_user = $id_user;
 		}
-		$this->fecha_mod = $fecha_mod->format('Y-m-d H:i:s');;
 		$this->db->update('cabecera', $this, array('id' => $id_cabecera));
 	}
 	/**
@@ -95,14 +92,11 @@ class M_pedido extends CI_Model {
 	 */
 	function insertaPedidoCabecera($id_cliente,$fecha,$id_user,$fecha_mod)
     {
-        //var_dump($fecha);
-        $fecha = date_format(DateTime::createFromFormat('Y-m-d H:i:s', $fecha),'Y-m-d H:i:s');
-
         $this->id_cliente    = $id_cliente;
         $this->fecha_ingreso  = $fecha ;
         $this->conFactura = 0;
         $this->id_user = $id_user;
-        $this->fecha_mod = $fecha_mod->format('Y-m-d H:i:s');
+      
         
         $this->db->insert('cabecera', $this);
         $insert_id = $this->db->insert_id();
@@ -145,8 +139,7 @@ class M_pedido extends CI_Model {
     function insertaAdjuntoPedido($id_pedido, $userid, $tipo,$url,$fecha,$filename,$publico){
 		
 		
-        $fecha = date_format(DateTime::createFromFormat('Y-m-d H:i:s', $fecha),'Y-m-d H:i:s');
-        
+       
         $this->id_cabecera    = $id_pedido;
         $this->id_user        = $userid;
         $this->id_tipo           = $tipo;

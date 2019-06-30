@@ -39,12 +39,12 @@ class M_estados extends CI_Model {
 	*/
     function insertaPedidoEstado($id_cabecera,$estado,$fecha,$id_user)
     {
-        $fecha_mod = $fecha->format('Y-m-d H:i:s');
+        
         
         $this->id_cabecera  = $id_cabecera;
         $this->estado 		= $estado;
         $this->id_user  = $id_user;
-        $this->fecha_mod  = $fecha_mod;
+        $this->fecha_mod  = $fecha;
 
         $this->db->insert('cambioestado', $this);
 		

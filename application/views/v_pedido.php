@@ -69,7 +69,7 @@
 				                    <label id="lbl_comision">Comisi&oacute;n</label>
 				                    <a href="#" id="btn_agregar_comision"title="[+]" >[+]</a>
 				                    <br/>
-									<!--  <input type="checkbox" id="chk_comision">-->
+									
 									<table id="table_comision" class="table"></table>	                    
 			
 			  </div><!--form-group  -->
