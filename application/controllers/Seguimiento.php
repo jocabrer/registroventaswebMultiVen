@@ -23,7 +23,7 @@ class Seguimiento extends CI_Controller
     
     
     /***
-     * Función encargada de mostrar el seguimiento de un pedido.
+     * Funciรณn encargada de mostrar el seguimiento de un pedido.
      * @param int $idpedido Pedido a mostrar 
      * @param int $idcliente Cliente al cual pertenece el pedido
      */
@@ -32,34 +32,38 @@ class Seguimiento extends CI_Controller
         
         $userid = -1;
         
+        //Verifico si accedemos como administrador.
         if ($this->ion_auth->is_admin())
         {
             $user = $this->ion_auth->user()->row();
             $userid = $user->id;
         }
         
-        
+        //Confirmo si tengo un código númrico de pedido y de cliente, si no redirijo a consulta.
         if ($idpedido==-1 or $idcliente==-1) {
             redirect ( 'seguimiento/Consulta' );
         } else {
-                
+                //Obtengo el pedido y el cliente 
                 $pededit = $this->M_pedido->obtenerPedido($idpedido);
                 $cliente = $this->M_cliente->getcliente($idcliente);
                 
+                //Si hay algún problema redirijo a consulta.
                 if($pededit==NULL OR $cliente==NULL)
                     redirect ( 'seguimiento/Consulta' );
                 
-                    
+                //Fecha actual para ser mostrada en la fecha consulta.                  
                 $fecha_actual = date_create();
-                // Llamados a los modelos
+                
+                // Llamados a los modelos para obtener la data.
                 $detallepedido = $this->M_pedido->obtenerPedidoDetalle($idpedido);
                 $indicadores =  $this->M_pedido->obtenerPedidoIndicadores($idpedido);
                 $pedidoSeguimiento = $this->M_pedido->obtenerPedidoSeguimiento($idpedido,$idcliente,$userid);
+                $adjuntos = $this->M_pedido->obtenerPedidoAdjuntosListado($idpedido,$userid,"desc");
                 
                 if($indicadores==NULL)
                     $dataContent['indicadores'] = '';
-                    else
-                        $dataContent['indicadores'] = $indicadores[0];
+                else
+                    $dataContent['indicadores'] = $indicadores[0];
                
                 $dataContent['titleHeader']  =  "Sistema de seguimiento de pedidos ONLINE.";
                 $dataContent['descHeader']   =  "ver estado de su pedido";
@@ -69,6 +73,7 @@ class Seguimiento extends CI_Controller
                 $dataContent['pedEdit'] = $pededit[0];  
                 $dataContent['cliente'] = $cliente[0];
                 $dataContent['detEdit'] = $detallepedido;
+                $dataContent['adjuntos'] = $adjuntos;
                 
                 $this->load->templatepublic('v_seguimiento', $dataContent);
         }
@@ -113,7 +118,7 @@ class Seguimiento extends CI_Controller
             echo "no existe";
     }
     
-    /** Retorna si un periodo está en la base de datos.
+    /** Retorna si un periodo estรก en la base de datos.
      *
      * @param int $idpedido
      *        	el pedido a buscar.

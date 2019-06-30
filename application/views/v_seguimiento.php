@@ -37,9 +37,6 @@
 				</div>
 			</div><!-- row -->
  			
-  			
-  			
-  			
   	</div><!-- Box Header -->
   	<div class="box-body">		
 		<div class="row">
@@ -109,6 +106,39 @@
 			
 		</div>
 	</div><!-- Div class box body -->
+
+	<div class="box">
+		<div class="box-header with-border">
+			<h3 class="box-title">Archivos adjuntos </h3>
+		</div>
+		<div class="table">
+		<table class="table no-margin">
+		<thead>
+		<tr>
+			<th>Archivo</th>
+			<th>Fecha Creación</th>
+			<th>Tipo</th>
+		</tr>
+		</thead>
+        <tbody>
+		<?php foreach ($adjuntos as $adj){ ?>
+            <tr>
+                <td><a href="<?php echo base_url("./uploads/".$adj['filenameid']);?>"><?php echo $adj['filename']; ?></a></td>
+				<td><?php echo $adj['fecha_subida']; ?></td>
+				<td><span class="label label-success"><?php echo $adj['nombretipo']; ?></span></td>
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                    </td>
+                  </tr>
+	<?php
+		}
+	?>
+		</tbody>
+                </table>
+		</div>
+	</div>
+
+
 	<div class="box-footer" style="text-align:left;">
 			<div class="row">
 				<div class="col-lg-4 col-md-4 col-xs-12">
@@ -123,6 +153,8 @@
              
                	
 	</div>
+
+
 	
 	<!--  Whatsapp Widget 
 	<div class="whatsapp fixed-bottom rounded-left border-left-0 animated flash">
@@ -138,7 +170,7 @@
 			</a>
 	</div> -->
 	
-</div><!-- .div box -->
+
 
 </section><!-- /.content -->
 
