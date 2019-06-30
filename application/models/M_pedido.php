@@ -208,34 +208,11 @@ class M_pedido extends CI_Model {
 	 */
 	function ObtenerPedidosFormatoListaHja($idpedidos)
 	{
-	    /* $query = "SELECT
-	    
-	    lp.`est_fec_ing` AS fechaingreso,
-	    dp.id_cabecera AS pedido,
-	    dp.`cantidad` AS cantidad,
-	    dp.nom_prod AS producto,
-	    dp.`costo_un` costo_cu,
-	    dp.`det_costo` AS tot_costo,
-	    dh.haber AS pagado,
-	    lp.`SaldoFabrica` AS saldo,
-	    lp.`iva`
-	    FROM `v_totaldetallepedido` dp
-	    INNER JOIN `v_listadopedidoextendido` lp ON dp.`id_cabecera` = lp.`numeroPedido`
-	    LEFT JOIN v_cuentasdebehaber dh ON dp.id_cabecera = dh.id_cabecera  AND dh.id_cuenta = 2
-	    WHERE dp.id_cabecera  IN (".$idpedidos.");";
-	    
-	    return  $this->db->query($query)->result_array();*/
-	    //echo $this->db->last_query();
-	    //exit(0);
 	    $this->db->from('v_reportehoja');
 	    $this->db->where_in('pedido', $idpedidos);
 	    $this->db->order_by("pedido", "asc");
 	    
 	    return $this->db->get()->result_array();
-	    
-	    
-	    
-	    
 	}
 	/***
 	 * Listado de pedido en base a criterios
@@ -365,21 +342,14 @@ class M_pedido extends CI_Model {
 	    
 	    return $query->result_array();
 	}
-	/*function get_Hoja($hoja)
-	{
-	    $query = $this->db->where('nombre_hoja',$hoja);
-	    $query =$this->db->order_by('orden', 'asc');
-	    $query =$this->db->get('hoja');
-	    return $query->result_array();
-	}
-	
-	function get_Hojas()
-	{
-	    $query =$this->db->order_by('orden', 'asc');
-	    $query =$this->db->get('hoja');
-	    return $query->result_array();
-	}*/
-	
+
+	/**
+	 * Verifica si existe un pedido validando el número de cliente
+	 *
+	 * @param [int] $idcabecera número de pedido
+	 * @param [int] $idcliente número de cliente
+	 * @return void retorna true o false si no existe.
+	 */
 	function existePedidoCliente($idcabecera,$idcliente){
 	    
 	    $this->db->where('id', $idcabecera);

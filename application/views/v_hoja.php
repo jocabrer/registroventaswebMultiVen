@@ -114,21 +114,8 @@
     					 data-show-columns="true"
     					 data-show-footer="false"    					 
     			 		 data-toggle="table"
-			   			 data-show-export="true"
-    			<thead>
-				    <tr>	
-    			 		<th data-field="tipo" data-visible="true"  data-align="center">Tipo</th>
-    			 		<th data-field="fechaingreso" data-visible="true"  data-align="center">Ingreso Pedido</th>
-    			 		<th data-field="pedido" data-visible="true"  data-align="center" data-formatter="f_idpedido">Pedido</th>
-    			 		<th data-field="cantidad" data-visible="true"  data-align="center">Cantidad</th>
-    			 		<th data-field="producto" data-visible="true"   data-align="left" data-footer-formatter="totalTextFormatter">Producto</th>
-    			 		<th data-field="costo_cu"  data-formatter="PriceFormatter"  data-visible="true" data-footer-formatter="sumFormatter"  data-align="right" >Costo c/u</th>
-    			 		<th data-field="tot_costo"  data-formatter="PriceFormatter"  data-visible="true"  data-footer-formatter="sumFormatter"  data-align="right">Total Costo</th>
-    			 		<th data-field="pagado"  data-formatter="PriceFormatter"  data-visible="true"  data-footer-formatter="sumFormatter"  data-align="right" >Pagado</th>
-    			 		<th data-field="iva"  data-formatter="PriceFormatter"  data-visible="true"  data-footer-formatter="sumFormatter"  data-align="right" >IVA</th>
-    			 		<th data-field="saldo"  data-formatter="PriceFormatter"  data-visible="true"  data-footer-formatter="sumFormatter"  data-align="right">Saldo</th>
-    			 		</tr>
-  			 		</thead>
+			   			 data-show-export="true">
+    			
     			</table>
 			</div>
 		</div>
@@ -157,7 +144,7 @@ function actualizaHoja(nombreHoja){
 				columns:[
 					
 					{field: 'tipo',align: 'center',title: 'Tipo'},
-					{field: 'fecha_ingreso',align: 'center',title: 'Ingreso Pedido'},
+					
 					{field: 'id_cabecera',title: 'Pedido',formatter:f_idpedido}, 
 					
 
@@ -166,9 +153,10 @@ function actualizaHoja(nombreHoja){
 
 					{field: 'costo_cu',title: 'Costo c/u',align:'left',formatter:PriceFormatter},
 					{field: 'tot_costo',title: 'Total Costo',align:'left',formatter:PriceFormatter},
-					{field: 'pagado',title: 'Pagado',align:'left',formatter:PriceFormatter},
 					{field: 'iva',title: 'Iva',align:'left',formatter:PriceFormatter},
-					{field: 'saldo',title: 'Saldo/Abono',align:'left',formatter:PriceFormatter}
+					{field: 'pagado',title: 'Pagado',align:'left',formatter:PriceFormatter},
+					{field: 'saldo',title: 'Saldo/Abono',align:'left',formatter:PriceFormatter},
+					{field: 'saldovendedor2',title: 'Vendedor 2',align:'left',formatter:PriceFormatter}
 	  			]
     }
 	);
@@ -187,7 +175,7 @@ function procesa() {
 
     jQuery.ajax({
 		method: "POST",
-			url: "<?php echo base_url(); ?>Reporte/procesaHoja",
+			url: "<?php echo base_url('Reporte/procesaHoja'); ?>",
 			dataType: 'json',
 			data: {nrospedidos:nrospedidos,nombrehoja:nombrehoja,tipohoja:tipohoja},
 			success: function(res) {
