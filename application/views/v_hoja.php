@@ -149,22 +149,49 @@
 
 <<script type="text/javascript">
 	$(document).ready(function() {
-		$('#btn_proc').click(function(){procesa()});
-		$('#btn_cons').click(function(){muestraHoja()});
-	
 
+		//Seteo eventos 
+		$('#btn_proc').click(function(){procesa()});
+		$('#btn_cons').click(function(){seteaHojaDesdeConsulta()});
+		
+		
+
+		//Inicializo widget
 		ultimasHojasProcesadas();
 
-		//Si hay que mostrar una hoja se setea 
+		//Identificamos hoja actual
 		var idhoja  = <?php echo $idhoja; ?>;
+		//Si existe hoja actualizamos para mostrar
 		if(idhoja!=-1)
-			actualizaHoja(idhoja);
+			muestraTablaHojas(idhoja);
 	});
-function muestraHoja(){
-	var nombreHoja = $('#sl_hojas').val();	
-	actualizaHoja(nombreHoja);
+
+	window.eventoTablaHojas = {'click .remove': function (e, value, row, index) {eliminaHoja(row);}};
+	
+function eliminaHoja(row){
+	jQuery.ajax({
+		method: "POST",
+			url: base_url+"Reporte/eliminaHoja",
+			dataType: 'json',
+			data: {nombre_hoja:row.nombre_hoja},
+			success: function(res) {
+				if (res == false){
+					alert("Problema al procesar");
+				}
+				else{ 
+					MuestraMensaje("Módulo Hojas",res.mensaje);
+					ultimasHojasProcesadas();
+				}
+			},
+			
+	}); //jqueryajax		
 }
-function actualizaHoja(nombreHoja){
+
+function seteaHojaDesdeConsulta(){
+	var nombreHoja = $('#sl_hojas').val();	
+	muestraTablaHojas(nombreHoja);
+}
+function muestraTablaHojas(nombreHoja){
 	$('#tbl_result_hoja').bootstrapTable('destroy').bootstrapTable
 	  ({
 			    url: '<?php echo base_url(); ?>Reporte/muestraHoja/'+nombreHoja,
@@ -218,7 +245,7 @@ function procesa() {
 				else{ 
 					MuestraMensaje("Modulo Hojas",res.mensaje);
 					$('#sl_hojas').val(nombrehoja);
-					actualizaHoja(nombrehoja);
+					muestraTablaHojas(nombrehoja);
 				}
 			},
 			
@@ -233,9 +260,10 @@ function ultimasHojasProcesadas(){
 		   method:"GET",
 		   dataType: 'json',
 		   columns:[
-					   {field: 'nombre_hoja',title: 'Hoja',formatter:'f_nombrehoja'}, 
+					   {field: 'nombre_hoja',title: 'Hoja',formatter:'f_nombrehojalink'}, 
 					   {field: 'fecha_proceso',title: 'Fecha proceso'},
-					   {field: 'fecha_mod',title: 'Ult. Modificación'}
+					   {field: 'fecha_mod',title: 'Ult. Modificación'},
+					   {field: 'operate',title: 'Eliminar',align: 'center',events:eventoTablaHojas,formatter:operateFormatter}
 					   
 		   ]
    }
@@ -248,7 +276,7 @@ Control busqueda de la hoja
 
 $("#sl_hojas").select2({
 		ajax: {
-		        url: "<?php echo base_url(); ?>Reporte/listadoControlHojas/",
+		        url: base_url+"Reporte/listadoControlHojas/",
 		        dataType: 'json',
 		        method:'get',
 		        quietMillis: 250,
