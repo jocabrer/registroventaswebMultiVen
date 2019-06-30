@@ -313,7 +313,7 @@ class Pedido extends CI_Controller
             $userid = $user->id;
             $url  = $this->upload->data('file_path');
             $filename = $this->upload->data('file_name');
-            $fecha  = (new DateTime('America/Argentina/Mendoza'))->format('Y-m-d H:i:s');
+            $fecha  = $this->load->obtieneFechaActual();
             $publico = $this->input->post('publico');
             //Grabamos en la base de datos
             $res =  $this->M_pedido->insertaAdjuntoPedido($id_pedido, $userid, $tipo, $url, $fecha, $filename, $publico);
@@ -336,7 +336,7 @@ class Pedido extends CI_Controller
             redirect('auth/login');
         }
 
-        $fecha_ing = (new DateTime('America/Argentina/Mendoza'))->format('Y-m-d H:i:s');
+        $fecha_ing = $this->load->obtieneFechaActual();
         //para el log de usuario
         $userid = $this->ion_auth->user()->row()->id;
 
@@ -344,7 +344,7 @@ class Pedido extends CI_Controller
         if (!$this->existePedido($id_pedido)) {
 
             //inserto cabecera sin estado aún
-            $id_pedido = $this->M_pedido->insertaPedidoCabecera($id_cliente, $fecha_ing, $userid, new DateTime('America/Argentina/Mendoza'));
+            $id_pedido = $this->M_pedido->insertaPedidoCabecera($id_cliente, $fecha_ing, $userid, $this->load->obtieneFechaActual());
             //Comision
             $this->generaComision($id_pedido);
             //Cambio estado, es el primero asi que va con estado inicial 0
@@ -437,14 +437,14 @@ class Pedido extends CI_Controller
 
         //Si cambió estado actualizo
         if ($idestadoanterior != $idestado) {
-            $idcambioestadoactual = $this->registraCambioEstado($idestado, $id_pedido, new DateTime('America/Argentina/Mendoza'));
+            $idcambioestadoactual = $this->registraCambioEstado($idestado, $id_pedido, $this->load->obtieneFechaActual());
             //Creo un nuevo comentario para seguimiento al cambiar de estado
             //$this->M_Comentarios->insertaPedidoComentario($id_pedido, $userid, $idestado, $comentario, new DateTime('America/Argentina/Mendoza'));
         } else
             $idcambioestadoactual = -1;
 
         // Actualizo cabecera pero no se actualiza ni la fecha de ingreso ni el usuario que lo ingresó por eso mando -1 en el usuario
-        $idnuevocabecera = $this->M_pedido->actualizaPedidosDatosCabecera($id_pedido, $idcambioestadoactual, -1, new DateTime('America/Argentina/Mendoza'));
+        $idnuevocabecera = $this->M_pedido->actualizaPedidosDatosCabecera($id_pedido, $idcambioestadoactual, -1, $this->load->obtieneFechaActual());
 
         return $idnuevocabecera;
     }
@@ -480,18 +480,18 @@ class Pedido extends CI_Controller
 
             // Creo comision con cuentaprincipal 100% porcentaje
             $cta = $this->M_Cuenta->getCuentaPrincipal();
-            $this->M_Cuenta->insertaComision($cta, $porcentaje = 100, $id_pedido, $userid, new DateTime('America/Argentina/Mendoza'));
+            $this->M_Cuenta->insertaComision($cta, $porcentaje = 100, $id_pedido, $userid, $this->load->obtieneFechaActual());
         }
 
         // porcentaje 0 cuenta proveedor 2
         $cta_pro = $this->M_Cuenta->get_CuentaTipo(2);
         if (!$this->M_Cuenta->tieneCuentaTipo($id_pedido, 2))
-            $this->M_Cuenta->insertaComision($cta_pro, $porcentaje = 0, $id_pedido, $userid, new DateTime('America/Argentina/Mendoza'));
+            $this->M_Cuenta->insertaComision($cta_pro, $porcentaje = 0, $id_pedido, $userid, $this->load->obtieneFechaActual());
 
         // porcentaje 0 cuenta cliente 0
         $cta_cli = $this->M_Cuenta->get_CuentaTipo(0);
         if (!$this->M_Cuenta->tieneCuentaTipo($id_pedido, 0))
-            $this->M_Cuenta->insertaComision($cta_cli, $porcentaje = 0, $id_pedido, $userid, new DateTime('America/Argentina/Mendoza'));
+            $this->M_Cuenta->insertaComision($cta_cli, $porcentaje = 0, $id_pedido, $userid, $this->load->obtieneFechaActual());
     }
 
     /**
