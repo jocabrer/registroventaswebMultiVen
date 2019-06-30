@@ -174,6 +174,28 @@ class M_pedido extends CI_Model {
 		return $result[0];
 	}
 	/**
+     * Función que busca adjuntos con diversos criterios y ordenamientos.
+     *
+     * @param [type] $limit
+     * @param [type] $descasc
+     * @param [type] $criterio
+     * @return void
+     */
+    function buscador_adjuntos($limit,$descasc,$criterio){
+
+        if(strlen($criterio)>0)
+            $this->db->where('id_cabecera',$criterio);
+
+        $this->db->limit($limit);
+        $this->db->order_by("fecha_subida",$descasc);
+
+        $query = $this->db->get('adjuntos');
+        
+    	return $query->result_array();
+    }
+
+
+	/**
 	 * Obtiene un registro de cabecera para el id 
 	 * @param int $idcabecera 
 	 */

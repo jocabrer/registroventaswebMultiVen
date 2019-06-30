@@ -72,6 +72,28 @@
 			<!-- /.box-footer -->
 			
 		  </div>
+
+		  <!-- consulta rapida -->
+		  <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Consulta rapida</h3>
+	              <div class="box-tools pull-right">
+                		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                   </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+					
+					<div class="form-group">
+					<input id="buscarpedido" class="form-control input-sm" type="text" placeholder="Ingrese pedido">
+					</div>
+					<div class="form-group">
+						<button  id="verPedido" type="button" class="btn btn-info input-sm">Ver Pedido</button>
+					</div>
+			</div>
+            <!-- /.box-body -->
+
+		  </div><!-- fin consulta rapida -->
 	
 	<!-- Fin Resumen Pedidos----------------------------------------------------------------------------------> 
 	</div><!-- class col -->
@@ -119,28 +141,10 @@
             <!-- /.box-footer -->
 		  </div>
 		  
-		  <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Consulta rapida</h3>
-	              <div class="box-tools pull-right">
-                		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                   </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-					
-					<div class="form-group">
-					<input id="buscarpedido" class="form-control input-sm" type="text" placeholder="Ingrese pedido">
-					</div>
-					<div class="form-group">
-						<button  id="verPedido" type="button" class="btn btn-info input-sm">Ver Pedido</button>
-					</div>
-			</div>
-            <!-- /.box-body -->
 
-		  </div>
 		  
-		  <?php if($this->ion_auth->is_admin()){ ?>
+		  
+		<?php if($this->ion_auth->is_admin()){ ?>
 			<!-- hojas recientes -->
 			<div class="box box-primary collapsed-box">
 				<div class="box-header with-border">
@@ -155,11 +159,24 @@
 			</div><!-- box primary -->
 			<!-- / fin hojas recientes -->
 		 <?php }?>
-		
-	<!--  Cabecera Listado Pedidos----------------------------------------------------------------------------------> 
-						
 
-	</div>
+		<!-- Ultimos adjuntos -->
+		<div class="box box-primary collapsed-box">
+				<div class="box-header with-border">
+						<h3 class="box-title">Archivos subidos</h3>
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+						</div>
+				</div> <!-- /.box-header -->
+				<div class="box-body">			  
+							<table id="tbl_ultimosadjuntos" class="table"></table>	   
+				</div><!-- box body -->
+			</div><!-- box primary -->
+		<!-- / fin Ultimos adjuntos -->
+
+					
+
+	</div><!-- Segunda columna-->
 </div><!-- row -->
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  <div class="box">
@@ -261,8 +278,6 @@
 	</div><!-- ROW -->
 	</div><!-- Div class box body -->
 </div><!-- .div box -->
-
-
 
 
 </section><!-- /.content -->
@@ -380,6 +395,7 @@
 
 		//Widgets 
 		ultimasHojasProcesadas();
+		ultimosAdjuntos();
 
 		//manejador evento que elimina pedido.
 		window.eventosTabla = {'click .remove': function (e, value, row, index) {eliminaPedido(row);},
@@ -451,7 +467,24 @@
 		   ]
    }
 	);
-}
+	}
+
+	function ultimosAdjuntos(){
+	$('#tbl_ultimosadjuntos').bootstrapTable('destroy').bootstrapTable
+	({
+		   url: base_url+'Pedido/muestraUltimosAdjuntos/',
+		   method:"GET",
+		   dataType: 'json',
+		   columns:[
+					   {field: 'fecha_subida',title: 'Fec. Subida'},
+					   {field: 'id_cabecera',title: 'Pedido',formatter:'f_idpedido'}, 
+					   {field: 'id_tipo',title: 'Tipo'},
+					   {field: 'filename',title: 'filename'}
+					   
+		   ]
+   }
+	);
+	}
 
 	/*
 	*  Usado para sacar el id del arreglo cuando es llamado desde una fila de la tabla de resultados,  para llamar a muestraPedidoVistaPreviaModal 
