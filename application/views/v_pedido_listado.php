@@ -18,158 +18,148 @@
 </section>
 
 <section class="content">
+<div class="row">
+	<div class="col-md-6">
+	<!-- Resumen Pedidos ---------------------------------------------------------------------------------->
+	<?php
+			$totalactual=$ind_ingresado+$ind_enfabricacion+$ind_esperando+$ind_conproblema+$ind_calculando;
+	?>
+			<div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title"><a href="javascript:seleccionaEstadosActuales()">Total actual : <?php echo $totalactual;?></a></h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                
+              </div>
+			</div>
+		
+            <!-- /.box-header -->
+            <div class="box-body">
+					<p><a href="javascript:seleccionaEstados(0)">Ingresados</a></p>
+					<div class="progress">
+						<div class="progress-bar progress-bar-silver" role="progressbar" aria-valuenow="<?php echo $ind_ingresado;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_ingresado*100)/$totalactual;?>%">
+						<span><?php echo $ind_ingresado;?></span>
+						</div>
+					</div>
+					<p><a href="javascript:seleccionaEstados(1)">En fabricación</a></p>
+					<div class="progress">
+						<div class="progress-bar progress-bar-yellow" role="progressbar" aria-valuenow="<?php echo $ind_enfabricacion;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_enfabricacion*100)/$totalactual;?>%">
+						<span><?php echo $ind_enfabricacion;?></span>
+						</div>
+					</div>
+					<p><a href="javascript:seleccionaEstados(2)">Esperando Entrega</a></p>
+					<div class="progress">
+						<div class="progress-bar progress-bar-green" role="progressbar" aria-valuenow="<?php echo $ind_esperando;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_esperando*100)/$totalactual;?>%">
+						<span><?php echo $ind_esperando;?></span>
+						</div>
+					</div>
+					
+					<p><a href="javascript:seleccionaEstados(5)">Calculando</a></p>
+					<div class="progress">
+						<div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="<?php echo $ind_calculando;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_calculando*100)/$totalactual;?>%">
+						<span><?php echo $ind_calculando;?></span>
+						</div>
+					</div>
+					<p><a href="javascript:seleccionaEstados(4)">Con Problema</a></p>
+					<div class="progress">
+						<div class="progress-bar progress-bar-red" role="progressbar" aria-valuenow="<?php echo $ind_conproblema;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_conproblema*100)/$totalactual;?>%">
+						<span><?php echo $ind_conproblema;?></span>
+						</div>
+					</div>
+			</div>
+			<!-- /.box-body -->
+			<?php if($this->ion_auth->is_admin()){ ?>
+            <div class="box-footer text-center">
+              <a href="javascript:seleccionaEstados(3)" class="uppercase">Pedidos completados : <?php echo $ind_listos; ?> </a>
+			</div>
+			<?php }?>
+			<!-- /.box-footer -->
+			
+		  </div>
+	
+	<!-- Fin Resumen Pedidos----------------------------------------------------------------------------------> 
+	</div><!-- class col -->
+	<!-- Cabecera Listado Pedidos ---------------------------------------------------------------------------------->
+	<div class="col-md-6">
+		   <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Saldos actuales</h3>
+	              <div class="box-tools pull-right">
+                		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                   </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+					<table class="table">
+					<tbody>
+					<?php if($this->ion_auth->is_admin()){ ?>
+							<tr>
+								<th>Total Admin</th>
+								<td><label id="lbl_totalSaldoVen1"></label></td>
+							</tr>
+					<?php }?>
+					
+							<?php if($this->ion_auth->in_group(2) || $this->ion_auth->is_admin()) {?>
+							<tr>
+								<th>Total Vendedor</th>
+								<td><label id="lbl_totalSaldoVen2"></label></td>
+							</tr>
+							<?php } 
+							if($this->ion_auth->is_admin())
+							{
+							?>
+							<tr>
+								<th>Total Fabrica</th>
+								<td><label id="lbl_totalSaldoFab"></label></td>
+							</tr>
+							<?php }?>
+					</tbody>
+					</table>
+			</div>
+            <!-- /.box-body -->
+            <div class="box-footer text-center">
+				<a href="<?php echo base_url(); ?>Pedido/nuevoPedido/" class="btn btn-default"><i class="fa fa-edit"></i> Nuevo Pedido</a>
+            </div>
+            <!-- /.box-footer -->
+		  </div>
+		  
+		  <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Consulta Rápida</h3>
+	              <div class="box-tools pull-right">
+                		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                   </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+					
+					<div class="form-group">
+					<input id="buscarpedido" class="form-control input-sm" type="text" placeholder="Ingrese pedido">
+					</div>
+					<div class="form-group">
+						<button  id="verPedido" type="button" class="btn btn-info input-sm">Ver Pedido</button>
+					</div>
+			</div>
+            <!-- /.box-body -->
+
+          </div>
+	<!--  Cabecera Listado Pedidos----------------------------------------------------------------------------------> 
+						
+
+	</div>
+</div><!-- row -->
+<!-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------->
  <div class="box">
  	<div class="box-header with-border">
-  		<h3>Pedidos</h3>
-  		<div class="box-tools pull-right">
-  			<a href="<?php echo base_url(); ?>Pedido/nuevoPedido/" class="btn btn-default"><i class="fa fa-edit"></i> Nuevo Pedido</a>
-  			<!--  <a class="btn" id="btn_listar"><i class="fa fa-repeat"></i> Refrescar</a>-->
-  		</div><!-- .Box Tools -->
+  		<h3>Resultados</h3>
+		  <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
   	</div><!-- Box Header -->
   	<div class="box-body">
   	
-  	<div class="row">
-			
-			
-			
-			<div class="col-md-3 col-sm-6 col-xs-12">
-		
-              <div class="info-box">
-                <span class="info-box-icon"  id="count_ing"><i class="fa fa-envelope-o"></i></span>
-    
-                <div class="info-box-content">
-                  <span class="info-box-text">Ingresados</span>
-                  <span class="info-box-number"><?php echo $ind_ingresado; ?></span>
-                </div>
-                <!-- /.info-box-content -->
-              </div>
-              <!-- /.info-box -->
-			
-            </div>
-            
-            
-			<div class="col-md-3 col-sm-6 col-xs-12">
-			
-					<div class="info-box">
-                        <span class="info-box-icon"  id="count_ef"><i class="fa fa-files-o"></i></span>
-            
-                        <div class="info-box-content">
-                          <span class="info-box-text">En Fabricaci&oacute;n</span>
-                          <span class="info-box-number"><?php echo $ind_enfabricacion; ?></span>
-                        </div>
-                        <!-- /.info-box-content -->
-                      </div>
-           
-			</div>
-			
-			<div class="col-md-3 col-sm-6 col-xs-12">
-		
-              <div class="info-box">
-                <span class="info-box-icon"  id="count_ee"><i class="fa fa-star-o"></i></span>
-    
-                <div class="info-box-content">
-                  <span class="info-box-text">Esperando Entrega</span>
-                  <span class="info-box-number"><?php echo $ind_esperando; ?></span>
-                </div>
-                <!-- /.info-box-content -->
-              </div>
-              <!-- /.info-box -->
-         
-            </div>
-            <?php if($this->ion_auth->is_admin()){ ?>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-         
-                      <div class="info-box">
-                        <span class="info-box-icon"  id="count_ok"><i class="fa fa-thumbs-o-up"></i></span>
-            
-                        <div class="info-box-content">
-                          <span class="info-box-text">Listos</span>
-                          <span class="info-box-number"><?php echo $ind_listos; ?></span>
-                        </div>
-                        <!-- /.info-box-content -->
-                      </div>
-                      <!-- /.info-box -->
-            
-             </div>
-             <?php }?>
-             
-             <div class="col-md-3 col-sm-6 col-xs-12">
-        
-                      <div class="info-box">
-                        <span class="info-box-icon"  id="count_problem"><i class="fa fa-thumbs-o-down"></i></span>
-            
-                        <div class="info-box-content">
-                          <span class="info-box-text">Problema</span>
-                          <span class="info-box-number"><?php echo $ind_conproblema; ?></span>
-                        </div>
-                        <!-- /.info-box-content -->
-                      </div>
-                      <!-- /.info-box -->
-               
-             </div>
-               
-             <div class="col-md-3 col-sm-6 col-xs-12">
-     
-                      <div class="info-box">
-                        <span class="info-box-icon"  id="count_calc"><i class="fa fa-calculator"></i></span>
-            
-                        <div class="info-box-content">
-                          <span class="info-box-text">Calculando</span>
-                          <span class="info-box-number"><?php echo $ind_calculando; ?></span>
-                        </div>
-                        <!-- /.info-box-content -->
-                      </div>
-                      <!-- /.info-box -->
-             
-             </div>
-        
-		</div><!-- row -->	
- 
-
-
-
-  	<div class="row">
-  		<div class="col-lg-6 col-md-12 col-xs-12">
-	  		<div class="table-responsive">
-				<table class="table">
-				<tbody>
-				<?php if($this->ion_auth->is_admin()){ ?>
-						  <tr>
-							<th>Total Admin</th>
-							<td><label id="lbl_totalSaldoVen1"></label></td>
-						  </tr>
-				<?php }?>
-				
-						  <?php if($this->ion_auth->in_group(2) || $this->ion_auth->is_admin()) {?>
-						   <tr>
-							<th>Total Vendedor</th>
-							<td><label id="lbl_totalSaldoVen2"></label></td>
-						  </tr>
-						  <?php } 
-						  if($this->ion_auth->is_admin())
-						  {
-						  ?>
-						  <tr>
-							<th>Total Fabrica</th>
-							<td><label id="lbl_totalSaldoFab"></label></td>
-						  </tr>
-						  <?php }?>
-				</tbody>
-				</table>
-			</div><!-- Div class table -->
-		</div><!-- COL -->
-		<div class="col-lg-6 col-md-12 col-xs-12">
-			<div class="form-group">
-			<label>Consulta Rápida</label>
-			</div>
-			<div class="form-group">
-			<input id="buscarpedido" class="form-control input-sm" type="text" placeholder="Ingrese pedido">
-			</div>
-			<div class="form-group">
-				<button  id="verPedido" type="button" class="btn btn-info input-sm">Ver Pedido</button>
-			</div>
-		</div>
-  	</div><!-- Row -->
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-xs-12">	
 		 <div id="toolbar">
@@ -392,12 +382,7 @@
 	    });
 
 
-	    $count_ing = $('#count_ing').click(function () {seleccionaEstados(0);});
-	    $count_ef = $('#count_ef').click(function () {seleccionaEstados(1);});
-	    $count_ee = $('#count_ee').click(function () {seleccionaEstados(2);});
-	    $count_ok = $('#count_ok').click(function () {seleccionaEstados(3);});
-	    $count_problem = $('#count_problem').click(function () {seleccionaEstados(4);});
-	    $count_calc = $('#count_calc').click(function () {seleccionaEstados(5);});
+	  
 
 
 	    <?php if(!$this->ion_auth->is_admin()){ ?>
@@ -511,11 +496,16 @@
     
     function seleccionaEstados(estado)
     {
-    	 $('#sl_estado').multiselect('deselect', ['0','1','2','3','4']);
+		 $('#sl_estado').multiselect('deselect', ['0','1','2','3','4','5']);
     	 $('#sl_estado').multiselect('select', [estado]);
     	 buscaResultados($('#tabla_resultado'));
     }
-    	
+		
+	function seleccionaEstadosActuales(){
+		$('#sl_estado').multiselect('deselect', ['0','1','2','3','4','5']);
+		 $('#sl_estado').multiselect('select',['0','1','2']);
+		 buscaResultados($('#tabla_resultado'));
+	}
 	/*
 	*Totaliza la respuesta.-
 	*/
