@@ -22,10 +22,13 @@ class Reporte extends CI_Controller {
 	}
 	
 
-	public function hojas(){
+	
+
+	public function hojas($hoja=-1){
 	    
 	    $dataContent['titleHeader']        = "Sistema de reportes LYM";
-	    $dataContent['descHeader']   	   = "Hojas de trabajo, analisis de ventas, Sistema lym.";
+		$dataContent['descHeader']   	   = "Hojas de trabajo, analisis de ventas, Sistema lym.";
+		$dataContent['idhoja'] = $hoja;
 	    
 	    if (!$this->ion_auth->logged_in()){
 	        redirect('auth/login');        
@@ -33,49 +36,6 @@ class Reporte extends CI_Controller {
 	        $this->load->template('v_hoja', $dataContent);
 	    }
 	}
-	
-	/*public function procesaHojaPedidos(){
-	    
-	    if (! $this->ion_auth->logged_in ()) {
-	        redirect ( 'auth/login' );
-	    }
-	    $json = file_get_contents('php://input');
-	    $obj = json_decode($json);
-	    
-	    //var_dump($obj);
-	    
-	    //exit(0);
-	    if( (!Isset($obj->nrospedidos))||(!Isset($obj->nombrehoja)) || (!Isset($obj->tipohoja))|| (!Isset($obj->procesa)) )
-	    {
-	           return "";
-	    }
-	    else{
-	        
-	      //  var_dump($obj->nrospedidos);
- //	        exit(0);
-	        if ($obj->nrospedidos=="") return "vacia";
-	        
-	    	        $idpedidos = $obj->nrospedidos;
-	    	        $nombre_hoja = $obj->nombrehoja;
-	    	        $tipo_hoja = $obj->tipohoja;
-	    	        $procesa = $obj->procesa;
-	    }
-	    
-
-	    if($procesa=="true")
-	    {
-	       $this->calculaHoja($idpedidos,$nombre_hoja,$tipo_hoja);
-	    }
-	    
-
-	    $data =  $this->M_pedido->get_hoja($nombre_hoja);
-	    
-	    $data2['rows'] = $data;
-	    $data2['total'] = count($data);
-	    
-	    echo json_encode($data);
-	    
-	}*/
 	
 	function muestraHoja($idhoja){
 	    
@@ -149,7 +109,7 @@ class Reporte extends CI_Controller {
 	}
 
 	/**
-	 * Crealos registros de la tabla hojas según la lógica de reporte.
+	 * Crea los registros de la tabla hojas según la lógica de reporte.
 	 *
 	 * @param [type] $data datos a procesas.
 	 * @param [type] $tipo_hoja tipos de registros.
@@ -248,7 +208,11 @@ class Reporte extends CI_Controller {
 	    echo json_encode ( $data );
 	}
 
-
+	/**
+	 * Metodo que entrega json con el listado de ultimas hojas 
+	 *
+	 * @return Salida json con los resultados.
+	 */
 	public function ultimasHojasProcesadas(){
 		$this->load->model('M_hojas');
 		$datos = $this->M_hojas->buscador_hojas(5,"desc","");
