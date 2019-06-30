@@ -88,11 +88,14 @@ class M_cliente extends CI_Model {
     	$query = $this->db->get('cliente');
     	return $query->result_array();
     }
-    
+    /**
+     * Obtiene el cliente de un pedido
+     * @param int $idpedido el número de pedido
+     */
     public function get_cliente_pedido($idpedido)
     {
     	
-    	$this->db->select('*');
+    	$this->db->select('*,cliente.id cli_id');
     	$this->db->from('cliente');
     	$this->db->join('cabecera', 'cabecera.id_cliente = cliente.id');
     	$this->db->where('cabecera.id',$idpedido);

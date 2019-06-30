@@ -304,15 +304,14 @@ class M_pedido extends CI_Model {
 	 */
 	function obtenerPedidoAdjuntosListado($idpedido,$userid,$order){
 		
-		$this->db->select('a.*,tipoadjunto.nombre as nombretipo');
-    	$this->db->from('adjuntos as a ');
-    	$this->db->join('tipoadjunto', 'a.id_tipo = tipoadjunto.id');
+		$this->db->select('*');
+    	$this->db->from('v_adjunto');
     	$this->db->where('id_cabecera',$idpedido);
 	    if($userid==-1){
 			 //Significa que el usuario es publico x tanto solo debe ver los 0
 			 $this->db->where('publico',0);
 		}
-		$this->db->order_by('a.id',$order);
+		$this->db->order_by('id',$order);
 		$query = $this->db->get();
 
 		return $query->result_array(); 

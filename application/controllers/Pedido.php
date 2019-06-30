@@ -15,7 +15,7 @@ class Pedido extends CI_Controller
         $this->Listado();
     }
 
-    
+
     /**
      * Retorna si un periodo está en la base de datos.
      *
@@ -24,55 +24,55 @@ class Pedido extends CI_Controller
      */
     public function existePedido($idpedido)
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
-        if ($idpedido == - 1)
+
+        if ($idpedido == -1)
             return false;
-        
+
         return $this->M_pedido->existePedido($idpedido);
     }
 
     public function porcentajeTotalPedido($idpedido)
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        if ($idpedido == - 1)
+        if ($idpedido == -1)
             return false;
-        
+
         return $this->M_Cuenta->porcentajeTotalPedido($idpedido);
     }
 
-     
-    public function obtieneIndicadoresExtendidos(){
-        
-        if (! $this->ion_auth->logged_in()) {
+
+    public function obtieneIndicadoresExtendidos()
+    {
+
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
         $idpedido = $this->input->post('idpedido');
-        
+
         $data = $this->M_pedido->obtenerPedidoIndicadoresDetalle($idpedido);
-        
-        
-        
+
+
+
         echo json_encode($data);
     }
-    
-    
-    
+
+
+
     /* ____Salidas____________________________________________________________________________________________________________________________________ */
-    
-    
+
+
     public function nuevoPedido()
     {
         $dataContent['titleHeader']  =  "Crear nuevo pedido.";
         $dataContent['descHeader']   =  "Creación de un nuevo pedido";
-        
-        
+
+
         $this->load->template('v_pedido_nuevo', $dataContent);
-        
     }
     /*
      * SALIDA Despliega controles para agregar un nuevo pedido
@@ -80,24 +80,24 @@ class Pedido extends CI_Controller
     public function editarPedido($idPed = -1)
     {
         date_default_timezone_set('America/Santiago');
-        
-        if (! $this->ion_auth->logged_in()) {
+
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login/');
         } else {
-            
-            
-            if(!$this->ion_auth->is_admin()){ 
-                
+
+
+            if (!$this->ion_auth->is_admin()) {
+
                 redirect('Pedido/Listado');
             }
-            
+
             $this->load->library("Comun");
             $this->load->helper('form');
-            
+
             // Para agregar un pedido se necesita un cliente ya creado.
             $dataContent['titleHeader'] = $this->lang->line('i_titleHeader');
             $dataContent['descHeader'] = $this->lang->line('i_descHeader');
-            
+
             // Frases
             $dataContent['p_nuevopedido'] = $this->lang->line('p_nuevopedido');
             $dataContent['p_formselectcliente'] = $this->lang->line('p_formselectcliente');
@@ -105,41 +105,41 @@ class Pedido extends CI_Controller
             $dataContent['p_headerdatospedido'] = $this->lang->line('p_headerdatospedido');
             $dataContent['p_fechaingresopedido'] = $this->lang->line('p_fechaingresopedido');
             $dataContent['p_diasestimados'] = $this->lang->line('p_diasestimados');
-            
+
             // INicialización control estado
             $dataContent['vEstados'] = $this->M_estados->get_Estados();
-            
+
             if ($this->existePedido($idPed)) {
                 // Editar
                 $dataContent['descHeader'] = "Editar pedido id ";
                 $pededit = $this->M_pedido->obtenerPedido($idPed);
-                
+
                 // Si no lo encuentro redirecciono a este mismo metodo
                 if (count($pededit) == 0)
                     redirect('Pedido/nuevoPedido');
                 else {
-                    
+
                     $pedido = $pededit[0];
                     $cliente = $this->M_cliente->getcliente($pedido['cli_id']);
-                    
+
                     $dataContent['pedEdit'] = $pedido;
                     $dataContent['cliente'] = $cliente[0];
-                    
+
                     // var_dump($dataContent['cliente']);
                     // exit(0);
                     // Comentarios/Seguimiento
                     $dataContent['comm'] = $this->M_Comentarios->obtenerPedidoComentarios($idPed);
-                    
+
                     // Cuento los dias transcurridos del pedido desde su fecha de ingreso
                     $fecha_ingreso = $this->comun->transformaStringFecha($pededit[0]['est_fec_ing']);
                     $cuantosdias = $this->comun->cuentaDias($fecha_ingreso, date_create());
-                    
+
                     // if ($fecha_ingreso->format('Y-m-d')<=(NEW DateTime('America/Argentina/Mendoza'))->format('Y-m-d'))
                     // $diasTranscurridos = $this->comun->Evalua($this->comun->DiasHabiles($fecha_ingreso->format('Y-m-d'),(NEW DateTime('America/Argentina/Mendoza'))->format('Y-m-d')));
                     // else
-                    
+
                     $dataContent['pedEdit']['diastranscurridos'] = $cuantosdias;
-                    
+
                     // necesito la fehca estado para calcular los dias en ese estado
                     $fechaEstado = $this->comun->transformaStringFecha($pededit[0]['est_fec_estactual']);
                     // if($dataContent['pedEdit']['est_esecuencia']==2){
@@ -148,14 +148,14 @@ class Pedido extends CI_Controller
                     //$this->comun->Evalua($this->comun->DiasHabiles($fechaEstado->format('Y-m-d'), (new DateTime('America/Argentina/Mendoza'))->format('Y-m-d')));
                     $dataContent['pedEdit']['diasCambioEstado'] = $diasCambioEstado;
                     // }
-                    
+
                     // echo $dataContent['pedEdit']['est_esecuencia'];
                     // echo "han pasado ". $diasTranscurridos . " dias , entre el" . $fecha_ingreso . " y el ". $fecha_actual;
                     // exit(0);
                 }
             } else
                 redirect('Pedido/nuevoPedido');
-            
+
             $this->load->template('v_pedido', $dataContent);
         }
     }
@@ -165,36 +165,34 @@ class Pedido extends CI_Controller
      */
     public function Listado()
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
         $user = $this->ion_auth->user()->row();
         $userid = $user->id;
 
-        if (!$this->ion_auth->in_group(1))
-        {
+        if (!$this->ion_auth->in_group(1)) {
             //no es admin solo cuento pedidos con comision
             $comision = 1;
-        }else
-        {
+        } else {
             $comision = -1;
         }
-        
+
         $dataContent['titleHeader'] = "Pedidos";
         $dataContent['descHeader'] = "Panel de pedidos";
-        
+
         // inicialización control estado
         $dataContent['vEstados'] = $this->M_estados->get_Estados();
-        
+
         // indicadores contadores
-        $dataContent['ind_ingresado'] = $this->M_estados->get_cantidadEstadoComision(0,$comision);
-        $dataContent['ind_enfabricacion'] = $this->M_estados->get_cantidadEstadoComision(1,$comision);
-        $dataContent['ind_esperando'] = $this->M_estados->get_cantidadEstadoComision(2,$comision);
-        $dataContent['ind_listos'] = $this->M_estados->get_cantidadEstadoComision(3,$comision);
-        $dataContent['ind_conproblema'] = $this->M_estados->get_cantidadEstadoComision(4,$comision);
-        $dataContent['ind_calculando'] = $this->M_estados->get_cantidadEstadoComision(5,$comision);
-        
-      
+        $dataContent['ind_ingresado'] = $this->M_estados->get_cantidadEstadoComision(0, $comision);
+        $dataContent['ind_enfabricacion'] = $this->M_estados->get_cantidadEstadoComision(1, $comision);
+        $dataContent['ind_esperando'] = $this->M_estados->get_cantidadEstadoComision(2, $comision);
+        $dataContent['ind_listos'] = $this->M_estados->get_cantidadEstadoComision(3, $comision);
+        $dataContent['ind_conproblema'] = $this->M_estados->get_cantidadEstadoComision(4, $comision);
+        $dataContent['ind_calculando'] = $this->M_estados->get_cantidadEstadoComision(5, $comision);
+
+
         $this->load->template('v_pedido_listado', $dataContent);
     }
 
@@ -204,15 +202,15 @@ class Pedido extends CI_Controller
      */
     public function ActualizaCF()
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
+
         $id_pedido = $this->input->post('idpedido');
         $chkiva = $this->input->post('chk_iva_val') == "false" ? FALSE : TRUE;
-        
+
         $this->M_pedido->actualizaPedidoPropiedadFactura($id_pedido, $chkiva);
-        
+
         $arr = array('id' => $id_pedido);
         echo json_encode($arr);
     }
@@ -225,52 +223,52 @@ class Pedido extends CI_Controller
      */
     public function grabaDetalle()
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
+
         $id_pedido = $this->input->post('idpedido');
         $cant = $this->input->post('cantidad');
         $idprod = $this->input->post('idproducto');
         $monto_cos = $this->input->post('costoventa');
         $monto_precio = $this->input->post('precioventa');
-        
-        $this->_grabaDetalle($id_pedido,$cant,$idprod,$monto_cos,$monto_precio);
+
+        $this->_grabaDetalle($id_pedido, $cant, $idprod, $monto_cos, $monto_precio);
     }
-    
-    public function _grabaDetalle($id_pedido,$cant,$idprod,$monto_cos,$monto_precio){
-        
-        if (! $this->ion_auth->logged_in()) {
+
+    public function _grabaDetalle($id_pedido, $cant, $idprod, $monto_cos, $monto_precio)
+    {
+
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
-        
+
+
         $data = $this->M_pedido->insertaPedidoLineaDetalle($id_pedido, $cant, $idprod, $monto_cos, $monto_precio);
         $arr = array(
             'id' => $id_pedido
         );
         echo json_encode($arr);
     }
-    
+
 
     /**
      * Graba un nuevo pedido con su respectiva cabecera 
      */
     public function grabaCabecera()
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
+
         $id_pedido = $this->input->post('idpedido');
         $id_cliente = $this->input->post('idcliente');
         $idestado = $this->input->post('idestado');
-        
-        $idnuevo = $this->_grabaCabecera($id_pedido, $id_cliente,$idestado);
+
+        $idnuevo = $this->_grabaCabecera($id_pedido, $id_cliente, $idestado);
 
         //Salida por modulo
-        $this->load->salidaRetornoAjax($idnuevo,"pedido","L","grabado",$idnuevo);
-      
+        $this->load->salidaRetornoAjax($idnuevo, "pedido", "L", "grabado", $idnuevo);
     }
 
     /**
@@ -279,29 +277,37 @@ class Pedido extends CI_Controller
     public function grabaAdjunto()
     {
         //Verificamos seguridad
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
         $user = $this->ion_auth->user()->row();
 
-
         //Se lee el pedido al que se le grabará el adjunto.
         $id_pedido = $this->input->post('cabecera');
-        
-        //Configuracion de los parámetros de subida de archivos
-        $config['upload_path']          = './uploads/';
-        $config['allowed_types']        = 'gif|jpg|png|pdf';
 
-        //Cargamos librerias
+        //Configuracion de los parámetros de subida de archivos.
+        $config['upload_path']          = './uploads/';
+        $config['allowed_types']        = 'gif|jpg|png|pdf|doc|docx';
+
+        //analizamos si existe la carpeta del usuario.
+        $cliente = $this->M_cliente->get_cliente_pedido($id_pedido);
+        $config['upload_path'] = $config['upload_path'].$cliente[0]->cli_id;
+        
+        //Si no existe lo creamos.
+        if (!is_dir($config['upload_path'])) {
+            mkdir($config['upload_path'], 0777, TRUE);
+        }
+        
+        //Cargamos librerias con el config de upload
         $this->load->library('upload', $config);
         $this->load->helper(array('form', 'url'));
        
         //Realizamos la subida y preguntamos si hubo error preparamos salida de error.
-        if (!$this->upload->do_upload('userfile')){
-            $error =$this->upload->display_errors();
-            $arr = array('id' => -1, 'mensaje' => "Pedido error ".$id_pedido. " - ".$error);
-        }
-        else{
+        $error="";
+        if (!$this->upload->do_upload('userfile')) {
+            $error = $this->upload->display_errors();
+            $arr = array('id' => -1, 'mensaje' => "Pedido error " . $id_pedido . " - " . $error);
+        } else {
             //Si la subida fue correcta obtenemos los datos para grabar el registro.
             $tipo =  $this->input->post('sl_tipoAdjunto');
             $userid = $user->id;
@@ -310,16 +316,15 @@ class Pedido extends CI_Controller
             $fecha  = (new DateTime('America/Argentina/Mendoza'))->format('Y-m-d H:i:s');
             $publico = $this->input->post('publico');
             //Grabamos en la base de datos
-            $res =  $this->M_pedido->insertaAdjuntoPedido($id_pedido, $userid, $tipo,$url,$fecha,$filename,$publico);
-
-            if(is_numeric($res))
-                $arr = array('id' => $res,'mensaje' => 'Archivo subido correctamente.');
+            $res =  $this->M_pedido->insertaAdjuntoPedido($id_pedido, $userid, $tipo, $url, $fecha, $filename, $publico);
+            #Waring aca daigual ya que despues se hace un redirect.
+            if (is_numeric($res))
+                $arr = array('id' => $res, 'mensaje' => 'Archivo subido correctamente.');
             else
-                $arr = array('id' => -1, 'mensaje' => $res ." ". $error );
-     
+                $arr = array('id' => -1, 'mensaje' => $res . " " . $error);
         }
         //Redireccionamos a la página del pedido.
-        redirect('/Pedido/editarPedido/'.$id_pedido);
+        redirect('/Pedido/editarPedido/' . $id_pedido);
     }
 
     /*
@@ -327,171 +332,174 @@ class Pedido extends CI_Controller
      */
     public function _grabaCabecera($id_pedido, $id_cliente, $idestado)
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
+
         $fecha_ing = (new DateTime('America/Argentina/Mendoza'))->format('Y-m-d H:i:s');
         //para el log de usuario
         $userid = $this->ion_auth->user()->row()->id;
-        
+
         //Creo nueva cabecera en caso de no existir.
         if (!$this->existePedido($id_pedido)) {
-            
+
             //inserto cabecera sin estado aún
             $id_pedido = $this->M_pedido->insertaPedidoCabecera($id_cliente, $fecha_ing, $userid, new DateTime('America/Argentina/Mendoza'));
             //Comision
             $this->generaComision($id_pedido);
             //Cambio estado, es el primero asi que va con estado inicial 0
-            $idcambioestado = $this->cambiaEstadoPedido($id_pedido,0,false);
-            
+            $idcambioestado = $this->cambiaEstadoPedido($id_pedido, 0, false);
+
             return $id_pedido;
         }
     }
-    
-    
+
+
     /**
      * 
      */
     public function importarPedidoWoo()
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
+
         $this->load->model('M_Woo');
         $this->load->model('M_Cliente');
-        
+
         $json = file_get_contents('php://input');
         $obj = json_decode($json);
-        
+
         isset($obj->idpedidowoo) ? $idpedidowoo = $obj->idpedidowoo : $idpedidowoo = -1;
-        
+
         //rescato el id cliente 
         $datacli = $this->M_Woo->get_cliente_pedido_woo($idpedidowoo);
         $datospedidocliente = $datacli[0];
         $correocliente = $datospedidocliente->cliente_correo;
         $clientes =  $this->M_cliente->buscarClientePorCorreo($correocliente);
-        
-        $arr = array('idcabecera' => '-', 
-                     'mensaje'=>'-', 
-                     'estado' => '-1',
-                     'idcliente' => '-1'
+
+        $arr = array(
+            'idcabecera' => '-',
+            'mensaje' => '-',
+            'estado' => '-1',
+            'idcliente' => '-1'
         );
-        
-        if (count($clientes) == 0)
-        {
-            $arr['mensaje'] = "Cliente no existe, este debe ser creado o importado con el mismo correo de WOO" ;
+
+        if (count($clientes) == 0) {
+            $arr['mensaje'] = "Cliente no existe, este debe ser creado o importado con el mismo correo de WOO";
             $arr['idcliente'] = -1;
             $arr['estado'] = -1;
-        }else{
-            
-            $arr['idcabecera'] =  $this->_grabaCabecera(-1,$clientes[0]['id'], 1);
+        } else {
+
+            $arr['idcabecera'] =  $this->_grabaCabecera(-1, $clientes[0]['id'], 1);
             $arr['idcliente'] = $clientes[0]['id'];
-            $arr['mensaje'] = "Pedido grabado correctamente, número de pedido #". $arr['idcabecera'] ;
+            $arr['mensaje'] = "Pedido grabado correctamente, número de pedido #" . $arr['idcabecera'];
             $arr['estado'] = 1;
             //mi nuevo número de pedido
-            $id_pedido =$arr['idcabecera'];
+            $id_pedido = $arr['idcabecera'];
             //asigno el $id_pedido con $idpedidowoo en la tabla 
-            
-            
+
+
             //busco los datos del pedido woo.
             $datapedido = $this->M_Woo->get_detalle_pedido($idpedidowoo);
-            foreach($datapedido as $linea){
+            foreach ($datapedido as $linea) {
                 //$this->_grabaDetalle($id_pedido,$linea['cantidad'],$linea['id_producto_interno'],$linea['precio_costo'],$linea['precio_vendido_woo']);
                 $data = $this->M_pedido->insertaPedidoLineaDetalle($id_pedido, $linea['cantidad'], $linea['id_producto_interno'], $linea['precio_costo'], $linea['precio_vendido_woo']);
             }
-            
+
             //falta grabar la relacion cabecera_woo
         }
         echo json_encode($arr);
     }
-    
+
     /**
      * Cambia el estado para un pedido.
      * @param unknown $id_pedido
      * @return unknown[]
      */
-    function cambiaEstadoPedido($id_pedido=-1,$idestado=-1){
-        
-        if (! $this->ion_auth->logged_in()) {
+    function cambiaEstadoPedido($id_pedido = -1, $idestado = -1)
+    {
+
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
-        if($id_pedido == -1 || $idestado==-1){
-                return;
+
+        if ($id_pedido == -1 || $idestado == -1) {
+            return;
         }
         //para el log de usuario
         $userid = $this->ion_auth->user()->row()->id;
-        
+
         //$comentario =$this->M_Comentarios->obtieneMensajeEstado($idestado);
         //Pedido existente
         //obtengoelestadoanterior si no tiene será -1
         $idestadoanterior = $this->M_estados->obtieneIdEstadoActualPedido($id_pedido);
-        
+
         //Si cambió estado actualizo
-        if($idestadoanterior != $idestado ){
+        if ($idestadoanterior != $idestado) {
             $idcambioestadoactual = $this->registraCambioEstado($idestado, $id_pedido, new DateTime('America/Argentina/Mendoza'));
             //Creo un nuevo comentario para seguimiento al cambiar de estado
             //$this->M_Comentarios->insertaPedidoComentario($id_pedido, $userid, $idestado, $comentario, new DateTime('America/Argentina/Mendoza'));
-        }else
+        } else
             $idcambioestadoactual = -1;
-     
+
         // Actualizo cabecera pero no se actualiza ni la fecha de ingreso ni el usuario que lo ingresó por eso mando -1 en el usuario
         $idnuevocabecera = $this->M_pedido->actualizaPedidosDatosCabecera($id_pedido, $idcambioestadoactual, -1, new DateTime('America/Argentina/Mendoza'));
 
         return $idnuevocabecera;
     }
-    
-    function cambiadEstadoPedidoPost(){
+
+    function cambiadEstadoPedidoPost()
+    {
         $id_pedido = $this->input->post('idpedido');
         $idestado = $this->input->post('estado');
-        
-        $this->cambiaEstadoPedido($id_pedido,$idestado);
-        
+
+        $this->cambiaEstadoPedido($id_pedido, $idestado);
+
         $arr = array('id' => $id_pedido);
         echo json_encode($arr);
     }
-    
-    
+
+
     /*
      * Contiene la lógica para generar la estructura de comision del pedido
      */
-    function generaComision($id_pedido){
-        if (! $this->ion_auth->logged_in()) {
+    function generaComision($id_pedido)
+    {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
+
         //para el log de usuario
         $userid = $this->ion_auth->user()->row()->id;
         // Valido si tiene comision para asignar la comision x defecto.
         if ($this->porcentajeTotalPedido($id_pedido) != 100) {
-            
+
             // Elimino cualquier comision previa por que no suma 100 entonces no sirve
             $this->M_Cuenta->eliminaPorcentajeExistente($id_pedido);
-            
+
             // Creo comision con cuentaprincipal 100% porcentaje
             $cta = $this->M_Cuenta->getCuentaPrincipal();
             $this->M_Cuenta->insertaComision($cta, $porcentaje = 100, $id_pedido, $userid, new DateTime('America/Argentina/Mendoza'));
         }
-        
+
         // porcentaje 0 cuenta proveedor 2
         $cta_pro = $this->M_Cuenta->get_CuentaTipo(2);
-        if (! $this->M_Cuenta->tieneCuentaTipo($id_pedido, 2))
+        if (!$this->M_Cuenta->tieneCuentaTipo($id_pedido, 2))
             $this->M_Cuenta->insertaComision($cta_pro, $porcentaje = 0, $id_pedido, $userid, new DateTime('America/Argentina/Mendoza'));
-            
-            // porcentaje 0 cuenta cliente 0
-            $cta_cli = $this->M_Cuenta->get_CuentaTipo(0);
-            if (! $this->M_Cuenta->tieneCuentaTipo($id_pedido, 0))
-                $this->M_Cuenta->insertaComision($cta_cli, $porcentaje = 0, $id_pedido, $userid, new DateTime('America/Argentina/Mendoza'));
+
+        // porcentaje 0 cuenta cliente 0
+        $cta_cli = $this->M_Cuenta->get_CuentaTipo(0);
+        if (!$this->M_Cuenta->tieneCuentaTipo($id_pedido, 0))
+            $this->M_Cuenta->insertaComision($cta_cli, $porcentaje = 0, $id_pedido, $userid, new DateTime('America/Argentina/Mendoza'));
     }
-    
+
     /**
      * Elimina una línea del detalle del pedido.
      */
     public function EliminaLineaDetalle()
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
         $id_detalle = $this->input->post('id_detalle');
@@ -503,13 +511,13 @@ class Pedido extends CI_Controller
      */
     public function registraCambioEstado($idestado, $idcabecera, $fecha)
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
         $user = $this->ion_auth->user()->row();
         $idusuario = $user->id;
         $idestado = $this->M_estados->insertaPedidoEstado($idcabecera, $idestado, $fecha, $idusuario);
-        
+
         return $idestado;
     }
 
@@ -518,24 +526,25 @@ class Pedido extends CI_Controller
      */
     public function eliminaPedido()
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
+
         $id_pedido = $this->input->post('id');
 
-        
+
         $resultado = $this->M_pedido->eliminaPedido($id_pedido);
 
-        $this->load->salidaRetornoAjax($id_pedido,"pedido","L","eliminado",$resultado);
+        $this->load->salidaRetornoAjax($id_pedido, "pedido", "L", "eliminado", $resultado);
     }
 
     /**
      * Metodo que llama al modelo que elimina un adjunto
      */
-    public function eliminaAdjunto(){
+    public function eliminaAdjunto()
+    {
 
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
         //Rescato id a eliminar
@@ -546,14 +555,14 @@ class Pedido extends CI_Controller
         $this->load->helper('file');
 
         //Debo rescatar el pathurl del archivo para eliminarlo
-        unlink($adjunto->pathurl.$adjunto->filename);
-    
+        unlink($adjunto->pathurl . $adjunto->filename);
+
         //Eliminamos registro de la BD 
         $estado = $this->M_pedido->eliminaAdjunto($adjunto->id);
-        
+
         // Salida de respuesta 
         //$id,$objeto,$estado,$accion,$mensaje
-        $this->load->salidaRetornoAjax($id_adjunto,"adjunto","L","eliminado",$estado);
+        $this->load->salidaRetornoAjax($id_adjunto, "adjunto", "L", "eliminado", $estado);
     }
 
     /*
@@ -563,19 +572,19 @@ class Pedido extends CI_Controller
      */
     public function ajax_getLinesPedido($id_cabecera)
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
-        If ($id_cabecera == "")
-            $id_cabecera = "-1"; 
-        
-            $data = $this->M_pedido->obtenerPedidoDetalle($id_cabecera);
-        
+
+        if ($id_cabecera == "")
+            $id_cabecera = "-1";
+
+        $data = $this->M_pedido->obtenerPedidoDetalle($id_cabecera);
+
         echo json_encode($data);
     }
 
-    
+
     /*
      * AJAX : Obtiene las lineas de detalle de un pedido
      *
@@ -583,14 +592,13 @@ class Pedido extends CI_Controller
      */
     public function ObtenerListadoAdjuntos()
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
 
         //Obtengo datos del usuario conectado
         $user = $this->ion_auth->user()->row();
         $idusuario = $user->id;
-        
 
         //Leo las variables del post
         $json = file_get_contents('php://input');
@@ -598,73 +606,75 @@ class Pedido extends CI_Controller
         isset($obj->pedidoid) ? $pedidoid = $obj->pedidoid : $pedidoid = "";
         isset($obj->order) ? $order = $obj->order : $order = "asc";
 
-        If ($pedidoid == "")
-            $pedidoid = "-1"; 
-        
-        $data = $this->M_pedido->obtenerPedidoAdjuntosListado($pedidoid,$idusuario,$order);
-        
+        if ($pedidoid == "")
+            $pedidoid = "-1";
+
+        $data = $this->M_pedido->obtenerPedidoAdjuntosListado($pedidoid, $idusuario, $order);
+
         echo json_encode($data);
     }
 
-    public function obtieneTipoAdjunto(){
-        if (! $this->ion_auth->logged_in()) {
+    public function obtieneTipoAdjunto()
+    {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
         $data = $this->M_pedido->obtenerTiposAdjuntos();
-        
+
         echo json_encode($data);
     }
-    
+
     /**
      * Obtiene el detalle del pedido 
      */
-    public function obtenerDetallePedido(){
-        
-        if (! $this->ion_auth->logged_in()) {
+    public function obtenerDetallePedido()
+    {
+
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
+
         $json = file_get_contents('php://input');
         $obj = json_decode($json);
-        
+
         isset($obj->numeroPedido) ? $numeroPedido = $obj->numeroPedido : $numeroPedido = -1;
-        
+
         $data = $this->M_pedido->obtenerPedidoDetalle($numeroPedido);
         echo json_encode($data);
     }
-    
-    
+
+
     /**
      * ********************************************* V_pedido_listado *****************************************************************************
      */
-    
+
     /*
      * AJAX : METODO pedidos en base a un criterio
      */
     public function listadoPedidos()
     {
-        if (! $this->ion_auth->logged_in()) {
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
+
         $json = file_get_contents('php://input');
         $obj = json_decode($json);
-        
+
         isset($obj->search) ? $criterio = $obj->search : $criterio = "";
         isset($obj->limit) ? $limit = $obj->limit : $limit = "10000";
         isset($obj->sort) ? $ordenarpor = $obj->sort : $ordenarpor = "numeroPedido";
         isset($obj->order) ? $orden = $obj->order : $orden = "desc";
-        isset($obj->slestado) ? $slestado = $obj->slestado : $slestado = array('0','1','2','3','4','5','6','7','8');
+        isset($obj->slestado) ? $slestado = $obj->slestado : $slestado = array('0', '1', '2', '3', '4', '5', '6', '7', '8');
         isset($obj->cliente) ? $cliente = $obj->cliente : $cliente = "todos";
         isset($obj->slcomision) ? $slcomision = $obj->slcomision : $slcomision = "-1";
-        
-        if (! $this->ion_auth->logged_in()) {
+
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
         $data = $this->M_pedido->ObtenerPedidosListado($criterio, $limit, $slestado, $ordenarpor, $orden, $slcomision, $cliente);
-        
+
         $data = $this->ProcesaListado($data);
-        
+
         // Transformo los nombres para evitar problemas entre JSON y los tildes y otros caracteres
         $data2['rows'] = $data;
         $data2['total'] = count($data);
@@ -678,17 +688,17 @@ class Pedido extends CI_Controller
     function ProcesaListado($data)
     {
         date_default_timezone_set('America/Santiago');
-        
-        if (! $this->ion_auth->logged_in()) {
+
+        if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        
+
         $this->load->library("Comun");
-        
-        for ($i = 0; $i < count($data); $i ++) {
+
+        for ($i = 0; $i < count($data); $i++) {
             $fecha_ingreso = $this->comun->transformaStringFecha($data[$i]["est_fec_ing"]);
             $estadoactual = $data[$i]["estado_sec"];
-            
+
             if ($estadoactual = 1 || $estadoactual = 0) {
                 $data[$i]["diastranscurridos"] = $this->comun->cuentaDias($fecha_ingreso, date_create());
             } else {
@@ -696,9 +706,10 @@ class Pedido extends CI_Controller
                 $data[$i]["diastranscurridos"] = $this->comun->cuentaDias($fecha_ingreso, $fecha_estadoactual);
             }
         }
-        
+
         return $data;
     }
+
 
     public function salir()
     {
@@ -706,7 +717,4 @@ class Pedido extends CI_Controller
         $this->ion_auth->logout();
         redirect('auth/login');
     }
-
-
-    
 }

@@ -325,7 +325,7 @@
          <tr >
          		 <th data-field="id" data-align="center">Id</th>
 				 <th data-field="nombretipo">Tipo</th>
-                 <th data-field="filename" data-formatter="f_archivoadjunto">Archivo</th>
+                 <th data-field="filenameid" data-formatter="f_archivoadjunto">Archivo</th>
 				 <th data-field="fecha_subida">Subido</th>
 				 <th data-field= 'operate' data-events='eventoTablaAdjunto' data-formatter='operateFormatter'}
          </tr>
