@@ -154,6 +154,11 @@
 	
 
 		ultimasHojasProcesadas();
+
+		//Si hay que mostrar una hoja se setea 
+		var idhoja  = <?php echo $idhoja; ?>;
+		if(idhoja!=-1)
+			actualizaHoja(idhoja);
 	});
 function muestraHoja(){
 	var nombreHoja = $('#sl_hojas').val();	
@@ -184,9 +189,10 @@ function actualizaHoja(nombreHoja){
 	  			]
     }
 	);
-
+	//alert(nombreHoja);
 	$('#lbl_nombrehoja').text(nombreHoja);
-	$('#sl_hojas').text(nombrehoja);
+	//$('#sl_hojas').text(nombrehoja);
+	$("#nombrehoja").attr('value',$('#lbl_nombrehoja').text());
 }
 function procesa() {
 
@@ -235,43 +241,6 @@ function ultimasHojasProcesadas(){
    }
 	);
 }
-
-
-/*function buscaComisiones($vartrue){
-
-	$('#flag_procesa').val($vartrue);
-	
-	 var $table = $('#tbl_result_hoja');
-		$table.bootstrapTable('refresh');
-}*/
-	 
-   	  
-/*function queryParams(params) {
-
-	params['procesa'] = $('#flag_procesa').val();
-
-
-	//Si es consulta se toma el valor de la hoja solamente 
-	if(params['procesa']==false)
-	{
-		params['nombrehoja'] =  $("#sl_hojas").val().split(",");
-	}else
-	{
-		params['nrospedidos']=  $("#nrospedidos").val().split(",");
-		params['nombrehoja']=  $("#nombrehoja").val();
-		params['tipohoja']=  $("#tipohoja").val();
-	}
-
-	
-    return params;
-}
-
-function responseHandler(res){
-
-	return alert(res);
-}*/
-
-
 
 /* 
 Control busqueda de la hoja
