@@ -125,6 +125,9 @@ function f_idpedido(data){
 function f_nombrehoja(data){
 	return "<a href=\"javascript:actualizaHoja('"+data+"');\">"+data+"</a>";
 }
+function f_nombrehojalink(data){
+	return['<a href="'+base_url+'Reporta/Ver/',data,'">',data,'</a>'].join('');
+}
 
 /*
  * Formateo de tabla el link hacia el detalle del pedido
