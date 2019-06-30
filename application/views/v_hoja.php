@@ -183,7 +183,7 @@ function procesa() {
 					alert("Problema al procesar");
 				}
 				else{ 
-					alert("Proceso OK "+res);
+					MuestraMensaje("Modulo Hojas",res.mensaje);
 					$('#sl_hojas').val(nombrehoja);
 					actualizaHoja(nombrehoja);
 				}

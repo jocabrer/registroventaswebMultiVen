@@ -142,7 +142,10 @@ class Reporte extends CI_Controller {
 	    }
 
 		$id_reg = $this->calculoDeHoja($data,$tipo_hoja,$fecha_proceso,$nombre_hoja);
-		echo json_encode($id_reg);
+
+		$this->load->salidaRetornoAjax($nombre_hoja,'registro','L','procesado','');
+		
+		
 	}
 
 	/**
@@ -190,7 +193,7 @@ class Reporte extends CI_Controller {
 				$saldocliente = 0 ;
             }else{
 				//Cuando es un nuevo pedido se hace el calculo del saldo a la fabrica y al vendedor.
-				
+
 				//Si es abono se abona el 50% solamente
 				if($tipo=="Abono"){
 					//Si es un abono no se muestra saldo aún del vendedor. Solo si el cliente ha pagado todo

@@ -132,7 +132,14 @@ class MY_Loader extends CI_Loader {
     }
 
     /**
-     * 
+     * Metodo que se encarga de tomar las variables y presentarlas como un array para salida del sistema
+     *
+     * @param [int] $id Identificador del objeto
+     * @param [string] $objeto Nombre del objeto ej 'pedido','producto' 
+     * @param [char] $estado Resultado de la operacion 'E' error, 'L' listo
+     * @param [string] $accion  Accion realizada por la operación ej. 'Grabar', 'Eliminar'
+     * @param [string] $mensaje mensaje 
+     * @return void
      */
     public function salidaRetornoAjax($id,$objeto,$estado,$accion,$mensaje){
         
