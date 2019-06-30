@@ -81,15 +81,12 @@ class Pedido extends CI_Controller
     {
         date_default_timezone_set('America/Santiago');
 
-        if (!$this->ion_auth->logged_in()) {
-            redirect('auth/login/');
-        } else {
+            if (!$this->ion_auth->logged_in()) {
+                redirect('auth/login/');
+            } else {
 
 
-            if (!$this->ion_auth->is_admin()) {
-
-                redirect('Pedido/Listado');
-            }
+            
 
             $this->load->library("Comun");
             $this->load->helper('form');
@@ -121,6 +118,13 @@ class Pedido extends CI_Controller
 
                     $pedido = $pededit[0];
                     $cliente = $this->M_cliente->getcliente($pedido['cli_id']);
+
+                    //Si el pedido es sin comision y no es admin no se permite seguir.
+                    if ($pedido['comision']==0){
+                        if (!$this->ion_auth->is_admin()) {
+                            redirect('Pedido/Listado');
+                        }
+                    }
 
                     $dataContent['pedEdit'] = $pedido;
                     $dataContent['cliente'] = $cliente[0];
