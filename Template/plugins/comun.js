@@ -106,6 +106,15 @@ function FormatoComision(data)
 	}	
 }
 
+function FormatoEsPublico(data)
+{
+	switch(data)
+	{
+		case "1": return "<span class='label label-danger'>NO</span>";
+		case "0": return "<span class='label label-warning'>SI<span>";
+	
+	}	
+}
 /*
  * Formateo de tabla el link hacia el detalle del pedido
  */
@@ -150,6 +159,7 @@ function i_prod(data)
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
 
 
 

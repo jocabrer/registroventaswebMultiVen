@@ -19,7 +19,7 @@
  	<div class="box" id="bx_cliente">
 		<form role="form" data-toggle="validator" id="frm_pedido">
 		<div class="box-header with-border">
-			<h3 class="box-title"><?php echo $descHeader; ?><label id="lbl_id_pedido"></label></h3>
+			<h3 class="box-title">#<label id="lbl_id_pedido"></label>&nbsp;&nbsp;&nbsp;<?php echo $descHeader; ?></h3>
 					<div class="box-tools pull-right">
 						<a class="btn btn-default"  title="Ver comprobante" href="<?php echo base_url(); ?>Comprobante/verComprobante/<?php echo $pedEdit['id'];?> " target="blank"><i class="fa fa-fw fa-print"></i> </a>
 						<a class="btn btn-default" title="Ver seguimiento de pedido" href="<?php echo base_url('seguimiento/ver/'.$pedEdit['id'].'/'.$pedEdit['cli_id']); ?>" target="blank"><i class="fa fa-fw fa-tasks"></i>Ver Seguimiento</a>
@@ -326,7 +326,7 @@
          		 <th data-field="id" data-align="center" data-visible="false">Id</th>
 				 <th data-field="nombretipo">Tipo</th>
                  <th data-field="filenameid" data-formatter="f_archivoadjunto">Archivo</th>
-				 <th data-field="publico">Público</th>
+				 <th data-field="publico" data-formatter="FormatoEsPublico">Público</th>
 				 <th data-field="fecha_subida">Subido</th>
 				 <th data-field= 'operate' data-events='eventoTablaAdjunto' data-formatter='operateFormatter'}
          </tr>
