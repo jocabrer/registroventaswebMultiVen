@@ -165,6 +165,17 @@ class M_Hojas extends CI_Model {
     	return $query->result_array();
 
     }
+
+
+    function eliminaHojaCompleta($nombrehoja){
+        
+        $this->db->where('nombre_hoja', $nombrehoja);
+        $this->db->delete('hojas'); 
+
+        $this->db->where('nombre_hoja', $nombrehoja);
+        $this->db->delete('cabecera_hojas'); 
+
+    }
 }
 
 ?>
