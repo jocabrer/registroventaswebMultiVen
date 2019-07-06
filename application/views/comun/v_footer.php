@@ -64,7 +64,7 @@
           <!-- Settings tab content -->
           <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
-              <h3 class="control-sidebar-heading">Portapapeles</h3>
+              <h3 class="control-sidebar-heading"><i class="fa fa-fw fa-clipboard"></i>Portapapeles</h3>
               <div class="form-group">
                 <label class="control-sidebar-subheading">
                   <textarea rows="8"  class="form-control" id="txt_portapapeles"></textarea>
@@ -104,16 +104,14 @@
 </html>
 
 <script>
+
+
 /*Funcion Cargar y Mostrar datos*/
 $(document).ready(function(){    
     $('#txt_portapapeles').change(function(){                       
         /*Obtener datos almacenados*/
-
-        localStorage.setItem("portapapeleslym",$("#txt_portapapeles").val());
-
-    
+      localStorage.setItem("portapapeleslym",$("#txt_portapapeles").val());
     });   
-
     var portapapeles = localStorage.getItem("portapapeleslym");
     /*Mostrar datos almacenados*/      
     document.getElementById("txt_portapapeles").innerHTML = portapapeles;
