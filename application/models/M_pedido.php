@@ -189,7 +189,7 @@ class M_pedido extends CI_Model {
         $this->db->limit($limit);
         $this->db->order_by("fecha_subida",$descasc);
 
-        $query = $this->db->get('adjuntos');
+        $query = $this->db->get('v_adjunto');
         
     	return $query->result_array();
     }

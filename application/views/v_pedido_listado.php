@@ -604,7 +604,7 @@
 					   {field: 'fecha_subida',title: 'Fec. Subida'},
 					   {field: 'id_cabecera',title: 'Pedido',formatter:'f_idpedido'}, 
 					   {field: 'id_tipo',title: 'Tipo'},
-					   {field: 'filename',title: 'filename'}
+					   {field: 'filenameid',title: 'filename',formatter:'f_archivoadjunto'}
 					   
 		   ]
    }
