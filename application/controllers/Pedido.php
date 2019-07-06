@@ -681,11 +681,12 @@ class Pedido extends CI_Controller
         isset($obj->slestado) ? $slestado = $obj->slestado : $slestado = array('0', '1', '2', '3', '4', '5', '6', '7', '8');
         isset($obj->cliente) ? $cliente = $obj->cliente : $cliente = "todos";
         isset($obj->slcomision) ? $slcomision = $obj->slcomision : $slcomision = "-1";
+        isset($obj->idprod) ? $idprod = $obj->idprod : $idprod = -1;
 
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        $data = $this->M_pedido->ObtenerPedidosListado($criterio, $limit, $slestado, $ordenarpor, $orden, $slcomision, $cliente);
+        $data = $this->M_pedido->ObtenerPedidosListado($criterio, $limit, $slestado, $ordenarpor, $orden, $slcomision, $cliente,$idprod);
 
         $data = $this->ProcesaListado($data);
 

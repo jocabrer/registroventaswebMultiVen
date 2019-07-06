@@ -232,17 +232,26 @@ class M_pedido extends CI_Model {
 	/***
 	 * Listado de pedido en base a criterios
 	 */
-	function ObtenerPedidosListado($criterio,$limit,$estados,$ordenarpor,$orden,$slcomision,$cliente)
+	function ObtenerPedidosListado($criterio,$limit,$estados,$ordenarpor,$orden,$slcomision,$cliente,$idprod = -1)
 	{
-	    $data = $this->db->select('*')->from('v_listadopedidoextendido');
+		$data = $this->db->select('*')->from('v_listadopedidoextendido');
+		
+		if($idprod<>-1)
+		{
+			$data = $this->db->join('detalle', ' detalle.id_cabecera =  v_listadopedidoextendido.numeroPedido');
+			$data = $this->db->where(' id_producto', $idprod);
+		}
+		
 	    $data = $this->db->where_in(' estado_sec', $estados);
 	    
 	    if($cliente!="todos")
-	        $data = $this->db->where(' cli_id', $cliente);
+			$data = $this->db->where(' cli_id', $cliente);
+			
+	
 	        
-	        if($slcomision <> -1){
-	            $data = $this->db->where(' comision', $slcomision);
-	        }
+		if($slcomision <> -1){
+			$data = $this->db->where(' comision', $slcomision);
+		}
 	        if($criterio!=""){
 	            
 	            $data = $this->db->group_start();
@@ -387,7 +396,13 @@ class M_pedido extends CI_Model {
 			return false;
 	}
 	
-	
+	function busquedaPedidoXProd($idprod){
+
+		$this->db->where('id_prod',$idprod);
+		$query = $this->db->get('v_totaldetallepedido');
+	    
+	    return $query->result();
+	}
 	
 	
 

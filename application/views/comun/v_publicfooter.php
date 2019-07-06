@@ -5,7 +5,7 @@
         	&nbsp;  
         </div>
         <!-- Default to the left -->
-        <strong>Copyright &copy; 2019 <a href="#">Latasymoldes.cl</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2019 <a href="#">Latasymoldes.cl</a>.</strong> Todos los derechos reservados. Dudas y consultas a sistemas@latasymoldes.com.
       </footer>
    </body>
 </html>

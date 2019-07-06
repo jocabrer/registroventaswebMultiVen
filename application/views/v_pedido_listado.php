@@ -29,12 +29,12 @@
               </div>
 			</div>
 		
-            <!-- /.box-header -->
+            <!-- /.box-header --> 
             <div class="box-body">
 					<p><a href="javascript:seleccionaEstados(0)">Ingresados</a></p>
 					<div class="progress">
 						<div class="progress-bar progress-bar-silver" role="progressbar" aria-valuenow="<?php echo $ind_ingresado;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_ingresado*100)/$totalactual;?>%">
-						<span><?php echo $ind_ingresado;?></span>
+						<span style="color:#000000;"><b><?php echo $ind_ingresado;?></b></span>
 						</div>
 					</div>
 					<p><a href="javascript:seleccionaEstados(1)">En fabricación</a></p>
@@ -73,27 +73,114 @@
 			
 		  </div>
 
-		  <!-- consulta rapida -->
-		  <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Consulta rapida</h3>
-	              <div class="box-tools pull-right">
-                		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                   </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-					
-					<div class="form-group">
-					<input id="buscarpedido" class="form-control input-sm" type="text" placeholder="Ingrese pedido">
-					</div>
-					<div class="form-group">
-						<button  id="verPedido" type="button" class="btn btn-info input-sm">Ver Pedido</button>
-					</div>
-			</div>
-            <!-- /.box-body -->
+		  <!-- consulta filtros principales -->
+		  <div class="box box-primary" >
+				<div class="box-header with-border">
+				  <h3 class="box-title">Filtros Principales</h3>
+					  <div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+					   </div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
 
-		  </div><!-- fin consulta rapida -->
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									Estados
+								</div>
+							</div>
+							<div class="col-md-8">
+									<div class="form-group">
+									<select  id="sl_estado" class="form-control input-sm" multiple>
+											<?php
+											foreach($vEstados as $est) {
+												  echo "<option "; 
+												   
+												  echo " value = \"". $est['id']."\"";
+												  if ($est['id']<3)
+													  echo " selected=\"selected\"";
+											 ?>
+											>
+											 <?php echo $est['descripcion']; ?>
+												  
+											  </option>
+											  <?php }?>	
+									</select>
+									</div>
+							</div><!--Col -->	   
+						</div><!--./ row -->
+
+						<div class="row">
+							<div class="col-md-4">
+									<div class="form-group">
+										Comisión
+									</div>
+							</div>
+							<div class="col-md-8">
+									<div class="form-group">
+									<select id="sl_comision" class="form-control input-sm">
+											<?php if($this->ion_auth->is_admin()){ ?>
+											<option value="-1">Comisi&oacute;n</option>
+										   <option value="0">No</option>
+										   <?php }?>
+										   <option value="1">Si</option>
+								   </select>
+								   </div>
+
+							</div>
+						</div>
+
+						<div class="row">
+								<div class="col-md-4">
+										<div class="form-group">
+												Buscar por <i>Nro.Pedido, Cliente</i>
+										</div>
+								</div>
+								<div class="col-md-8">
+										<div class="form-group">
+										<input name="search_txt" class="form-control input-sm" type="text" placeholder="Buscar" id="search_txt">
+										</div>
+	
+								</div>
+						</div>
+						
+
+						<div class="row">
+								<div class="col-md-4">
+										<div class="form-group">
+												Producto 
+										</div>
+								</div>
+								<div class="col-md-8">
+										<div class="form-group">
+										<select id="cntrl_id_producto"  class="form-control" name="cntrl_id_producto" data-error="Seleccione un Producto" required>
+											
+										</select>
+										</div>
+								</div>
+						</div>
+
+						
+
+
+						<div class="row">
+								<div class="col-md-12">
+										<div class="form-group">
+												<button  id="ok" type="button" class="btn btn-info input-sm">Actualizar</button>
+										</div>
+								</div>
+						</div>
+
+
+
+
+						
+					</div><!-- box body -->
+						
+		</div><!-- toolbar -->
+		 
+
 	
 	<!-- Fin Resumen Pedidos----------------------------------------------------------------------------------> 
 	</div><!-- class col -->
@@ -174,6 +261,35 @@
 			</div><!-- box primary -->
 		<!-- / fin Ultimos adjuntos -->
 
+		
+			<!-- consulta rapida -->
+			<div class="box box-primary">
+					<div class="box-header with-border">
+					<h3 class="box-title">Consulta rapida</h3>
+						<div class="box-tools pull-right">
+								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						</div>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+							<div class"row">
+								<div class="col-md-8">
+									<div class="form-group">
+									<input id="buscarpedido" class="form-control input-sm" type="text" placeholder="Ingrese pedido">
+								</div>
+								</div>
+								<div class="col-md-4">
+								<div class="form-group">
+								<button  id="verPedido" type="button" class="btn btn-info input-sm">Ver Pedido</button>
+								</div>
+								</div>
+							</div>
+					</div>
+					<!-- /.box-body -->
+
+				</div><!-- fin consulta rapida -->
+		   
+
 					
 
 	</div><!-- Segunda columna-->
@@ -190,50 +306,9 @@
   	
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-xs-12">	
-		 <div id="toolbar">
-            <div class="form-inline" role="form">
-                <div class="form-group">
-                    
-                 	<label>Estados</label>
-                    <select  id="sl_estado" class="form-control input-sm" multiple>
-					<?php
-					foreach($vEstados as $est) {
-						  echo "<option "; 
-						   
-						  echo " value = \"". $est['id']."\"";
-						  if ($est['id']<3)
-						  	echo " selected=\"selected\"";
-					 ?>
-					>
-					 <?php echo $est['descripcion']; ?>
-						  
-  					</option>
-  					<?php }?>	
-					</select>
-                </div>
-                <div class="form-group">
-                   <!--   <span>Limit: </span>
-                    <input name="limit" class="form-control" type="number" value="20" style="width:80px;">-->
-                </div>
-                 <div class="form-group">
-                 	<label>Comisión</label>
-                 	<select id="sl_comision" class="form-control input-sm">
-                 	 		<?php if($this->ion_auth->is_admin()){ ?>
-                 	 		<option value="-1">Comisi&oacute;n</option>
-                 		    <option value="0">No</option>
-                 		    <?php }?>
-                 			<option value="1">Si</option>
-                 	</select>
-                 </div>
-                <div class="form-group" >
-                    <input name="search" class="form-control input-sm" type="text" placeholder="Buscar">
-                </div>
-                
-                 <button  id="ok" type="button" class="btn btn-info input-sm">Ir!</button>
-            </div>
-        </div>
+		
 		<table id="tabla_resultado"
-			   data-toolbar="#toolbar"
+			   
 			   data-method="post"
 			   
        		   data-show-footer="true"
@@ -403,8 +478,13 @@
 							  };
 		
 		
+		$table = $('#tabla_resultado');
+		
+
 		$sl_comision = $('#sl_comision');
 		$sl_comision.change(function(){ $table.bootstrapTable('refresh'); });
+		
+		$('#cntrl_id_producto').change(function(){buscaProducto();});
 		
 	    $("#sl_estado").multiselect({ 
 	        nonSelectedText: 'Filtrar los estados!',    
@@ -452,6 +532,51 @@
 
 	});
 	
+
+	/*
+	* Control busqueda de producto 
+	*/ 
+	function buscaProducto(){
+		
+		var idprod = $( "#cntrl_id_producto" ).val();
+		jQuery.ajax({
+				method: "GET",
+					url: base_url+"Productos/ObtieneProductoPorId/"+idprod,
+					dataType: 'json',
+					success: function(res) {
+						buscaResultados($('#tbl_detallepedido'));
+						}
+		}); //jqueryajax
+	}
+	$("#cntrl_id_producto").select2({
+				ajax: {
+				        url: base_url+"Productos/listadoControlProductos/",
+				        dataType: 'json',
+				        method:'get',
+				        quietMillis: 250,
+				        maximumSelectionSize: 0,
+				        processResults: function (data, page) {
+				        	var res = [];
+						
+							var mi=0;
+							res[mi] = {id:'-1',text:'-'};
+							mi++;
+					    	for(var i = 0; i < data.length; i++){
+								res[mi] = {id:data[i].id,text:data[i].nombre};
+								mi++;
+							}
+						
+
+					    	 return {results: res};
+
+					            var more = (page * 30) < res.total_count; // whether or not there are more results available
+				 			
+				            // notice we return the value of more so Select2 knows if more results can be loaded
+				            return { results: res, more: more };
+				        }
+				    },
+				    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+	});
 
 	function ultimasHojasProcesadas(){
 	$('#tbl_ultimashojas').bootstrapTable('destroy').bootstrapTable
@@ -651,11 +776,12 @@
 
 		var slcomision = $('#sl_comision');
 		params['slcomision'] = slcomision.val();
-
+		params['search'] = $('#search_txt').val();
+		params['idprod'] = $('#cntrl_id_producto').val();
 		
-        $('#toolbar').find('input[name]').each(function () {
+        /*$('#toolbar').find('input[name]').each(function () {
             params[$(this).attr('name')] = $(this).val();
-        });
+        });*/
 	    return params;
 	}
 	

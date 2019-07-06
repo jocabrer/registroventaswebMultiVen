@@ -161,7 +161,7 @@ date_default_timezone_set('America/Santiago');
             echo "<body class=\"skin-purple  sidebar-mini \">";
 		}
 		else {
-		    echo "<body class=\"skin-red  sidebar-mini \">";
+		    echo "<body class=\"skin-yellow  sidebar-mini \">";
 		}
   
   ?>

@@ -70,12 +70,12 @@ function FormatoEstado(value, row, index)
 	var url = base_url+"seguimiento/ver/"+row.numeroPedido+"/"+row.cli_id
 	switch(data)
 	{
-		case "0": return "<a href="+url+" target='blank'><span class='label label-danger'>Ingresado</span></a>";
-		case "1": return "<a href="+url+" target='blank'><span class='label label-info'>En Fabricacion.<span></a>";
-		case "2": return "<a href="+url+" target='blank'><span class='label label-warning'>Esperando</span></a>";
+		case "0": return "<a href="+url+" target='blank'><span class='label label-default'>Ingresado</span></a>";
+		case "1": return "<a href="+url+" target='blank'><span class='label label-warning'>En Fabricacion.<span></a>";
+		case "2": return "<a href="+url+" target='blank'><span class='label label-success'>Esperando</span></a>";
 		case "3": return "<a href="+url+" target='blank'><span class='label label-success'>Listo</span></a>";
 		case "4": return "<a href="+url+" target='blank'><span class='label label-danger'>Problem</span></a>";
-		case "5": return "<a href="+url+" target='blank'><span class='label label-success'>Calculando</span></a>"
+		case "5": return "<a href="+url+" target='blank'><span class='label label-primary'>Calculando</span></a>"
 	}
 }
 
