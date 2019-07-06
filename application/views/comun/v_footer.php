@@ -64,15 +64,12 @@
           <!-- Settings tab content -->
           <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
-              <h3 class="control-sidebar-heading">General Settings</h3>
+              <h3 class="control-sidebar-heading">Portapapeles</h3>
               <div class="form-group">
                 <label class="control-sidebar-subheading">
-                  Report panel usage
-                  <input type="checkbox" class="pull-right" checked />
+                  <textarea rows="8"  class="form-control" id="txt_portapapeles"></textarea>
                 </label>
-                <p>
-                  Some information about this general settings option
-                </p>
+                
               </div><!-- /.form-group -->
             </form>
           </div><!-- /.tab-pane -->
@@ -105,3 +102,23 @@
   
    </body>
 </html>
+
+<script>
+/*Funcion Cargar y Mostrar datos*/
+$(document).ready(function(){    
+    $('#txt_portapapeles').change(function(){                       
+        /*Obtener datos almacenados*/
+
+        localStorage.setItem("portapapeleslym",$("#txt_portapapeles").val());
+
+    
+    });   
+
+    var portapapeles = localStorage.getItem("portapapeleslym");
+    /*Mostrar datos almacenados*/      
+    document.getElementById("txt_portapapeles").innerHTML = portapapeles;
+});
+
+
+
+</script>
