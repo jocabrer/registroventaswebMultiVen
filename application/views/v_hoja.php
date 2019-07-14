@@ -11,26 +11,28 @@
 </section>
 
 <section class="content">
-
-	<!-- hojas recientes -->
-	<div class="box box-primary">
-		<div class="box-header with-border">
-				<h3 class="box-title">Hojas Recientes</h3>
-				<div class="box-tools pull-right">
-			
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-                </button>
-            
+	<div class="box">
+		<!-- hojas recientes -->
+		<div class="box box-primary">
+			<div class="box-header with-border">
+					<h3 class="box-title">Hojas Recientes</h3>
+					<div class="box-tools pull-right">
 				
-				</div>
-		</div>	  <!-- /.box-header -->
-		<div class="box-body">			  
-					<table id="tbl_ultimashojas" class="table"></table>	   
-		</div><!-- box body -->
-	</div><!-- box primary -->
-	<!-- / fin hojas recientes -->
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+					</button>
+				
+					
+					</div>
+			</div>	  <!-- /.box-header -->
+			<div class="box-body">			  
+						<table id="tbl_ultimashojas" class="table"></table>	   
+			</div><!-- box body -->
+		</div><!-- box primary -->
+		<!-- / fin hojas recientes -->
+	</div>
+	
 
-	<div class="table">
+	
 		<div class="row">
 		<div class="col-md-8 col-sm-6 col-xs-12">
 			<div class="box" id="cajaUltimasHojas">
@@ -80,31 +82,23 @@
 			<div class="col-md-4 col-sm-6 col-xs-12">
 					<div class="box">
 						<div class="box-header with-border">
-						<h3 class="box-title">Consultar</h3>
-				
-						<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-							<i class="fa fa-minus"></i></button>
-							<button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove">
-							<i class="fa fa-times"></i></button>
-						</div>
+								<h3 class="box-title">Consultar</h3>
+								<div class="box-tools pull-right">
+									<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+									<i class="fa fa-minus"></i></button>
+									<button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove">
+									<i class="fa fa-times"></i></button>
+								</div>
 						</div>
 						<div class="box-body" style="width:100%;">
-						
 							<div class="row">
-							
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									
-									<select class="form-control" id="sl_hojas">
-										
-									
-									</select>			
+									<select class="form-control" id="sl_hojas"></select>			
 								</div>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-												<a class="btn btn-default" id="btn_cons"><i class="fa fa-search"></i> Consultar</a>
+									<a class="btn btn-default" id="btn_cons"><i class="fa fa-search"></i> Consultar hoja</a>
 								</div>
 							</div>
-						
 						</div>
 						<!-- /.box-body -->
 					
@@ -113,61 +107,38 @@
 			</div>
 			
 		</div><!--row-->
-	</div><!-- class = table -->
-        
+	
+	
 	
 	<div class="box">
 				<div class="box-header with-border">
-				 <h3 class="box-title">Hoja proceso #<label id="lbl_nombrehoja"></label></h3>
-				<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-							<i class="fa fa-minus"></i></button>
-							
+						<h3 class="box-title">Hoja proceso #<label id="lbl_nombrehoja"></label></h3>
+						<div class="box-tools pull-right">
+									<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+									<i class="fa fa-minus"></i></button>
+									
 						</div>
-						</div>
-						<div class="box-body" style="width:100%;">
-						
-						<table id="tbl_result_hoja"  
-    					 data-show-columns="true"
-    					 data-show-footer="false"    					 
-    			 		 data-toggle="table"
-			   			 data-show-export="true">
-    			
-    			</table>
-						
-						</div>
-						<!-- /.box-body -->
-					
-						<!-- /.box-footer-->
+				</div><!-- .header -->
+				<div class="box-body">
+						<table id="tbl_result_hoja"  data-show-columns="true" data-show-footer="false"    					 
+													data-toggle="table" data-show-export="true">
+						</table>
+				</div><!-- /.box-body -->
 	</div><!-- box -->
-
-	<div class="box">
-			<p>
-			<?php
-			if(count($alertas)==0)
-				echo "sin alertas";
-
-			foreach($alertas as $alerta) { ?>
-						<?php echo $alerta->texto."<br>";  ?>
-			<?php } ?>
-			</p>
-	</div>
-</div>
-     
  
-<!-- <button class="print" id="btn_imprimir"> Print this </button> -->
 </section><!-- /.content -->
-</div><!-- /.content-wrapper -->
 
-<<script type="text/javascript">
+	</div><!-- /.content-wrapper -->
+
+<script type="text/javascript">
+
 	$(document).ready(function() {
 
 		//Seteo eventos 
 		$('#btn_proc').click(function(){procesa()});
 		$('#btn_cons').click(function(){seteaHojaDesdeConsulta()});
+		window.eventoTablaHojas = {'click .remove': function (e, value, row, index) {eliminaHoja(row);}};
 		
-		
-
 		//Inicializo widget
 		ultimasHojasProcesadas();
 
@@ -178,7 +149,7 @@
 			muestraTablaHojas(idhoja);
 	});
 
-	window.eventoTablaHojas = {'click .remove': function (e, value, row, index) {eliminaHoja(row);}};
+	
 	
 function eliminaHoja(row){
 	jQuery.ajax({
@@ -204,50 +175,39 @@ function seteaHojaDesdeConsulta(){
 	muestraTablaHojas(nombreHoja);
 }
 function muestraTablaHojas(nombreHoja){
-	$('#tbl_result_hoja').bootstrapTable('destroy').bootstrapTable
-	  ({
-			    url: '<?php echo base_url(); ?>Reporte/muestraHoja/'+nombreHoja,
+	$('#tbl_result_hoja').bootstrapTable('destroy').bootstrapTable({
+			    url: base_url+'Reporte/muestraHoja/'+nombreHoja,
 			    method:"GET",
 				dataType: 'json',
 				columns:[
 					
 					{field: 'tipo',align: 'center',title: 'Tipo'},
-					
 					{field: 'id_cabecera',title: 'Pedido',formatter:f_idpedido}, 
-					
-
 					{field: 'cantidad',title: 'Cantidad'},
 					{field: 'producto',title: 'Producto',align:'left'},
-
 					{field: 'costo_cu',title: 'Costo c/u',align:'left',formatter:PriceFormatter},
 					{field: 'tot_costo',title: 'Total Costo',align:'left',formatter:PriceFormatter},
 					{field: 'iva',title: 'Iva',align:'left',formatter:PriceFormatter},
 					{field: 'pagado',title: 'Pagado',align:'left',formatter:PriceFormatter},
 					{field: 'saldo',title: 'Saldo/Abono',align:'left',formatter:PriceFormatter},
 					{field: 'saldovendedor2',title: 'Vendedor 2',align:'left',formatter:PriceFormatter}
-	  			]
-    }
+	  			]}
 	);
-	//alert(nombreHoja);
+	
 	$('#lbl_nombrehoja').text(nombreHoja);
-	//$('#sl_hojas').text(nombrehoja);
 	$("#nombrehoja").attr('value',$('#lbl_nombrehoja').text());
 }
-function procesa() {
 
-	
+function procesa() {
 		//Si es consulta se toma el valor de la hoja solamente 
 	params=[];
-
-	
 	var nrospedidos=  $("#nrospedidos").val().split(",");
 	var nombrehoja=  $("#nombrehoja").val();
 	var tipohoja =  $("#tipohoja").val();
 
-
     jQuery.ajax({
 		method: "POST",
-			url: "<?php echo base_url('Reporte/procesaHoja'); ?>",
+			url: base_url+'Reporte/procesaHoja',
 			dataType: 'json',
 			data: {nrospedidos:nrospedidos,nombrehoja:nombrehoja,tipohoja:tipohoja},
 			success: function(res) {
@@ -260,7 +220,6 @@ function procesa() {
 					muestraTablaHojas(nombrehoja);
 				}
 			},
-			
 	}); //jqueryajax		
 }
 
@@ -276,16 +235,12 @@ function ultimasHojasProcesadas(){
 					   {field: 'fecha_proceso',title: 'Fecha proceso'},
 					   {field: 'fecha_mod',title: 'Ult. Modificación'},
 					   {field: 'operate',title: 'Eliminar',align: 'center',events:eventoTablaHojas,formatter:operateFormatter}
-					   
-		   ]
-   }
-	);
+		   ]});
 }
 
 /* 
 Control busqueda de la hoja
 */ 
-
 $("#sl_hojas").select2({
 		ajax: {
 		        url: base_url+"Reporte/listadoControlHojas/",
