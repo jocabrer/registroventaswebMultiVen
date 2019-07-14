@@ -142,9 +142,15 @@
 	</div><!-- box -->
 
 	<div class="box">
-			<?php foreach($alertas as $alerta) { ?>
+			<p>
+			<?php
+			if(count($alertas)==0)
+				echo "sin alertas";
+
+			foreach($alertas as $alerta) { ?>
 						<?php echo $alerta->texto."<br>";  ?>
 			<?php } ?>
+			</p>
 	</div>
 </div>
      
