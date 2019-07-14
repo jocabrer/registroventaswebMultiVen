@@ -139,8 +139,14 @@
 						<!-- /.box-body -->
 					
 						<!-- /.box-footer-->
-				</div><!-- box -->
-			</div>
+	</div><!-- box -->
+
+	<div class="box">
+			<?php foreach($alertas as $alerta) { ?>
+						<?php echo $alerta->texto."<br>";  ?>
+			<?php } ?>
+	</div>
+</div>
      
  
 <!-- <button class="print" id="btn_imprimir"> Print this </button> -->
@@ -160,7 +166,7 @@
 		ultimasHojasProcesadas();
 
 		//Identificamos hoja actual
-		var idhoja  = <?php echo $idhoja; ?>;
+		var idhoja  = "<?php echo $idhoja; ?>";
 		//Si existe hoja actualizamos para mostrar
 		if(idhoja!=-1)
 			muestraTablaHojas(idhoja);

@@ -32,6 +32,7 @@ class M_Hojas extends CI_Model {
         unset($this->nombre_hoja);
         $this->tipo = $tipo;
         $this->fecha_ingreso = $fechaingreso;
+        $this->fecha_proceso = $fecha_proceso;
         $this->id_cabecera= $pedido;
         $this->cantidad  = $cantidad;
         $this->producto  = $producto;
@@ -43,6 +44,7 @@ class M_Hojas extends CI_Model {
         $this->nombre_hoja  =$nombre_hoja;
         $this->orden = $orden;
         $this->saldovendedor2 = $SaldoVendedor2;
+       // $this->obs = $obs;
         $this->db->insert('hojas', $this);
         
         return  $nombre_hoja;
@@ -121,6 +123,14 @@ class M_Hojas extends CI_Model {
     }
     
     
+    function buscaPedidoHojasPrevias($idpedido,$hojactual){
+        $this->db->where('id_cabecera',$idpedido);
+        $this->db->where('nombre_hoja !=',$idpedido);
+        $query =$this->db->get('hojas');
+        return $query->result();
+    }
+
+
     function borrar_detalle($nombre_hoja,$tipo,$nropedido){
         
         $this->db->where('nombre_hoja', $nombre_hoja);

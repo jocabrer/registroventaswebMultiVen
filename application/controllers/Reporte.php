@@ -10,7 +10,7 @@ class Reporte extends CI_Controller {
 	    $dataContent['titleHeader']        = "Sistema de reportes LYM";
 	    $dataContent['descHeader']   	   = "Hojas de trabajo, analisis de ventas, Sistema lym.";
 	    
-	    //Autenticaci�n
+	    //Autenticación
 	    if (!$this->ion_auth->logged_in())
 	    {
 	        redirect('auth/login');
@@ -52,10 +52,15 @@ class Reporte extends CI_Controller {
 	 * @return void Salida de pantalla.
 	 */
 	public function hojas($hoja=-1){
-	    
+		
+		$this->load->model('M_alertas');
+
 	    $dataContent['titleHeader']        = "Sistema de reportes LYM";
 		$dataContent['descHeader']   	   = "Hojas de trabajo, analisis de ventas, Sistema lym.";
 		$dataContent['idhoja'] = $hoja;
+
+
+		$dataContent['alertas'] = $this->M_alertas->obtieneAlertas($hoja);
 	    
 	    if (!$this->ion_auth->logged_in()){
 	        redirect('auth/login');        
@@ -65,7 +70,7 @@ class Reporte extends CI_Controller {
 	}
 	
 	/**
-	 * Función que ontiene y devuelve una hoja y su detalle en formato Json para cargar en tabla.
+	 * Función que obtiene y devuelve una hoja y su detalle en formato Json para cargar en tabla.
 	 *
 	 * @param [type] $idhoja
 	 * @return void
@@ -100,7 +105,8 @@ class Reporte extends CI_Controller {
 		}
 		
 		//Cargamos el modelo. 
-	    $this->load->model('M_hojas');
+		$this->load->model('M_hojas');
+		$this->load->model('M_alertas');
 		
 		//Obtengo identificación el usuario.
 	    $user = $this->ion_auth->user()->row();
@@ -127,10 +133,12 @@ class Reporte extends CI_Controller {
 		//Si existe actualizo fechas, sino inserto una cabecera de hoja.
 		if(count($obj_hoja_cabecera)>0){
 			$nombre_hoja =  $this->M_hojas->update_entry_cab_hoja($nombre_hoja,$fecha_proceso,$userid);
+			$this->M_alertas->grabaAlerta(1,$fecha_proceso,$nombre_hoja,null,"Comienza actualización de hoja : $nombre_hoja");
 			//Elimino de la hoja los pedidos que ahora voy a procesar para evitar duplicados.
 			$this->M_hojas->borrar_pedidos_hoja($nombre_hoja,$idpedidos);
 	    }else{
-	        $nombre_hoja =  $this->M_hojas->insertaHojaCabecera($nombre_hoja,$fecha_proceso,$userid);
+			$nombre_hoja =  $this->M_hojas->insertaHojaCabecera($nombre_hoja,$fecha_proceso,$userid);
+			$this->M_alertas->grabaAlerta(1,$fecha_proceso,$nombre_hoja,null,"Nuevo proceso hoja creada : $nombre_hoja");
 	    }
 
 		$id_reg = $this->calculoDeHoja($data,$tipo_hoja,$fecha_proceso,$nombre_hoja);
@@ -153,7 +161,7 @@ class Reporte extends CI_Controller {
 	    $cont = 0;
 		// Variable de control para no duplicar pedidos.
 		$nropedidoActual = "";
-
+		$cant = count($data);
 		//Recorremos los datops de
 	    foreach ($data as $pedido){
 	        $cont++;
@@ -171,15 +179,23 @@ class Reporte extends CI_Controller {
 			$saldocliente = $pedido['SaldoCliente'];
 			$saldovendedor2 = $pedido['SaldoVendedor2'];
 			
-			//Solo se calculan por pedido , no por linea de detalle
+			//Solo se calculan totales por pedido , no por linea de detalle
             if($cab_ante == $pedido['pedido']){
+
                 $pagado = 0;
                 $saldo = 0;
 				$iva = 0;
 				$saldovendedor2 = 0;
 				$saldocliente = 0 ;
+
+				$this->generaAlertaPedidoHojasPrevias($ped['id'],$nombre_hoja,$fecha_proceso);
+
+
             }else{
 				//Cuando es un nuevo pedido se hace el calculo del saldo a la fabrica y al vendedor.
+				
+				$elPedido = $this->M_pedido->obtenerPedido($pedido['pedido']);
+				$ped= $elPedido[0];
 
 				//Si es abono se abona el 50% solamente
 				if($tipo=="Abono"){
@@ -187,21 +203,38 @@ class Reporte extends CI_Controller {
 					if($saldocliente!=0){
 						$saldo = $saldo/2;
 						$saldovendedor2 = 0;
+						$obs = "Saldado";
 					}else{
-						//es un abono pero paga todo
+						//es un abono pero no paga todo
 					}
 				}
 			}
-		
-			
+
+			$cab_ante =  $pedido['pedido'];
 	        //insertadetalle   
             $id_reg = $this->M_hojas->insert_entry_hoja($tipo,$fechaingreso,$nropedido,$cantidad,$producto,$costo_cu,$tot_costo,$pagado,$saldo,$iva,$fecha_proceso,$nombre_hoja,$cont,$saldovendedor2);
-            $cab_ante =  $pedido['pedido'];
-			
-			
 		}
-		
 		return $id_reg;
+	}
+
+
+	/**
+	 * Valida posibles problemas y genera alertas.
+	 *
+	 * @param [int] $idpedido numero de pedido a analizar.
+	 * @param [varchar] $hojactual nombre de la hoja actual.
+	 * @return void
+	 */
+	function generaAlertaPedidoHojasPrevias($idpedido,$hojactual,$fecha_proceso){
+
+		//buscamos coincidencias anteriores
+		$hojasPrevias = $this->M_hojas->buscaPedidoHojasPrevias($idpedido,$hojactual);
+		
+		//recorro  las coincidencias
+		foreach($hojasPrevias as $pedido){
+
+			$this->M_alertas->grabaAlerta(1,$fecha_proceso,$hojactual,$pedido->id_cabecera,"El pedido $pedido->id_cabecera se encuentra en la hoja : $pedido->nombre_hoja como : $pedido->tipo");
+		}
 	}
 	
 	/**
