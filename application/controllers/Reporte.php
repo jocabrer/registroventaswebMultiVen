@@ -59,7 +59,7 @@ class Reporte extends CI_Controller {
 		$dataContent['descHeader']   	   = "Hojas de trabajo, analisis de ventas, Sistema lym.";
 		$dataContent['idhoja'] = $hoja;
 
-
+		if($hoja!=-1)
 		$dataContent['alertas'] = $this->M_alertas->obtieneAlertas($hoja);
 	    
 	    if (!$this->ion_auth->logged_in()){
@@ -181,22 +181,19 @@ class Reporte extends CI_Controller {
 			
 			//Solo se calculan totales por pedido , no por linea de detalle
             if($cab_ante == $pedido['pedido']){
-
+				//Mismo pedido distinta línea
                 $pagado = 0;
                 $saldo = 0;
 				$iva = 0;
 				$saldovendedor2 = 0;
 				$saldocliente = 0 ;
 
+				$elPedido = $this->M_pedido->obtenerPedido($pedido['pedido']);
+				$ped= $elPedido[0];
 				$this->generaAlertaPedidoHojasPrevias($ped['id'],$nombre_hoja,$fecha_proceso);
-
 
             }else{
 				//Cuando es un nuevo pedido se hace el calculo del saldo a la fabrica y al vendedor.
-				
-				$elPedido = $this->M_pedido->obtenerPedido($pedido['pedido']);
-				$ped= $elPedido[0];
-
 				//Si es abono se abona el 50% solamente
 				if($tipo=="Abono"){
 					//Si es un abono no se muestra saldo aún del vendedor. Solo si el cliente ha pagado todo
@@ -209,9 +206,9 @@ class Reporte extends CI_Controller {
 					}
 				}
 			}
-
+			//Seteo metodo burbuja
 			$cab_ante =  $pedido['pedido'];
-	        //insertadetalle   
+	        //insertadetalle proceso linea  
             $id_reg = $this->M_hojas->insert_entry_hoja($tipo,$fechaingreso,$nropedido,$cantidad,$producto,$costo_cu,$tot_costo,$pagado,$saldo,$iva,$fecha_proceso,$nombre_hoja,$cont,$saldovendedor2);
 		}
 		return $id_reg;
