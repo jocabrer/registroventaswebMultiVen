@@ -235,7 +235,7 @@
 			<!-- hojas recientes -->
 			<div class="box box-primary box">
 				<div class="box-header with-border">
-						<h3 class="box-title">Últimas hojas</h3>
+						<h3 class="box-title"><a href="<?php echo base_url('Reporte/Hojas/-1'); ?>">Últimas hojas</a></h3>
 						<div class="box-tools pull-right">
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
 						</div>
@@ -307,23 +307,9 @@
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-xs-12">	
 		
-		<table id="tabla_resultado"
-			   
-			   data-method="post"
-			   
-       		   data-show-footer="true"
-               data-show-columns="true"
-               data-show-refresh="true"
-			   data-show-export="true"
-			   data-side-pagination="server"
-			   
-			   data-sort-Order="desc"
-			   
-			   
-			   data-toggle="table"
-			   data-query-params="queryParams"
-			   
-			   data-response-handler="responseHandler"
+		<table id="tabla_resultado" data-method="post" data-show-footer="true" data-show-columns="true"
+               data-show-refresh="true" data-show-export="true" data-side-pagination="server" data-sort-Order="desc"
+			   data-toggle="table" data-query-params="queryParams" data-response-handler="responseHandler"
 			   data-url="<?php echo base_url(); ?>Pedido/listadoPedidos/">
 	     <thead>
          <tr >
