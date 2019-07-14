@@ -122,7 +122,13 @@ class M_Hojas extends CI_Model {
         return $query->result();
     }
     
-    
+    /**
+     * Obtiene líneas de hojas coincidentes con el pedido enviado, excepto actual.
+     *
+     * @param [int] $idpedido pedido enviado
+     * @param [varchar] $hojactual nombre hoja actual
+     * @return void
+     */
     function buscaPedidoHojasPrevias($idpedido,$hojactual){
         $this->db->where('id_cabecera',$idpedido);
         $this->db->where('nombre_hoja !=',$idpedido);
@@ -176,7 +182,12 @@ class M_Hojas extends CI_Model {
 
     }
 
-
+    /**
+     * FUncion que elimina hoja
+     *
+     * @param [varchar] $nombrehoja Nombre hoja a eliminar
+     * @return void
+     */
     function eliminaHojaCompleta($nombrehoja){
         
         $this->db->where('nombre_hoja', $nombrehoja);
@@ -184,8 +195,10 @@ class M_Hojas extends CI_Model {
 
         $this->db->where('nombre_hoja', $nombrehoja);
         $this->db->delete('cabecera_hojas'); 
-
     }
+
+
+    
 }
 
 ?>
