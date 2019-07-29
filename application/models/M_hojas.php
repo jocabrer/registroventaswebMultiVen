@@ -131,7 +131,7 @@ class M_Hojas extends CI_Model {
      */
     function buscaPedidoHojasPrevias($idpedido,$hojactual){
         $this->db->where('id_cabecera',$idpedido);
-        $this->db->where('nombre_hoja !=',$idpedido);
+        $this->db->where('nombre_hoja !=',$hojactual);
         $query =$this->db->get('hojas');
         return $query->result();
     }

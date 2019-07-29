@@ -110,7 +110,7 @@
 	
 	
 	
-	<div class="box">
+	<div class="box box-success">
 				<div class="box-header with-border">
 						<h3 class="box-title">Hoja proceso #<label id="lbl_nombrehoja"></label></h3>
 						<div class="box-tools pull-right">
@@ -125,6 +125,23 @@
 						</table>
 				</div><!-- /.box-body -->
 	</div><!-- box -->
+
+	<div class="box box-warning">
+		<div class="box-header with-border"><h3 class="box-title"> Alertas </h3></div>
+		<div class="box-body">
+			<?php 
+			if(isset($alertas))
+			{
+				if(count($alertas)==0)
+					echo "sin alertas";
+				foreach($alertas as $alerta) { 
+					echo $alerta->texto."<br>";  
+				}
+
+			}
+			?>
+		</div>
+	</div>
  
 </section><!-- /.content -->
 

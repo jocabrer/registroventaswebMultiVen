@@ -35,7 +35,9 @@
                 <a href="<?php echo base_url(); ?>Pedido/editarPedido/<?php echo $ult["numeroPedido"];?>">
                   <?php echo $ult["numeroPedido"]; ?>
                 </a>
-               De <?php echo $ult["cli_nom"]; ?> <i>hace <?php echo date_diff(new DateTime($ult["est_fec_ing"]),new DateTime())->format('%a d&iacute;as'); ?> est&aacute; <?php echo $ult["est_desc"];?> </i>
+               De <?php echo $ult["cli_nom"]; ?> <i>hace <?php echo date_diff(new DateTime($ult["est_fec_ing"]),new DateTime())->format('%a d&iacute;as'); ?> est&aacute; <?php echo $ult["est_d</section><!-- /.content -->
+
+	</div><!-- /.content-wrapper -->"];?> </i>
               </li>
             <?php 
              }

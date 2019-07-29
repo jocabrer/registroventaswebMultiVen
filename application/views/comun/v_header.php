@@ -183,7 +183,7 @@ date_default_timezone_set('America/Santiago');
           
           
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">Esconder Navegaciï¿½n</span>
+            <span class="sr-only">Esconder Navegación</span>
           </a>
           <!-- Navbar Right Menu -->
             <!-- --------------------------------------------------------------------------------------------------------------------------------------------------- -->
