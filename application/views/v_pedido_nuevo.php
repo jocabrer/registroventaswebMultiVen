@@ -22,14 +22,14 @@
 			
     			<div class="box box-warning">
                     <div class="box-header with-border">
-                      <h3 class="box-title">Selección de Cliente</h3>
+                      <h3 class="box-title">Seleccione un cliente</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
                      
                         <!-- text input -->
                         <div class="form-group">
-                          <label>Cliente</label>
+                          <label>Clientes ingresados</label>
                            <select id="cntrl_id_cliente"  
 								    class="form-control" 
 								    name="cntrl_id_cliente" 
@@ -37,10 +37,21 @@
 								    
 								    </select>
 							 
-                        </div>
-                        <div class="form-group">
-                        	<button  id="btn_agregar_pedido" type="button" class="btn bg-olive" title="Agregar nuevo pedido" ><i class="fa fa-edit"></i> Nuevo Pedido Cliente</button></span>
-                        </div>
+						</div>
+
+						<div id="agregarpedido">
+							<div class="form-group">
+									<label>Comisión</label>
+									<select id="sl_comision" name="sl_comision"  class="form-control" >
+											<option value="1">No</option>
+											<option value="0">Si</option>
+											
+									</select>
+							</div> 
+							<div class="form-group">
+								<button  id="btn_agregar_pedido" type="button" class="btn bg-olive" title="Agregar nuevo pedido" ><i class="fa fa-edit"></i> Nuevo Pedido Cliente</button></span>
+							</div>
+						</div>
                     </div>
                     <div class="box-footer" style="display:inline;">
                     			<div class="row">
@@ -83,8 +94,8 @@
 //https://github.com/wenzhixin/bootstrap-table/blob/master/src/extensions/export/README.md
 $(document).ready(function() {
 
-	$("#btn_agregar_pedido").hide();
-
+	
+	$("#agregarpedido").hide();
 	//********** Control Cliente **************************************		
 	var $select = $("#cntrl_id_cliente");
 	$select.select2({
@@ -121,22 +132,23 @@ $(document).ready(function() {
 
 		if($('#cntrl_id_cliente').val()!=null){
 			$("#btn_agregar_pedido").text("Crear pedido para cliente " + $('#cntrl_id_cliente').val());
-			$("#btn_agregar_pedido").show();
+			$("#agregarpedido").show();
 		}else{
-			$("#btn_agregar_pedido").hide();
+			$("#agregarpedido").hide();
 		}
 	});
 
 	$("#btn_agregar_pedido").click(function(){
 
 		var idcliente = $('#cntrl_id_cliente').val();
+		var comision = $('#sl_comision').val();
 
 		if(idcliente!=null){
         		//$('#btn_agregar_pedido').prop("disabled",true);1
         		$.ajax({
         			  type: "POST",
         			  url: "<?php echo base_url(); ?>Pedido/grabaCabecera/",
-        			  data: {idpedido:-1,idcliente,idestado:0},
+        			  data: {idpedido:-1,idcliente,comision},
         			  success: pedidoGrabadoCall,
         			  dataType: 'json'
         			});

@@ -146,7 +146,7 @@
 				</div>
 			</div><!--  row 5 -->
 			<div class="row">&nbsp;</div>
-			<div class="row">
+			<div class="row justify-content-end">
 				<div class="col-lg-4 col-md-4 col-xs-12 text-left">
 					   <span class="input-group-btn">
                        	 <button id="btn_guardar_cab" type="submit" class="btn btn-default" title="Guardar Cliente" ><i class="fa fa-save"></i> Guardar </button>
@@ -159,8 +159,17 @@
                       </span>
 				</div>
 
-				<div class="col-lg-4 col-md-4 col-xs-8 text-right">
-				   <button  id="btn_agregar_pedido" type="button" class="btn bg-olive" title="Agregar nuevo pedido" ><i class="fa fa-edit"></i> Nuevo Pedido </button></span>
+				<div class="col-lg-4 col-md-4 col-xs-8 text-right" >
+				
+									<label>Comisión</label>
+									<select id="sl_comision" name="sl_comision" style="width:60px;"> 
+											<option value="1">No</option>
+											<option value="0">Si</option>
+											
+									</select>
+									<button  id="btn_agregar_pedido" type="button" class="btn bg-olive" title="Agregar nuevo pedido" ><i class="fa fa-edit"></i> Nuevo Pedido </button></span>
+				
+				  
 				 </div>
 
 			</div><!--  row 6 -->
@@ -297,10 +306,11 @@ $(document).ready(function() {
   //Nuevo pedido hacemos llamada ajax a controlador de Pedidos
 	$("#btn_agregar_pedido").click(function(){
 		$('#btn_agregar_pedido').prop("disabled",true);
+		var comision = $('#sl_comision').val();
 		$.ajax({
 			  type: "POST",
 			  url: "<?php echo base_url('Pedido/grabaCabecera/'); ?>",
-			  data: {idpedido:-1,idcliente: '<?php echo $cliEdit['id']?>',idestado:0},
+			  data: {idpedido:-1,idcliente: '<?php echo $cliEdit['id']?>',comision},
 			  success: pedidoGrabadoCall,
 			  dataType: 'json'
 			});
@@ -308,7 +318,7 @@ $(document).ready(function() {
   //Callback del grabar pedido
   function pedidoGrabadoCall(res){
   	if (res.estado!=-1){
-      	MuestraMensaje("Módulo Pedidos",res.mensaje);
+      	MuestraMensaje("Mรณdulo Pedidos",res.mensaje);
       	$('#modalDinamico').on('hidden.bs.modal', function () {window.location.href = "<?php echo base_url(); ?>pedido/editarPedido/"+res.id;});
   	}else{
   		$('#btn_agregar_pedido').prop("disabled",false);
@@ -363,11 +373,11 @@ $(document).ready(function() {
         						$(':input[type="submit"]').prop('disabled', false);
         						if (res)
         						{
-        							  MuestraMensaje("Módulo Clientes",res.mensaje);
+        							  MuestraMensaje("Mรณdulo Clientes",res.mensaje);
         							  $('#modalDinamico').on('hidden.bs.modal', function () {window.location.href = "<?php echo base_url(); ?>Cliente/edicion/"+res.id;});
         						}else
         						{
-        							  MuestraMensaje("Módulo Clientes","Error al grabar mensaje ".res.mensaje);
+        							  MuestraMensaje("Mรณdulo Clientes","Error al grabar mensaje ".res.mensaje);
         							  $(':input[type="submit"]').prop('disabled', false);
         						}
         				}
