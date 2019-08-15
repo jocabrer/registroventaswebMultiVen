@@ -270,6 +270,11 @@ class Cuenta extends CI_Controller {
 		if (! $this->ion_auth->logged_in ())
 			redirect ( 'auth/login' );
 		
+		if(!$this->ion_auth->is_admin())
+			redirect ( 'auth/login' );
+
+
+
 		$user = $this->ion_auth->user()->row();
 		$userid = $user->id;
 			
