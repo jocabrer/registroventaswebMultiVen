@@ -10,6 +10,10 @@ class M_Cuenta extends CI_Model {
 		return $this->db->query("SELECT id FROM `cuenta` WHERE entidad = 'VEN1'")->row()->id;	
 	}
 	
+	function getCuentaSecundaria()
+	{
+		return $this->db->query("SELECT id FROM `cuenta` WHERE entidad = 'VEN2'")->row()->id;	
+	}
 	
 	
 	function get_CuentaTipo($tipo){
@@ -20,15 +24,19 @@ class M_Cuenta extends CI_Model {
 		
 	}
 	
-		
+	/**
+	 * Verifica si un pedido tiene 
+	 * Tipos de cuenta :
+	 * Tipo 1 : Vendedores
+	 * Tipo 2 : Fabrica 
+	 * Tipo 0 : Ingreso cliente 
+	 *
+	 * @param [type] $idpedido
+	 * @param [type] $tipo
+	 * @return void
+	 */	
 	function tieneCuentaTipo($idpedido,$tipo){
-	
-		
-		/*SELECT * FROM `movimiento_cab` cab
-		INNER JOIN cuenta cta   ON cab.id_cuenta = cta.id
-		WHERE cta.tipo*/
-		
-		
+			
 		$this->db->select('cta.id');
 		$this->db->from('movimiento_cab cab');
 		$this->db->join('cuenta cta', 'cab.id_cuenta = cta.id','inner');
