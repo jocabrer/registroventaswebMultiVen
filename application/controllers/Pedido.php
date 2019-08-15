@@ -267,9 +267,9 @@ class Pedido extends CI_Controller
 
         $id_pedido = $this->input->post('idpedido');
         $id_cliente = $this->input->post('idcliente');
-        $idestado = $this->input->post('idestado');
+        $comision = $this->input->post('comision');
 
-        $idnuevo = $this->_grabaCabecera($id_pedido, $id_cliente, $idestado);
+        $idnuevo = $this->_grabaCabecera($id_pedido,$id_cliente,$comision);
 
         //Salida por modulo
         $this->load->salidaRetornoAjax($idnuevo, "pedido", "L", "grabado", $idnuevo);
@@ -334,7 +334,7 @@ class Pedido extends CI_Controller
     /*
      * Metodo que graba una cabecera recibe los valores por parametro
      */
-    public function _grabaCabecera($id_pedido, $id_cliente, $idestado)
+    public function _grabaCabecera($id_pedido, $id_cliente,$comision)
     {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
@@ -350,7 +350,7 @@ class Pedido extends CI_Controller
             //inserto cabecera sin estado aún
             $id_pedido = $this->M_pedido->insertaPedidoCabecera($id_cliente, $fecha_ing, $userid, $this->load->obtieneFechaActual());
             //Comision
-            $this->generaComision($id_pedido);
+            $this->generaComision($id_pedido, $comision);
             //Cambio estado, es el primero asi que va con estado inicial 0
             $idcambioestado = $this->cambiaEstadoPedido($id_pedido, 0, false);
 
@@ -364,7 +364,7 @@ class Pedido extends CI_Controller
      */
     public function importarPedidoWoo()
     {
-        if (!$this->ion_auth->logged_in()) {
+       /* if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
 
@@ -395,7 +395,7 @@ class Pedido extends CI_Controller
             $arr['estado'] = -1;
         } else {
 
-            $arr['idcabecera'] =  $this->_grabaCabecera(-1, $clientes[0]['id'], 1);
+            $arr['idcabecera'] =  $this->_grabaCabecera(-1, $clientes[0]['id'], 1),$comision = 0);
             $arr['idcliente'] = $clientes[0]['id'];
             $arr['mensaje'] = "Pedido grabado correctamente, número de pedido #" . $arr['idcabecera'];
             $arr['estado'] = 1;
@@ -413,7 +413,7 @@ class Pedido extends CI_Controller
 
             //falta grabar la relacion cabecera_woo
         }
-        echo json_encode($arr);
+        echo json_encode($arr);*/
     }
 
     /**
@@ -465,37 +465,33 @@ class Pedido extends CI_Controller
     }
 
 
-    /*
+    /**
      * Contiene la lógica para generar la estructura de comision del pedido
+     *
+     * @param [int] $id_pedido
+     * @param [bool] $vendedorPrincipal
+     * @return void
      */
-    function generaComision($id_pedido)
+    function generaComision($id_pedido, $vendedorPrincipal)
     {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-
         //para el log de usuario
         $userid = $this->ion_auth->user()->row()->id;
-        // Valido si tiene comision para asignar la comision x defecto.
-        if ($this->porcentajeTotalPedido($id_pedido) != 100) {
-
-            // Elimino cualquier comision previa por que no suma 100 entonces no sirve
-            $this->M_Cuenta->eliminaPorcentajeExistente($id_pedido);
-
-            // Creo comision con cuentaprincipal 100% porcentaje
-            $cta = $this->M_Cuenta->getCuentaPrincipal();
-            $this->M_Cuenta->insertaComision($cta, $porcentaje = 100, $id_pedido, $userid, $this->load->obtieneFechaActual());
+        $this->M_Cuenta->eliminaPorcentajeExistente($id_pedido);
+        
+        $cta = $this->M_Cuenta->getCuentaPrincipal();
+        
+        if($vendedorPrincipal){
+           $porcentaje = 100;
         }
-
-        // porcentaje 0 cuenta proveedor 2
-        $cta_pro = $this->M_Cuenta->get_CuentaTipo(2);
-        if (!$this->M_Cuenta->tieneCuentaTipo($id_pedido, 2))
-            $this->M_Cuenta->insertaComision($cta_pro, $porcentaje = 0, $id_pedido, $userid, $this->load->obtieneFechaActual());
-
-        // porcentaje 0 cuenta cliente 0
-        $cta_cli = $this->M_Cuenta->get_CuentaTipo(0);
-        if (!$this->M_Cuenta->tieneCuentaTipo($id_pedido, 0))
-            $this->M_Cuenta->insertaComision($cta_cli, $porcentaje = 0, $id_pedido, $userid, $this->load->obtieneFechaActual());
+        else{
+            $porcentaje = 50;
+            $cta_sec = $this->M_Cuenta->getCuentaSecundaria();
+            $this->M_Cuenta->insertaComision($cta_sec, $porcentaje, $id_pedido, $userid, $this->load->obtieneFechaActual());
+        }
+        $this->M_Cuenta->insertaComision($cta,$porcentaje, $id_pedido, $userid, $this->load->obtieneFechaActual());
     }
 
     /**
