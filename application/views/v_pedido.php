@@ -67,7 +67,9 @@
 			 
 			 
 				                    <label id="lbl_comision">Comisi&oacute;n</label>
-				                    <a href="#" id="btn_agregar_comision"title="[+]" >[+]</a>
+									<?php if($this->ion_auth->is_admin()){ ?>
+											<a href="#" id="btn_agregar_comision"title="[+]" >[+]</a>
+									<?php } ?>
 				                    <br/>
 									
 									<table id="table_comision" class="table"></table>	                    
@@ -90,7 +92,7 @@
 	<form role="form" data-toggle="validator" id="frm_det_pedido">
 	<div class="box" id="bx_agregardetalle"><!-- BOX 2 -->
 		<div class="box-header with-border" >
-	 			<h3 class="box-title">Detalle Pedido</h3>
+	 			<h3 class="box-title">Detalle</h3>
 	 			<div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 				</div>
@@ -680,7 +682,7 @@ $(document).ready(function() {
 				method: "GET",
 				columns:[
 							
-							{field: 'cantidad',title: 'Qty'},
+							{field: 'cantidad',title: 'Cant.'},
 							{field: 'nom_prod',title: 'Desc.'}, 
 							{field: 'venta_un',title: 'Venta',align: 'right',formatter: PriceFormatter},
 							{field: 'costo_un',title: 'Costo',align: 'right',formatter: PriceFormatter},
@@ -710,6 +712,11 @@ $(document).ready(function() {
 	 */
 	function buscaComisiones(){
 		
+		var editable = false;
+		<?php if($this->ion_auth->is_admin()){ ?>
+				editable = true;
+		<?php } ?>
+
 		$("#div_comision").modal('hide');
 		var idpedido 	=  <?php echo $pedEdit['id'];?> //$("#numeroPedido").val();
 			$('#table_comision').bootstrapTable('destroy').bootstrapTable
@@ -720,8 +727,8 @@ $(document).ready(function() {
 				   columns:[
 							   {field: 'id',title: 'id.', visible:false},
 							   {field: 'nom_cta',title: 'Cuenta.'}, 
-							   {field: 'porcentaje',title: 'Porcentaje',align: 'right',editable:true},
-							   {field: 'operate',title: 'Acción',align: 'center',events: eventosTablaComision,formatter:operateFormatter}
+							   {field: 'porcentaje',title: 'Porcentaje',align: 'right',editable:editable},
+							   {field: 'operate',title: 'Acción',align: 'center',events: eventosTablaComision,formatter:operateFormatter, visible : editable}
 				   ]
 		   }
 	   );
