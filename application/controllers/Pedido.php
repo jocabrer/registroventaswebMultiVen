@@ -85,7 +85,8 @@ class Pedido extends CI_Controller
                 redirect('auth/login/');
             } else {
 
-
+                $user = $this->ion_auth->user()->row();
+                $userid = $user->id;
             
 
             $this->load->library("Comun");
@@ -491,7 +492,21 @@ class Pedido extends CI_Controller
             $cta_sec = $this->M_Cuenta->getCuentaSecundaria();
             $this->M_Cuenta->insertaComision($cta_sec, $porcentaje, $id_pedido, $userid, $this->load->obtieneFechaActual());
         }
+
+
         $this->M_Cuenta->insertaComision($cta,$porcentaje, $id_pedido, $userid, $this->load->obtieneFechaActual());
+
+        //Inserto los demás participantes 
+        //tipo 2 y 0  Cliente y fabrica
+        $cta_pro = $this->M_Cuenta->get_CuentaTipo(2);
+        if (!$this->M_Cuenta->tieneCuentaTipo($id_pedido, 2))
+        $this->M_Cuenta->insertaComision($cta_pro, $porcentaje = 0, $id_pedido, $userid, $this->load->obtieneFechaActual());
+
+        // porcentaje 0 cuenta cliente 0
+        $cta_cli = $this->M_Cuenta->get_CuentaTipo(0);
+        if (!$this->M_Cuenta->tieneCuentaTipo($id_pedido, 0))
+            $this->M_Cuenta->insertaComision($cta_cli, $porcentaje = 0, $id_pedido, $userid, $this->load->obtieneFechaActual());
+
     }
 
     /**
