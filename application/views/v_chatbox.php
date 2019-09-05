@@ -106,7 +106,7 @@ window.addEventListener("beforeunload", function (e) {
   position: absolute;
   width: 100%;
   max-width: 100%;
-  height: 100%;
+  height: 90%;
   border-radius: 10px;
   background-color: #fff;
   left: 50%;
@@ -120,7 +120,7 @@ window.addEventListener("beforeunload", function (e) {
 .top_menu {
   background-color: #fff;
   width: 100%;
-  padding: 20px 0 15px;
+  padding: 5px 0 5px;
   box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
 }
 .top_menu .buttons {
@@ -155,7 +155,7 @@ window.addEventListener("beforeunload", function (e) {
   list-style: none;
   padding: 20px 10px 0 10px;
   margin: 0;
-  height: 100%;
+  height:80%;
   overflow: scroll;
 }
 .messages .message {
@@ -239,7 +239,7 @@ window.addEventListener("beforeunload", function (e) {
   position: relative;
   width: 100%;
   background-color: #fff;
-  padding: 20px 20px;
+  padding: 0px 20px;
   position: absolute;
   bottom: 0;
 }
