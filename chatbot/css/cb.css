@@ -1,0 +1,200 @@
+* {
+  box-sizing: border-box;
+}
+
+
+
+.chat_window {
+  position: absolute;
+  width: 80%;
+  max-width: 80%;
+  height:100%;
+  border-radius: 10px;
+  background-color: #fff;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  background-color: #f8f8f8;
+  overflow: hidden;
+}
+
+.top_menu {
+  background-color: #009D7E;
+  width: 100%;
+  padding: 0px 0 0px;
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
+  height: 13%;
+  min-height: 100px;
+  max-height: 150px;
+}
+.top_menu .buttons {
+  margin: 3px 0 0 20px;
+  position: absolute;
+}
+
+.top_menu .buttons .imguser{
+  margin-top: 1.5em;
+  border-radius: 50%;
+}
+
+.top_menu .title {
+  
+  color: #fff;
+  font-size: 3.0em;
+  padding-top: 0.5em;
+  padding-left: 3em;
+}
+
+.messages {
+  position: relative;
+  list-style: none;
+  padding: 20px 10px 0 10px;
+  margin: 0;
+  height:80%;
+  overflow: scroll;
+}
+.messages .message {
+  clear: both;
+  overflow: hidden;
+  margin-bottom: 20px;
+  transition: all 0.5s linear;
+  opacity: 0;
+}
+.messages .message.left .avatar {
+  background-color: #f5886e;
+  float: left;
+}
+.messages .message.left .text_wrapper {
+  background-color: #b2c3d0 !important;
+  margin-left: 20px;
+}
+.messages .message.left .text_wrapper::after, .messages .message.left .text_wrapper::before {
+  right: 100%;
+  border-right-color: #b2c3d0 !important;
+}
+.messages .message.left .text {
+  color: #333;
+}
+.messages .message.right .avatar {
+  background-color: #fdbf68;
+  float: right;
+}
+.messages .message.right .text_wrapper {
+  background-color: #c7eafc;
+  margin-right: 20px;
+  float: right;
+}
+.messages .message.right .text_wrapper::after, .messages .message.right .text_wrapper::before {
+  left: 100%;
+  border-left-color: #c7eafc;
+}
+.messages .message.right .text {
+  color: #45829b;
+}
+.messages .message.appeared {
+  opacity: 1;
+}
+.messages .message .avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.messages .message .text_wrapper {
+  display: inline-block;
+  padding: 20px;
+  border-radius: 6px;
+  width: calc(100% - 85px);
+  min-width: 100px;
+  position: relative;
+}
+.messages .message .text_wrapper::after, .messages .message .text_wrapper:before {
+  top: 18px;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.messages .message .text_wrapper::after {
+  border-width: 13px;
+  margin-top: 0px;
+}
+.messages .message .text_wrapper::before {
+  border-width: 15px;
+  margin-top: -2px;
+}
+.messages .message .text_wrapper .text {
+  font-size: 2.5em;
+  font-weight: 300;
+}
+
+.bottom_wrapper {
+  position: relative;
+  width: 100%;
+  background-color: #fff;
+  padding: 5px 5px 20px;
+  position: absolute;
+  bottom: 0;
+  height: 13%;
+  min-height: 50px;
+  max-height: 100px;
+}
+.bottom_wrapper .message_input_wrapper {
+  display: inline-block;
+  border-radius: 25px;
+  border: 1px solid #bcbdc0;
+  width: calc(100% - 160px);
+  position: relative;
+  padding: 0 20px;
+  margin-top:10px;
+  height: 80%;
+}
+.bottom_wrapper .message_input_wrapper .message_input {
+  border: none;
+  box-sizing: border-box;
+  width: calc(100% - 40px);
+  position: absolute;
+  outline-width: 0;
+  color: gray;
+  font-size: 2.0em;
+  font-weight: 100;
+  
+}
+.bottom_wrapper .send_message {
+  width: 140px;
+  height: 60%;
+  display: inline-block;
+  border-radius: 50px;
+  background-color: #a3d063;
+  border: 2px solid #a3d063;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s linear;
+  text-align: center;
+  float: right;
+  margin-top:1em;
+  padding-top: 0.2em;
+  
+}
+.bottom_wrapper .send_message:hover {
+  color: #a3d063;
+  background-color: #fff;
+}
+.bottom_wrapper .send_message .text {
+  font-size: 2.0em;
+  font-weight: 300;
+  display: inline-block;
+  line-height: 35px;
+}
+
+.message_template , .message_template2 {
+  display: none;
+}
+
+.escribiendo{
+  font-size: 0.5em;
+  display: none;
+}
