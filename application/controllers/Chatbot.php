@@ -7,66 +7,55 @@ class Chatbot extends CI_Controller {
 	
 	public function index()
 	{
-		$this->load->model('M_cbatenciones');
-		$this->load->model('M_Chatbot');
-		$this->load->library("Comun");
-		$fecha = $this->load->obtieneFechaActual();
 		
-		//Crea objetos
+		$this->load->model('M_cbatenciones');
+		$this->load->model('M_Cbvisitantes');
+		$this->load->model('M_Chatbot');
+
+		$this->load->library("Comun");
+
+
+		$fecha = $this->load->obtieneFechaActual();
+		$datosVisitante = $this->comun->obtieneDatosVisitante();
+
+		//Crea objetos atencion , visitante y chatbox.
 		$atencion =  $this->M_cbatenciones->insertaAtencion($fecha);
-		$visitante = $this->creaVisitante($atencion);
+		$visitante = $this->M_Cbvisitantes->insertaVisitante($datosVisitante['agent'],$datosVisitante['ip'],$atencion);
 		$chatbox = $this->M_Chatbot->insertaChatbot($texto="",$fecha,$atencion,$visitante);
 		
 		$data['id_visitante'] = $visitante;
 		$data['id_atencion'] = $atencion;
 		$data['id_chatbox'] = $chatbox;
+
+		//Salida del chat a navegador
 		$this->load->view('v_chatbot',$data); // footer
 	}
 	
 
 	/**
-	 * Undocumented function
+	 * 
 	 *
 	 * @return void
 	 */
 	public function creaVisitante($atencion){
 
+		
 
 		$this->load->model('M_Cbvisitantes');
-		
 		$this->load->library('user_agent');
 
-		if ($this->agent->is_browser())
-		{
-				$agent = $this->agent->browser().' '.$this->agent->version();
+		if ($this->agent->is_browser()){
+			$agent = $this->agent->browser().' '.$this->agent->version();
+		}elseif ($this->agent->is_robot()){
+			$agent = $this->agent->robot();
+		}elseif ($this->agent->is_mobile()){
+			$agent = $this->agent->mobile();
+		}else{
+			$agent = 'Unidentified User Agent';
 		}
-		elseif ($this->agent->is_robot())
-		{
-				$agent = $this->agent->robot();
-		}
-		elseif ($this->agent->is_mobile())
-		{
-				$agent = $this->agent->mobile();
-		}
-		else
-		{
-				$agent = 'Unidentified User Agent';
-		}
-		
-		//echo $agent;
-		//var_dump($_SERVER);
-		
 		$ip = $_SERVER['REMOTE_ADDR'];
 
-
-
-
-
 		return $this->M_Cbvisitantes->insertaVisitante($agent,$ip,$atencion);
-
-
-
-		//echo $this->agent->platform(); // Platform info (Windows, Linux, Mac, etc.)
 	}
 
 

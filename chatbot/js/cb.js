@@ -20,8 +20,8 @@
     };
 
 
-    $(function ()
-    {
+    $(function (){
+        
         var getMessageText, sendMessage, obligatorio;
 
         obligatorio = 0 ; //no es campo del visitante obligatorio
@@ -64,9 +64,11 @@
 
          verificaCK = function($clave){
 
+            let $retorno;
              //verifica CK
              jQuery.ajax({
                 method: "POST",
+                    async:false,
                     url: base_url+"Chatbot/verificaCheck",
                     dataType: 'json',
                     data: {id_atencion},
@@ -75,20 +77,21 @@
                 }).done(
                         function(res){
                             if(res.ck_saludo!=0){
-                                obtieneAjaxMensaje('ck_saludo');
+                               retorno = 'ck_saludo';
                             }else if(res.ck_nombre!=0){
-                                obtieneAjaxMensaje('ck_nombre');
+                                retorno = 'ck_nombre';
                             }else if(res.ck_contacto!=0){
-                               obtieneAjaxMensaje('ck_contacto');
+                                retorno = 'ck_contacto';
                             }else
-                                obtieneAjaxMensaje($clave);
+                                retorno = $clave;
                         }
                 ); 
+            return $retorno;
          }
 
         botAction = function($clave){
-          
-            verificaCK($clave);
+            $clave = verificaCK($clave);
+            obtieneAjaxMensaje($clave);
  
         }
 
