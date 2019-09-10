@@ -26,6 +26,8 @@ class Chatbot extends CI_Controller {
 		$data['id_visitante'] = $visitante;
 		$data['id_atencion'] = $atencion;
 		$data['id_chatbox'] = $chatbox;
+		
+		$data['atencion'] = $this->obtieneAtencion($atencion);
 
 		//Salida del chat a navegador
 		$this->load->view('v_chatbot',$data); // footer
@@ -65,17 +67,11 @@ class Chatbot extends CI_Controller {
 	 * @param [type] $atencion
 	 * @return void
 	 */
-	public function verificaCheck(){
+	public function obtieneAtencion($atencion){
 
 		$this->load->model('M_cbatenciones');
-
-		$atencion = $this->input->post('id_atencion');
-
 		$data = $this->M_cbatenciones->obtieneAtencion($atencion);
-
-
-		echo json_encode($data);
-
+		return $data;
 	}
 
 
@@ -109,14 +105,15 @@ class Chatbot extends CI_Controller {
 		
 		$msje = $this->input->post('mensaje');
 		$obligatorio = $this->input->post('obligatorio');
-		$claveobligatorio = $this->input->post('claveobligatorio');
+		$claveobligatorio = $this->input->post('claveobligatorioRespuesta');
 		$id_atencion = $this->input->post('id_atencion');
 
 		//TODO validar que sea realmente lo que necesita el campo obligatorio
+		//TODO ACTUALIZAR VISITANTEEEEEEEEEEEEE
 		$this->M_cbatenciones->actualizaAtencion($id_atencion,$claveobligatorio,0);
 		
 		//if($obligatorio==1)
-
+		echo json_encode($claveobligatorio);
 
 	}
 

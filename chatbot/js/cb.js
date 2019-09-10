@@ -22,7 +22,8 @@
 
     $(function (){
         
-        var getMessageText, sendMessage, obligatorio;
+        var getMessageText, sendMessage, obligatorio, ck_saludo, ck_nombre, ck_contaco;
+
 
         obligatorio = 0 ; //no es campo del visitante obligatorio
         claveobligatorio = "";
@@ -63,8 +64,19 @@
 
 
          verificaCK = function($clave){
+            retorno="";
+            if(ck_saludo!=0){
+                retorno = 'ck_saludo';
+             }else if(ck_nombre!=0){
+                 retorno = 'ck_nombre';
+             }else if(ck_contacto!=0){
+                 retorno = 'ck_contacto';
+             }else
+                 retorno = $clave;
+             return retorno;
 
-            let $retorno;
+
+            /*let $retorno;
              //verifica CK
              jQuery.ajax({
                 method: "POST",
@@ -86,7 +98,7 @@
                                 retorno = $clave;
                         }
                 ); 
-            return $retorno;
+            return $retorno;*/
          }
 
         botAction = function($clave){
@@ -113,11 +125,16 @@
         }
 
 
+        
         botActionCallBack = function(res){
-            if(res.obligatoria>0)
-            {
+            if(res.obligatoria>0){
+                //Bot Pregunta
                 obligatorio = res.obligatoria;
-                claveobligatorio = res.ck;
+                claveobligatorioRespuesta = res.ck;
+            }else{
+                //Bot Responde
+                obligatorio = 0 ;
+                claveobligatorioRespuesta="";
             }
 
             botMessage(res.respuesta);
@@ -125,15 +142,20 @@
 
         userAction = function(mensaje){
             if(obligatorio>0){
+                //es una respuesta debo saber cual es la clave a actualizar
                 jQuery.ajax({
                     method: "POST",
                         url: base_url+"Chatbot/actualizaObligatorio",
                         dataType: 'json',
-                        data: {obligatorio,mensaje,claveobligatorio,id_atencion},
+                        data: {obligatorio,mensaje,claveobligatorioRespuesta,id_atencion},
                         success: function(res) {
-                            //procesaRespuestaServer(res);
-                            //espero un poco antes de buscar una respuesta
-                            
+                           //actualize un ck , debo refrescar las variables ck en el chatbox
+                           if(claveobligatorioRespuesta=="ck_nombre")
+                                ck_nombre = 0;
+                            if(claveobligatorioRespuesta=="ck_contacto")
+                                ck_contacto= 0;
+                            if(claveobligatorioRespuesta=="ck_saludo")
+                                ck_saludo = 0;
                         }
                     }); 
             }
