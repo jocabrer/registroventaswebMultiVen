@@ -22,19 +22,22 @@
 
     $(function (){
         
-        var getMessageText, sendMessage, obligatorio, ck_saludo, ck_nombre, ck_contaco;
+        var getMessageText, sendMessage, obligatorio, ck_saludo, ck_nombre, ck_contacto;
 
 
         obligatorio = 0 ; //no es campo del visitante obligatorio
         claveobligatorio = "";
+        claveobligatorioRespuesta = "";
 
-        getMessageText = function () {
+        //obtiene el mensaje del input 
+        getMessageText = function(){
             var $message_input;
             $message_input = $('#inputmsje');
             return $message_input.val();
         };
         
 
+        //Muestra un mensaje en el chatbox
         sendMessage = function (text,message_side,template) {
             var $messages, message;
             if (text.trim() === '') {
@@ -51,7 +54,7 @@
             return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
         };
 
-
+        //Muestra un mensaje Como el bot en el chatbox
         botMessage = function($msje){
             escribiendo = $('#escribiendo');
             escribiendo.show();
@@ -63,6 +66,7 @@
           }
 
 
+          //se encarga de revisar en el storage  si se han cumplidos los CK 
          verificaCK = function($clave){
             retorno="";
             if(ck_saludo!=0){
@@ -74,32 +78,7 @@
              }else
                  retorno = $clave;
              return retorno;
-
-
-            /*let $retorno;
-             //verifica CK
-             jQuery.ajax({
-                method: "POST",
-                    async:false,
-                    url: base_url+"Chatbot/verificaCheck",
-                    dataType: 'json',
-                    data: {id_atencion},
-                    success: function(res) {
-                    }
-                }).done(
-                        function(res){
-                            if(res.ck_saludo!=0){
-                               retorno = 'ck_saludo';
-                            }else if(res.ck_nombre!=0){
-                                retorno = 'ck_nombre';
-                            }else if(res.ck_contacto!=0){
-                                retorno = 'ck_contacto';
-                            }else
-                                retorno = $clave;
-                        }
-                ); 
-            return $retorno;*/
-         }
+        }
 
         botAction = function($clave){
             $clave = verificaCK($clave);
@@ -117,7 +96,7 @@
                 method: "POST",
                     url: base_url+"Chatbot/obtieneMensaje",
                     dataType: 'json',
-                    data: {clave:$clave},
+                    data: {clave:$clave,claveobligatorioRespuesta},
                     success: function(res) {
                         botActionCallBack(res.respuesta);
                     }
@@ -149,23 +128,38 @@
                         dataType: 'json',
                         data: {obligatorio,mensaje,claveobligatorioRespuesta,id_atencion},
                         success: function(res) {
-                           //actualize un ck , debo refrescar las variables ck en el chatbox
-                           if(claveobligatorioRespuesta=="ck_nombre")
-                                ck_nombre = 0;
-                            if(claveobligatorioRespuesta=="ck_contacto")
-                                ck_contacto= 0;
-                            if(claveobligatorioRespuesta=="ck_saludo")
-                                ck_saludo = 0;
+                            actualizaCK(res);
                         }
                     }); 
             }
             sendMessage(getMessageText(),'right','.message_template2');
-            setTimeout(function () {botAction(mensaje);}, 3000);
+            setTimeout(function () {botAction(mensaje,);}, 3000);
         }
 
-        
-        //inicializamos chat con el HOLA 
-        botAction('[hola]');
+        actualizaCK = function(res){
+                //actualize un ck , debo refrescar las variables ck en el chatbox
+                if(claveobligatorioRespuesta=="ck_nombre"){
+                    ck_nombre = 0;
+                }
+                if(claveobligatorioRespuesta=="ck_contacto")
+                ck_contacto= 0;
+                if(claveobligatorioRespuesta=="ck_saludo")
+                ck_saludo = 0;
+        }
+
+       
+
+
+        inicializaChatBox = function(){
+
+                
+                //inicializamos chat con el HOLA 
+                botAction('[hola]');
+               // localStorage.setItem('preguntasObligatorias',<?php echo $preguntasObligatorias; ?>)
+        }
+
+
+        inicializaChatBox();
 
         //Listeners
         $('#btnenviar').click(function (e) {userAction(getMessageText());});
