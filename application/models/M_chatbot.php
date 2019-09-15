@@ -30,23 +30,7 @@ class M_Chatbot extends CI_Model {
     
 
    
-    function obtieneMensaje($clave){
-
-        $this->db->select('p.respuesta,p.obligatoria,p.ck');
-		$this->db->from('cb_patrones p');
-		$this->db->like('claves', $clave);
-        $this->db->order_by('prioridad', 'asc');
-        
-        $query = $this->db->get();
-        
-        $queryresultado = $query->row_array(1);
-
-        $data['respuesta'] = $queryresultado['respuesta'];
-        $data['obligatoria'] = $queryresultado['obligatoria'];
-        $data['ck'] = $queryresultado['ck'];
-
-        return $data;
-	}
+    
     
    
 

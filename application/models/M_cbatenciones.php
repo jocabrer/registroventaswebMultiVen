@@ -40,6 +40,7 @@ class M_cbatenciones extends CI_Model {
         $this->ck_nombre = $queryresultado['ck_nombre'];
         $this->ck_saludo = $queryresultado['ck_saludo'];
 
+        
        return $queryresultado;
 
     }

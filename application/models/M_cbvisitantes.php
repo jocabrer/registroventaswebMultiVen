@@ -25,10 +25,12 @@ class M_Cbvisitantes extends CI_Model {
     function actualizaVisitante($idvisitante,$campo,$valor){
 
         $this->db->set($campo, $valor);
-        $this->db->where('id',idvisitante);
+        $this->db->where('id',$idvisitante);
         $this->db->update('cb_visitantes'); // gives UPDATE mytable SET field = field+1 WHERE id = 2
     }
 
+
+  
    
 }
 

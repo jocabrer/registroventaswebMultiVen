@@ -10,6 +10,7 @@ class Chatbot extends CI_Controller {
 		
 		$this->load->model('M_cbatenciones');
 		$this->load->model('M_Cbvisitantes');
+		$this->load->model('M_cbpatrones');
 		$this->load->model('M_Chatbot');
 
 		$this->load->library("Comun");
@@ -28,6 +29,7 @@ class Chatbot extends CI_Controller {
 		$data['id_chatbox'] = $chatbox;
 		
 		$data['atencion'] = $this->obtieneAtencion($atencion);
+		//$data['preguntasObligatorias'] = $this->M_cbpatrones->obtienePreguntasObligatorias();
 
 		//Salida del chat a navegador
 		$this->load->view('v_chatbot',$data); // footer
@@ -75,33 +77,56 @@ class Chatbot extends CI_Controller {
 	}
 
 
+	/**
+	 * Metodo POST que se encarga de solicitar al modelo un mensaje según una palabra.
+	 * Aplica reeplace de palabras plantilla
+	 *
+	 * @return json con el mensaje de respuesta y su atributo si es obligatorio y su ck
+	 */
 	public function obtieneMensaje(){
 
-		$this->load->model('M_Chatbot');
+		$this->load->model('M_cbpatrones');
 
 		$clave = $this->input->post('clave');
+		
+		//tengo el dato anterior de lo que se respondio acá puedo rescatar el nombre por ej si me respondiero el nombre 
+		$claveobligatorioRespuesta = $this->input->post('claveobligatorioRespuesta');
+		
 		$clave = trim($clave);
 		$desglose = explode(" ",$clave);
 
 		$respuesta="";
 		foreach($desglose as $pal){
-			
-			$respuesta = $this->M_Chatbot->obtieneMensaje($pal);
-			
-			if($respuesta!="")
-				break;
-		}
-		
-		$data['respuesta'] = $this->reemplazaClaves($respuesta);
-		$data['respuesta'] = $this->reemplazaClaves($respuesta);
 
+			if(strlen($pal)>3)
+			{
+				$respuesta = $this->M_cbpatrones->obtieneMensaje($pal);
+				if($respuesta!="")
+					break;
+			}
+		}
+	
+		if(empty($respuesta))
+			$respuesta = $this->MensajeMuletilla();
+		$data['respuesta'] = $this->reemplazaClaves($respuesta);
 		echo json_encode($data);
+	}
+
+	/**
+	 * Obtiene un mensaje cuando no se obtuvo respuestas para alguna entrada de usuario.-
+	 *
+	 * @return json con 
+	 */
+	function MensajeMuletilla(){
+		$this->load->model('M_cbpatrones');
+		return $this->M_cbpatrones->obtieneMensaje('cordial');
 	}
 
 	function actualizaObligatorio(){
 		
-		$this->load->model('M_Chatbot');
+		//$this->load->model('M_Chatbot');
 		$this->load->model('M_cbatenciones');
+		$this->load->model('M_Cbvisitantes');
 		
 		$msje = $this->input->post('mensaje');
 		$obligatorio = $this->input->post('obligatorio');
@@ -110,10 +135,21 @@ class Chatbot extends CI_Controller {
 
 		//TODO validar que sea realmente lo que necesita el campo obligatorio
 		//TODO ACTUALIZAR VISITANTEEEEEEEEEEEEE
+		if($claveobligatorio=="ck_nombre")
+			$this->M_Cbvisitantes->actualizaVisitante($id_atencion,'nombre',$msje);
+		if($claveobligatorio=="ck_contacto"){
+			if($obligatorio==2)
+				$this->M_Cbvisitantes->actualizaVisitante($id_atencion,'fono',$msje);
+			if($obligatorio==3)
+				$this->M_Cbvisitantes->actualizaVisitante($id_atencion,'correo',$msje);
+		}
+
 		$this->M_cbatenciones->actualizaAtencion($id_atencion,$claveobligatorio,0);
 		
+		$data['claveobligatorio'] = $claveobligatorio;
+		$data['datoobligatorio'] = $msje;
 		//if($obligatorio==1)
-		echo json_encode($claveobligatorio);
+		echo json_encode($data);
 
 	}
 
@@ -137,6 +173,7 @@ class Chatbot extends CI_Controller {
 			$buenas = "días";
 
 		$msje = str_replace("{tiempo}",$buenas,$msje);
+		
 
 		return $msje;
 	}
