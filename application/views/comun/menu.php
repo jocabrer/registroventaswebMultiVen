@@ -46,11 +46,6 @@
 					<li class="<?php echo ($currentAction == "Consulta")?'active':'treeview'; ?>">
 						<a href="<?php echo base_url('seguimiento/Consulta'); ?>">Seguimiento</a>
 					</li>
-					<?php  if($this->ion_auth->is_admin()) {?>
-               		<li class="<?php echo ($currentAction == "verdetallemovimientos")?'active':'treeview'; ?>">
-						<a href="<?php echo base_url('Cuenta/verdetallemovimientos'); ?>">Movimiento cuentas</a>
-					</li>
-					<?php }?>
               </ul>
             </li>
             
@@ -99,11 +94,11 @@
             </li>
             
             <?php if($this->ion_auth->is_admin()){ ?>
-              <li class="<?php echo ($currentClass == "Reporte")?'active':'treeview'; ?>">
+            <li class="<?php echo ($currentClass == "Reporte")?'active':'treeview'; ?>">
               <a href="#">
-				<i class="fa fa-tag">
+				<i class="fa fa-pie-chart">
 				</i> 
-				<span>Reportes</span> 
+				<span>Analisis</span> 
 				<i class="fa fa-angle-left pull-right"></i>
 			  </a>
               <ul class="treeview-menu">
@@ -111,7 +106,11 @@
               		<li class="<?php echo ($currentAction == "hojas")?'active':'treeview'; ?>">
 						<a href="<?php echo base_url('Reporte/hojas'); ?>">Hojas de trabajo</a>
 					</li>
-                
+
+					<li class="<?php echo ($currentAction == "verdetallemovimientos")?'active':'treeview'; ?>">
+						<a href="<?php echo base_url('Cuenta/verdetallemovimientos'); ?>">Movimiento cuentas</a>
+					</li>
+			    
               </ul>
             </li>
             
@@ -131,7 +130,10 @@
 					
               </ul>
             </li>
-            
+			
+			
+
+
             <?php }?>
           </ul><!-- /.sidebar-menu -->
 		  

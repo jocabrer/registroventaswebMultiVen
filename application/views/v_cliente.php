@@ -213,20 +213,21 @@
 						   data-url="<?php echo base_url('Pedido/listadoPedidos/'); ?>">
 				     <thead>
 			         <tr>
-			                 <th data-field="numeroPedido"  data-sortable="true" data-formatter="f_idpedido">Nro.</th>
-			                 <th data-field="numeroPedido"  data-sortable="true" data-formatter="f_comprobante">Comp.</th>
-			                 <th data-field="cli_id" data-visible="false">id cliente</th>
-			                 <th data-field="cli_nom"  data-visible="false" data-filterby="true"  data-formatter="f_cliente">Cliente</th>
-			                 <th data-field="estado_sec"  data-sortable="true" data-align="left" data-formatter="FormatoEstado">Estado</th>
-							 <th data-field="comision"  data-sortable="true" data-align="left"  data-formatter="FormatoComision">Comisi&oacute;n</th>
-							 <th data-field="confactura"  data-sortable="true" data-align="center" data-visible="false">Factura</th>
-							 <th data-field="est_fec_estactual" data-sortable="true">Fecha Act</th>
-							 <th data-field="diastranscurridos" data-sortable="true">D&iacute;as T.</th>
-							 <th data-field="totalAPagar" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Venta Total</th>
-							 <th data-field="SaldoCLiente" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo Cliente</th>
-							 <th data-field="SaldoVendedor1"  data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo VEN1</th>
-							 <th data-field="SaldoVendedor2"  data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo VEN2</th>
-							 <th data-field="SaldoFabrica" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo F&aacute;brica</th>
+					 		<th data-field="numeroPedido"  data-sortable="true" data-align="center" data-formatter="formatoVerDetalle" data-events="eventosTabla"></th>
+							<th data-field="numeroPedido"  data-sortable="true" data-formatter="f_idpedido">Nro.</th>
+			                <th data-field="numeroPedido"  data-sortable="true" data-formatter="f_comprobante">Comp.</th>
+							<th data-field="cli_id" data-visible="false">id cliente</th>
+							<th data-field="cli_nom"  data-visible="false" data-filterby="true"  data-formatter="f_cliente">Cliente</th>
+							<th data-field="estado_sec"  data-sortable="true" data-align="left" data-formatter="FormatoEstado">Estado</th>
+							<th data-field="comision"  data-sortable="true" data-align="left"  data-formatter="FormatoComision">Comisi&oacute;n</th>
+							<th data-field="confactura"  data-sortable="true" data-align="center" data-visible="false">Factura</th>
+							<th data-field="est_fec_estactual" data-sortable="true">Fecha Act</th>
+							<th data-field="diastranscurridos" data-sortable="true">D&iacute;as T.</th>
+							<th data-field="totalAPagar" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Venta Total</th>
+							<th data-field="SaldoCLiente" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo Cliente</th>
+							<th data-field="SaldoVendedor1"  data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo VEN1</th>
+							<th data-field="SaldoVendedor2"  data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo VEN2</th>
+							<th data-field="SaldoFabrica" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Saldo F&aacute;brica</th>
 			            </tr>
 			         </thead>
 					</table>
@@ -298,6 +299,11 @@ $(document).ready(function() {
 	$("#txt_fono2").change(function() {validaCliente($("#txt_fono2").val());});
   $("#txt_rut").change(function(){$('#txt_rut').rut();});
 
+
+
+	//manejador evento que elimina pedido.
+	window.eventosTabla = {'click .ver': function (e, value, row, index) {
+		muestraPedidoVistaPreviaModalRow(row);}};
 
   //Seteo eventos botones
   $('#btnback').click(function () {window.history.back();});

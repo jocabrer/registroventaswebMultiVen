@@ -37,7 +37,9 @@ return [
 
 
 /*
+****************************************************************************************************************************************************************************************
 Crea columnas con el boton de eliminar
+****************************************************************************************************************************************************************************************
 */
 function formatoVerDetalle(value, row, index) {
 return [
@@ -46,6 +48,93 @@ return [
     '</a>'
 ].join('');
 }
+
+/*
+*  Usado para sacar el id del arreglo cuando es llamado desde una fila de la tabla de resultados,  para llamar a muestraPedidoVistaPreviaModal 
+*/
+function muestraPedidoVistaPreviaModalRow(row)
+{
+	muestraPedidoVistaPreviaModal(row['numeroPedido']);
+}
+/*
+*	Muestra el modal con la vista previa del detalle del pedido
+*	Se gatilla cada vez que se presiona la lupa en algun pedido del listado
+*   row : Es la fila desde donde se hizo clic 
+*/	
+function muestraPedidoVistaPreviaModal(id)
+{
+	//Seteo en un label del modal el pedido que cargaremos
+	$('#iddetallepedido').val(id);
+	$('#iddetallepedido').text(id);
+	//Llamo a la funcion que actualiza la tabla con los valores de este pedido
+	//buscaResultados($('#tbl_detallepedido'));
+	$('#tbl_detallepedido').bootstrapTable('refresh');
+	//LLamo a la funcion que actualiza los totales del detalle 
+	actualizaIndicadoresDetalleVistaPrevia(id);
+	//Agrego un link para editar el pedido
+	var link = "<a class='btn btn-default'  href='"+base_url+"Pedido/editarPedido/"+id+"'><i class='fa fa-edit'></i> Ver Más</a>";
+	
+	$('#linkfooter').html(link);
+	//Muestro el modal
+	$('#divpedidopreview').modal('show');
+}
+
+/*
+	*Totaliza la respuesta para mostrar el detalle
+	*/
+	function actualizaIndicadoresDetalleVistaPreviaCallBack(res){
+
+		$("#p_comisiones").html('');
+		
+		if(res!=null)
+        {
+
+			for (var i = 0; i < res.length; i++){
+				
+			    var r = res[i];
+
+			    if(i==0){
+			    	$('#lbl_subtotal').text(PriceFormatter(r.Subtotal));
+		        	$('#lbl_iva').text(PriceFormatter(r.iva));
+		        	$('#lbl_totalapagar').text(PriceFormatter(r.totalAPagar));
+		        	$('#lbl_totalabonocliente').text(PriceFormatter(r.PagadoCliente));
+		        	$('#lbl_totalsaldocliente').text(PriceFormatter(r.SaldoCliente));
+		    
+		        	$('#lbl_totalCosto').text(PriceFormatter(r.CostoTotal));
+		        	
+		        	$('#lbl_totalganancia').text(PriceFormatter(r.Ganancia100));
+		        	
+			    }
+
+			    	$("#p_comisiones").append("<b>"+r.NombreVendedor+"</b>&nbsp;<br/><i>Quedan </i>"+PriceFormatter(r.SaldoVendedor)+"<i> de</i> " +PriceFormatter(r.TotalVendedor)+" <br>");
+			    
+			}
+	        
+        	
+        }
+    	
+	}
+
+	function actualizaIndicadoresDetalleVistaPrevia(id){
+		jQuery.ajax({
+			method: "POST",
+				url: base_url+"Pedido/obtieneIndicadoresExtendidos",
+				dataType: 'json',
+				data: {idpedido:id},
+				success: function(res){actualizaIndicadoresDetalleVistaPreviaCallBack(res);}
+		}); //jqueryajax	
+	}
+
+	/*
+	 * Funcion que setea los parametros de la tabla de detalle
+	 */
+	function queryParamsDetalle(params) {
+		params['numeroPedido'] = $('#iddetallepedido').val();
+  return params;
+}
+/*
+****************************************************************************************************************************************************************************************
+*/	
 
 
 /*
@@ -247,5 +336,10 @@ function MuestraMensaje(titulo,mensaje){
 	  modal.find('.modal-body').html(mensaje)
 	  modal.modal('show');
 }
+
+
+
+
+
 
 
