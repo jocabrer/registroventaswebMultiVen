@@ -221,6 +221,7 @@
 							<th data-field="estado_sec"  data-sortable="true" data-align="left" data-formatter="FormatoEstado">Estado</th>
 							<th data-field="comision"  data-sortable="true" data-align="left"  data-formatter="FormatoComision">Comisi&oacute;n</th>
 							<th data-field="confactura"  data-sortable="true" data-align="center" data-visible="false">Factura</th>
+							<th data-field="est_fec_ing" data-sortable="true" data-visible="true">Ingresado</th>
 							<th data-field="est_fec_estactual" data-sortable="true">Fecha Act</th>
 							<th data-field="diastranscurridos" data-sortable="true">D&iacute;as T.</th>
 							<th data-field="totalAPagar" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" >Venta Total</th>
