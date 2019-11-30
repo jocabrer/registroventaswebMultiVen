@@ -629,10 +629,10 @@ class Pedido extends CI_Controller
         echo json_encode($data);
     }
 
-    public function muestraUltimosAdjuntos(){
+    public function muestraUltimosAdjuntos($criterio = ""){
 
         $this->load->model('M_hojas');
-		$datos = $this->M_pedido->buscador_adjuntos(5,"desc","");
+		$datos = $this->M_pedido->buscador_adjuntos(5,"desc",$criterio);
 		echo json_encode ( $datos );
         
     }

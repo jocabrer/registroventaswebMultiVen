@@ -183,8 +183,10 @@ class M_pedido extends CI_Model {
      */
     function buscador_adjuntos($limit,$descasc,$criterio){
 
-        if(strlen($criterio)>0)
-            $this->db->where('id_cabecera',$criterio);
+        if(strlen($criterio)>0){
+			$this->db->or_like('id_cabecera',$criterio);
+			$this->db->or_like('filename',$criterio);
+		}
 
         $this->db->limit($limit);
         $this->db->order_by("fecha_subida",$descasc);

@@ -21,9 +21,9 @@
 		<div class="box-header with-border">
 			<h3 class="box-title">#<label id="lbl_id_pedido"></label>&nbsp;&nbsp;&nbsp;<?php echo $descHeader; ?></h3>
 					<div class="box-tools pull-right">
+						<a class="btn btn-default" title="Ver adjuntos" href="#"><i class="fa fa-fw fa-paperclip"></i></a>
 						<a class="btn btn-default"  title="Ver comprobante" href="<?php echo base_url(); ?>Comprobante/verComprobante/<?php echo $pedEdit['id'];?> " target="blank"><i class="fa fa-fw fa-print"></i> </a>
 						<a class="btn btn-default" title="Ver seguimiento de pedido" href="<?php echo base_url('seguimiento/ver/'.$pedEdit['id'].'/'.$pedEdit['cli_id']); ?>" target="blank"><i class="fa fa-fw fa-tasks"></i>Ver Seguimiento</a>
-						
 					</div>
 				</div>
 		<div class="box-body">
@@ -307,59 +307,7 @@
 </div><!-- /.box-footer-->
 </div>
 
-<!-- -------------------------- Adjuntos -------------------------------------------------------------->
-<div class="box">
-<div class="box-header with-border">
-	<h3 class="box-title">Adjuntos</h3>
-    <div class="box-tools pull-right">
-         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-    </div><!-- tools -->
-</div><!-- /.box-header -->
-<div class="box-body" style="width:100%">
-		
-		<table id="tbl_adjuntos"
-			   data-method="post"
-       		   data-toggle="table"
-			   data-url="<?php echo base_url('Pedido/ObtenerListadoAdjuntos/'); ?>"
-			   data-query-params="queryParamsTablaAdjuntos"
-			   data-response-handler="responseHandlerTablaAdjuntos">
-	     <thead>
-         <tr >
-         		 <th data-field="id" data-align="center" data-visible="false">Id</th>
-				 <th data-field="nombretipo">Tipo</th>
-                 <th data-field="filenameid" data-formatter="f_archivoadjunto">Archivo</th>
-				 <th data-field="publico" data-formatter="FormatoEsPublico">Público</th>
-				 <th data-field="fecha_subida">Subido</th>
-				 <th data-field= 'operate' data-events='eventoTablaAdjunto' data-formatter='operateFormatter'}
-         </tr>
-         </thead>
-      
-		</table>
-		
-		<br>
-		<form action="<?php echo base_url(); ?>Pedido/grabaAdjunto/" enctype="multipart/form-data" role="form"  id="frm_adjunto" method="post">
-		<input type="hidden" id="cabecera" name="cabecera" value="<?php echo $pedEdit['id'];?>">
-		<div class="row">
-			<div class="col-lg-2 col-md-12  col-xs-12">
-				<input type="checkbox" id="publico" name="publico" class="form">Publico</th>
-			</div>
-			<div class="col-lg-2 col-md-12  col-xs-12">
-				<select id="sl_tipoAdjunto" name="sl_tipoAdjunto" class="form-control"></select>
-			</div>
-			<div class="col-lg-8 col-md-12  col-xs-12">
-				<input type="file" name="userfile" id="userfile" size="20 class="form-control" />
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-4 col-md-12  col-xs-12">
-			<button  id="btn_subir_adjunto" type="submit" class="btn btn-default" title="Subir archivo adjunto al pedido" >
-			<i class="fa fa-save"></i> Grabar Adjunto</button>
-			</div>
-		</div>
-		</form>
-</div>
-</div>
-<!-- -------------------------- Fin Adjuntos -------------------------------------------------------------->
+
 
 </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
@@ -476,6 +424,76 @@
 </div><!-- /.modal -->
 
 
+
+
+
+<!-- subida de archivos adjuntos -->
+<div class="modal fade" tabindex="-1" role="dialog" id="divsubearchivo">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Agregar adjunto <label id="iddetallepedido"></label> :</h4>
+      </div>
+      <div class="modal-body">
+      		
+      		<div class="row">
+      			<div class="col-md-12 col-sm-12 col-xs-12">
+				  <table id="tbl_adjuntos"
+						data-method="post"
+						data-toggle="table"
+						data-url="<?php echo base_url('Pedido/ObtenerListadoAdjuntos/'); ?>"
+						data-query-params="queryParamsTablaAdjuntos"
+						data-response-handler="responseHandlerTablaAdjuntos">
+					<thead>
+					<tr >
+							<th data-field="id" data-align="center" data-visible="false">Id</th>
+							<th data-field="nombretipo">Tipo</th>
+							<th data-field="filenameid" data-formatter="f_archivoadjunto">Archivo</th>
+							<th data-field="publico" data-formatter="FormatoEsPublico">Público</th>
+							<th data-field="fecha_subida">Subido</th>
+							<th data-field= 'operate' data-events='eventoTablaAdjunto' data-formatter='operateFormatter'}
+					</tr>
+					</thead>
+					</table>
+        		</div><!-- col -->
+			</div><!-- row -->
+			<form action="<?php echo base_url(); ?>Pedido/grabaAdjunto/" enctype="multipart/form-data" role="form"  id="frm_adjunto" method="post">
+			<div class="row">
+				 <div class="col-md-6 col-sm-6 col-xs-12" style="text-align_right;">
+				 <input type="hidden" id="cabecera" name="cabecera" value="<?php echo $pedEdit['id'];?>">
+					<table class="table no-margin">
+                      <tr>
+                        <th style="width:50%"><input type="checkbox" id="publico" name="publico" class="form">Publico</th></th>
+                      </tr>
+                      <tr>
+                        <td><select id="sl_tipoAdjunto" name="sl_tipoAdjunto" class="form-control"></select></label></td>
+                      </tr>
+                      <tr>
+                        <th><input type="file" name="userfile" id="userfile" size="20 class="form-control" /></th>
+                      </tr>
+                      <tr>
+                        <td>
+						<button  id="btn_subir_adjunto" type="submit" class="btn btn-default" title="Subir archivo adjunto al pedido" >
+								<i class="fa fa-save"></i> Grabar Adjunto</button>
+                        </td>
+                      </tr>
+                      
+                     </table>
+				 </div>
+				</div><!-- row -->
+				</form>
+	  </div><!-- modal info -->
+	  <div class="modal-footer">
+	  		<span id="linkfooter"></span>
+	  </div>
+      
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
 <script type="text/javascript">
 	/*
 	 * Funcion que setea los parametros.
@@ -493,6 +511,8 @@
 
 
 $(document).ready(function() {
+
+
 
 	$.fn.editable.defaults.mode = 'inline';
 
@@ -1063,8 +1083,10 @@ $(document).ready(function() {
 				});
 
 			$('#btnback').click(function () {
-				window.history.back();
-	});
+				window.history.back();});
+
+			$('.fa-paperclip').click(function(){
+	$('#divsubearchivo').modal('show');});
 				
 }); //Function ready
 </script>

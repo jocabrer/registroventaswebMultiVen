@@ -255,8 +255,30 @@
 							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
 						</div>
 				</div> <!-- /.box-header -->
-				<div class="box-body">			  
-							<table id="tbl_ultimosadjuntos" class="table"></table>	   
+				<div class="box-body">	
+					
+				
+							<div class"row">
+								<div class="col-md-8">
+									<div class="form-group">
+										<input name="txt_criterio_adj" class="form-control input-sm" type="text" placeholder="Buscar adjunto" id="txt_criterio_adj">
+										
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<button  id="btn_buscar_adj" type="button" class="btn btn-info">Buscar</button>
+									</div>
+								</div>
+							</div>
+							<div class"row">
+								<div class="col-md-12">
+								<table id="tbl_ultimosadjuntos" class="table"></table>	   
+								</div>
+							</div><!-- row -->
+						 		
+							
+							
 				</div><!-- box body -->
 			</div><!-- box primary -->
 		<!-- / fin Ultimos adjuntos -->
@@ -379,10 +401,6 @@
 	        enableClickableOptGroups: true
 	    });
 
-
-	  
-
-
 	    <?php if(!$this->ion_auth->is_admin()){ ?>
 	    	var element = document.getElementById('sl_comision');
 	    	element.value = '1';
@@ -390,7 +408,6 @@
 
 	    
 	    /*SETEO EVENTOS*/
-	    
 	    $ok = $('#ok');  
 	    $btnVerPedido = $('#verPedido');
 		$ok.click(function () {buscaResultados($('#tabla_resultado'));});
@@ -401,7 +418,7 @@
 		
 		
 		
-		
+		$('#btn_buscar_adj').click(function(){ultimosAdjuntos();});
 		$('#btn_eliminar').click(function () {
 
 			if(confirm('¿ Seguro desea eliminar el producto ? '))
@@ -480,19 +497,19 @@
 	}
 
 	function ultimosAdjuntos(){
+
+	var criterio = $('#txt_criterio_adj').val();		
 	$('#tbl_ultimosadjuntos').bootstrapTable('destroy').bootstrapTable
-	({
-		   url: base_url+'Pedido/muestraUltimosAdjuntos/',
+	(	{
+		   url: base_url+'Pedido/muestraUltimosAdjuntos/'+criterio,
 		   method:"GET",
 		   dataType: 'json',
-		   columns:[
-					   {field: 'fecha_subida',title: 'Fec. Subida'},
+		   columns:[   {field: 'fecha_subida',title: 'Fec. Subida'},
 					   {field: 'id_cabecera',title: 'Pedido',formatter:'f_idpedido'}, 
 					   {field: 'id_tipo',title: 'Tipo'},
 					   {field: 'filenameid',title: 'filename',formatter:'f_archivoadjunto'}
-					   
-		   ]
-   }
+		   		   ]
+   		}
 	);
 	}
 
