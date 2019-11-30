@@ -287,13 +287,28 @@ class M_pedido extends CI_Model {
 		$this->db->join('cliente', 'v_cabecera.id = v_adjunto.id_cabecera and v_adjunto.id_tipo = 1', 'left');
 		$this->db->where('v_cabecera.ConFactura',$iva);
 		$this->db->where('v_adjunto.id',null);
-			
+
 		$this->db->where('v_cabecera.est_fec_ing >','2019-11-01');
 
 		return $this->db->get()->result_array();
 
 	}
 	
+	function obtenerPedidosDescuadrados(){
+		
+		$notin = array(0, 1);
+
+		
+		$this->db->select('v_listadopedidoextendido.*');
+		$this->db->from('v_listadopedidoextendido');
+		$this->db->where(' (SaldoCliente+SaldoFabrica+SaldoVendedor1+SaldoVendedor2) <>',0);
+		$this->db->where('est_fec_ing >','2019-11-01');
+		$this->db->where_not_in('estado_sec',$notin);
+
+		return $this->db->get()->result_array();
+	}
+
+
 
 	/**
 	 * Obtiene los indicadores de un pedido

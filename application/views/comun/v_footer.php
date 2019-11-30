@@ -5,7 +5,7 @@
           <?php echo  $user->first_name; ?>
         </div>
         <!-- Default to the left -->
-        <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2020 <a href="#">Company</a>.</strong> All rights reserved.
         Ultima con.
           <?php 
                   $date = new DateTime();

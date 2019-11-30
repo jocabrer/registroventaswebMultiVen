@@ -119,6 +119,13 @@
 					$cant= count($ind_conivasinfactura);
 					if($cant>0)
 						echo "<i class='fa fa-warning text-yellow'></i>Existen <a href='javascript:pedidosConIvaSinFactura()'>$cant</a> pedido(s) sin factura adjunta";
+
+
+					$cant = count($ind_descuadrados);
+					if($cant>0)
+						echo "<br><i class='fa fa-warning text-yellow'></i>Existen <a href='javascript:pedidosDescuadrados()'>$cant</a> pedido(s) listos y descuadrados";
+
+
 				?>
 				
 				<!--<a href="<?php echo base_url(); ?>Pedido/nuevoPedido/" class="btn btn-default"><i class="fa fa-edit"></i> Nuevo Pedido</a>-->
@@ -137,12 +144,12 @@
 					<!-- /.box-header -->
 					<div class="box-body">
 							<div class="row">
-								<div class="col-md-8">
+								<div class="col-md-6">
 									<div class="form-group">
 									<input id="buscarpedido" class="form-control input-sm" type="text" placeholder="Ingrese pedido">
 								</div>
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-6">
 								<div class="form-group">
 								<button  id="verPedido" type="button" class="btn btn-info input-sm">Ver Pedido</button>
 								</div>
@@ -526,6 +533,32 @@
 	  modal.modal('show');
 
 	}
+
+
+	/*
+	* muestra descuadrados
+	*/
+	function pedidosDescuadrados(){
+		$('#tbl_listapedidos').bootstrapTable('destroy').bootstrapTable
+	(	{
+		   url: base_url+'Pedido/obtenerPedidosDescuadradoAjax/',
+		   method:"GET",
+		   dataType: 'json',
+		   columns:[  /* {field: 'fecha_subida',title: 'Fec. Subida'},*/
+					   {field: 'numeroPedido',title: 'Pedido',formatter:'f_idpedido'},
+					   {field: 'cli_nom',title:'Nombre',formatter:'f_cliente'},
+					   /*{field: 'filenameid',title: 'filename',formatter:'f_archiv|oadjunto'}*/
+		   		   ]
+   		}
+	);
+
+	var modal = $('#modalDinamicoMuestraPedido');
+	  modal.find('.modal-title').text('Pedidos descuadrados')
+	  //modal.find('.modal-body').html(mensaje)
+	  modal.modal('show');
+
+	}
+
 /*	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
 /*	 Metodos  
 /*	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */

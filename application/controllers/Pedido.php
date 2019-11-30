@@ -199,6 +199,9 @@ class Pedido extends CI_Controller
 
 
         $dataContent['ind_conivasinfactura']  = $this->obtenerPedidosConIvaSinFactura();
+        $dataContent['ind_descuadrados']  = $this->M_pedido->obtenerPedidosDescuadrados();
+
+        
 
 
         $this->load->template('v_pedido_listado', $dataContent);
@@ -693,6 +696,16 @@ class Pedido extends CI_Controller
         echo json_encode($data);
     }
 
+
+    public function obtenerPedidosDescuadradoAjax(){
+         
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login');
+        }
+        
+        $data = $this->M_pedido->obtenerPedidosDescuadrados();
+        echo json_encode($data);
+    }
 
     /**
      * ********************************************* V_pedido_listado *****************************************************************************
