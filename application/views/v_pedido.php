@@ -442,23 +442,24 @@
 				  <table id="tbl_adjuntos"
 						data-method="post"
 						data-toggle="table"
-						data-url="<?php echo base_url('Pedido/ObtenerListadoAdjuntos/'); ?>"
+						data-url="<?php echo base_url('Pedido/Adj_obtenerPorPedido/'); ?>"
 						data-query-params="queryParamsTablaAdjuntos"
 						data-response-handler="responseHandlerTablaAdjuntos">
 					<thead>
 					<tr >
 							<th data-field="id" data-align="center" data-visible="false">Id</th>
+							<th data-field= 'operate' data-events='eventoTablaAdjunto' data-formatter='operateFormatter'>
 							<th data-field="nombretipo">Tipo</th>
 							<th data-field="filenameid" data-formatter="f_archivoadjunto">Archivo</th>
 							<th data-field="publico" data-formatter="FormatoEsPublico">Público</th>
 							<th data-field="fecha_subida">Subido</th>
-							<th data-field= 'operate' data-events='eventoTablaAdjunto' data-formatter='operateFormatter'}
+							
 					</tr>
 					</thead>
 					</table>
         		</div><!-- col -->
 			</div><!-- row -->
-			<form action="<?php echo base_url(); ?>Pedido/grabaAdjunto/" enctype="multipart/form-data" role="form"  id="frm_adjunto" method="post">
+			<form action="<?php echo base_url(); ?>Pedido/Adj_grabar/" enctype="multipart/form-data" role="form"  id="frm_adjunto" method="post">
 			<div class="row">
 				 <div class="col-md-6 col-sm-6 col-xs-12" style="text-align_right;">
 				 <input type="hidden" id="cabecera" name="cabecera" value="<?php echo $pedEdit['id'];?>">
@@ -528,10 +529,10 @@ $(document).ready(function() {
 	$("#btn_agregar_caja").click(function(){$("#div_agregarcaja").modal('show');});
 	
 	//Seteamos eventos para mostrar imagenes adjunto
-	$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+	/*$(document).on('click', '[data-toggle="lightbox"]', function(event) {
                 event.preventDefault();
                 $(this).ekkoLightbox();
-	});
+	});*/
 	
 	//Seteamos evento del control de estado para que grabe cada vez que se cambia de estado 
 	$("#sl_estado").change(function(){cambiaEstadoPedido();});
@@ -632,7 +633,7 @@ $(document).ready(function() {
 		var id = row['id'];
 		jQuery.ajax({
 			method: "POST",
-				url: "<?php echo base_url('Pedido/eliminaAdjunto/'); ?>",
+				url: "<?php echo base_url('Pedido/Adj_eliminar/'); ?>",
 				data:{id},
 				dataType: 'json',
 				success: function(res){eliminaAdjuntoCallback(res);}
@@ -671,7 +672,7 @@ $(document).ready(function() {
 		var options = $("#sl_tipoAdjunto");
 		jQuery.ajax({
 					method: "POST",
-						url: "<?php echo base_url('Pedido/obtieneTipoAdjunto/'); ?>",
+						url: "<?php echo base_url('Pedido/Adj_listadoTipo/'); ?>",
 						dataType: 'json',
 						success: function(data){
 							$.each(data, function() 

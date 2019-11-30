@@ -15,177 +15,68 @@
 
 	<section class="content">
 	<div class="row">
-		<div class="col-md-6">
-		<!-- Resumen Pedidos ---------------------------------------------------------------------------------->
+		<!-- --------------------------------------------- primera columna ----------------------------------------------->
+		<div class="col-md-3">
+			<!-- Resumen Pedidos ---------------------------------------------------------------------------------->
 			<?php $totalactual=$ind_ingresado+$ind_enfabricacion+$ind_esperando+$ind_conproblema+$ind_calculando;?>
 			<div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title"><a href="javascript:seleccionaEstadosActuales()">Total actual : <?php echo $totalactual;?></a></h3>
+										<div class="box-header with-border">
+										<h3 class="box-title"><a href="javascript:seleccionaEstadosActuales()">Total actual : <?php echo $totalactual;?></a></h3>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                
-              </div>
-			</div>
-		
-            <!-- /.box-header --> 
-            <div class="box-body">
-					<p><a href="javascript:seleccionaEstados(0)">Ingresados</a></p>
-					<div class="progress">
-						<div class="progress-bar progress-bar-silver" role="progressbar" aria-valuenow="<?php echo $ind_ingresado;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_ingresado*100)/$totalactual;?>%">
-						<span style="color:#000000;"><b><?php echo $ind_ingresado;?></b></span>
-						</div>
-					</div>
-					<p><a href="javascript:seleccionaEstados(1)">En fabricación</a></p>
-					<div class="progress">
-						<div class="progress-bar progress-bar-yellow" role="progressbar" aria-valuenow="<?php echo $ind_enfabricacion;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_enfabricacion*100)/$totalactual;?>%">
-						<span><?php echo $ind_enfabricacion;?></span>
-						</div>
-					</div>
-					<p><a href="javascript:seleccionaEstados(2)">Esperando Entrega</a></p>
-					<div class="progress">
-						<div class="progress-bar progress-bar-green" role="progressbar" aria-valuenow="<?php echo $ind_esperando;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_esperando*100)/$totalactual;?>%">
-						<span><?php echo $ind_esperando;?></span>
-						</div>
-					</div>
-					
-					<p><a href="javascript:seleccionaEstados(5)">Calculando</a></p>
-					<div class="progress">
-						<div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="<?php echo $ind_calculando;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_calculando*100)/$totalactual;?>%">
-						<span><?php echo $ind_calculando;?></span>
-						</div>
-					</div>
-					<p><a href="javascript:seleccionaEstados(4)">Con Problema</a></p>
-					<div class="progress">
-						<div class="progress-bar progress-bar-red" role="progressbar" aria-valuenow="<?php echo $ind_conproblema;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_conproblema*100)/$totalactual;?>%">
-						<span><?php echo $ind_conproblema;?></span>
-						</div>
-					</div>
-			</div>
-			<!-- /.box-body -->
-			<?php if($this->ion_auth->is_admin()){ ?>
-            <div class="box-footer text-center">
-              <a href="javascript:seleccionaEstados(3)" class="uppercase">Pedidos completados : <?php echo $ind_listos; ?> </a>
-			</div>
-			<?php }?>
-			<!-- /.box-footer -->
-			
-		  </div>
-
-		  <!-- consulta filtros principales -->
-		  <div class="box box-primary" >
-				<div class="box-header with-border">
-				  <h3 class="box-title">Filtros Principales</h3>
-					  <div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-					   </div>
-				</div>
-				<!-- /.box-header -->
-				<div class="box-body">
-
-						<div class="row">
-							<div class="col-md-4">
-								<div class="form-group">
-									Estados
-								</div>
-							</div>
-							<div class="col-md-8">
-									<div class="form-group">
-									<select  id="sl_estado" class="form-control input-sm" multiple>
-											<?php
-											foreach($vEstados as $est) {
-												  echo "<option "; 
-												   
-												  echo " value = \"". $est['id']."\"";
-												  if ($est['id']<3)
-													  echo " selected=\"selected\"";
-											 ?>
-											>
-											 <?php echo $est['descripcion']; ?>
-												  
-											  </option>
-											  <?php }?>	
-									</select>
-									</div>
-							</div><!--Col -->	   
-						</div><!--./ row -->
-
-						<div class="row">
-							<div class="col-md-4">
-									<div class="form-group">
-										Comisión
-									</div>
-							</div>
-							<div class="col-md-8">
-									<div class="form-group">
-									<select id="sl_comision" class="form-control input-sm">
-											<?php if($this->ion_auth->is_admin()){ ?>
-											<option value="-1">Comisi&oacute;n</option>
-										   <option value="0">No</option>
-										   <?php }?>
-										   <option value="1">Si</option>
-								   </select>
-								   </div>
-
-							</div>
-						</div>
-
-						<div class="row">
-								<div class="col-md-4">
-										<div class="form-group">
-												Buscar por <i>Nro.Pedido, Cliente</i>
-										</div>
-								</div>
-								<div class="col-md-8">
-										<div class="form-group">
-										<input name="search_txt" class="form-control input-sm" type="text" placeholder="Buscar" id="search_txt">
-										</div>
-	
-								</div>
-						</div>
-						
-
-						<div class="row">
-								<div class="col-md-4">
-										<div class="form-group">
-												Producto 
-										</div>
-								</div>
-								<div class="col-md-8">
-										<div class="form-group">
-										<select id="cntrl_id_producto"  class="form-control" name="cntrl_id_producto" data-error="Seleccione un Producto" required>
+										<div class="box-tools pull-right">
+											<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+											</button>
 											
-										</select>
 										</div>
-								</div>
-						</div>
-
-						
-
-
-						<div class="row">
-								<div class="col-md-12">
-										<div class="form-group">
-												<button  id="ok" type="button" class="btn btn-info input-sm">Actualizar</button>
 										</div>
-								</div>
-						</div>
-
-
-
-
+									
+										<!-- /.box-header --> 
+										<div class="box-body">
+												<p><a href="javascript:seleccionaEstados(0)">Ingresados</a></p>
+												<div class="progress">
+													<div class="progress-bar progress-bar-silver" role="progressbar" aria-valuenow="<?php echo $ind_ingresado;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_ingresado*100)/$totalactual;?>%">
+													<span style="color:#000000;"><b><?php echo $ind_ingresado;?></b></span>
+													</div>
+												</div>
+												<p><a href="javascript:seleccionaEstados(1)">En fabricación</a></p>
+												<div class="progress">
+													<div class="progress-bar progress-bar-yellow" role="progressbar" aria-valuenow="<?php echo $ind_enfabricacion;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_enfabricacion*100)/$totalactual;?>%">
+													<span><?php echo $ind_enfabricacion;?></span>
+													</div>
+												</div>
+												<p><a href="javascript:seleccionaEstados(2)">Esperando Entrega</a></p>
+												<div class="progress">
+													<div class="progress-bar progress-bar-green" role="progressbar" aria-valuenow="<?php echo $ind_esperando;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_esperando*100)/$totalactual;?>%">
+													<span><?php echo $ind_esperando;?></span>
+													</div>
+												</div>
+												
+												<p><a href="javascript:seleccionaEstados(5)">Calculando</a></p>
+												<div class="progress">
+													<div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="<?php echo $ind_calculando;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_calculando*100)/$totalactual;?>%">
+													<span><?php echo $ind_calculando;?></span>
+													</div>
+												</div>
+												<p><a href="javascript:seleccionaEstados(4)">Con Problema</a></p>
+												<div class="progress">
+													<div class="progress-bar progress-bar-red" role="progressbar" aria-valuenow="<?php echo $ind_conproblema;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_conproblema*100)/$totalactual;?>%">
+													<span><?php echo $ind_conproblema;?></span>
+													</div>
+												</div>
+										</div>
+										<!-- /.box-body -->
+										<?php if($this->ion_auth->is_admin()){ ?>
+										<div class="box-footer text-center">
+										<a href="javascript:seleccionaEstados(3)" class="uppercase">Pedidos completados : <?php echo $ind_listos; ?> </a>
+										</div>
+										<?php }?>
+										<!-- /.box-footer -->
+										
+									</div><!-- box primary -->
+									<!-- Fin Resumen Pedidos----------------------------------------------------------------------------------> 						
 						
-					</div><!-- box body -->
-						
-		</div><!-- toolbar -->
-		 
-
-	
-	<!-- Fin Resumen Pedidos----------------------------------------------------------------------------------> 
-	</div><!-- class col -->
-	<!-- Cabecera Listado Pedidos ---------------------------------------------------------------------------------->
-	<div class="col-md-6">
+	</div><!-- --------------------------------------------- FIN primera columna ----------------------------------------------->
+	<div class="col-md-3"><!-- --------------------------------------------- SEGUNDA columna ----------------------------------------------->
 		   <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Saldos actuales</h3>
@@ -227,11 +118,42 @@
             </div>
             <!-- /.box-footer -->
 		  </div>
-		  
 
-		  
-		  
-		<?php if($this->ion_auth->is_admin()){ ?>
+	</div><!-- --------------------------------------------- SEGUNDA columna ----------------------------------------------->
+	<div class="col-md-3"><!-- --------------------------------------------- TERCERA columna ----------------------------------------------->
+			<!-- Ultimos adjuntos -->
+			<div class="box box-primary collapsed-box">
+					<div class="box-header with-border">
+							<h3 class="box-title">Archivos subidos</h3>
+							<div class="box-tools pull-right">
+								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+							</div>
+					</div> <!-- /.box-header -->
+					<div class="box-body">	
+								<div class="row">
+									<div class="col-md-8">
+										<div class="form-group">
+											<input name="txt_criterio_adj" class="form-control input-sm" type="text" placeholder="Buscar adjunto" id="txt_criterio_adj">
+											
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<button  id="btn_buscar_adj" type="button" class="btn btn-info">Buscar</button>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+									<table id="tbl_ultimosadjuntos" class="table"></table>	   
+									</div>
+								</div><!-- row -->
+					</div><!-- box body -->
+				</div><!-- box primary -->
+			<!-- / fin Ultimos adjuntos -->
+	</div>
+	<div class="col-md-3"><!-- --------------------------------------------- CUARTA columna ----------------------------------------------->
+			<?php if($this->ion_auth->is_admin()){ ?>
 			<!-- hojas recientes -->
 			<div class="box box-primary box">
 				<div class="box-header with-border">
@@ -245,48 +167,12 @@
 				</div><!-- box body -->
 			</div><!-- box primary -->
 			<!-- / fin hojas recientes -->
-		 <?php }?>
+			<?php }?>
 
-		<!-- Ultimos adjuntos -->
-		<div class="box box-primary collapsed-box">
-				<div class="box-header with-border">
-						<h3 class="box-title">Archivos subidos</h3>
-						<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-						</div>
-				</div> <!-- /.box-header -->
-				<div class="box-body">	
-					
-				
-							<div class"row">
-								<div class="col-md-8">
-									<div class="form-group">
-										<input name="txt_criterio_adj" class="form-control input-sm" type="text" placeholder="Buscar adjunto" id="txt_criterio_adj">
-										
-									</div>
-								</div>
-								<div class="col-md-4">
-									<div class="form-group">
-										<button  id="btn_buscar_adj" type="button" class="btn btn-info">Buscar</button>
-									</div>
-								</div>
-							</div>
-							<div class"row">
-								<div class="col-md-12">
-								<table id="tbl_ultimosadjuntos" class="table"></table>	   
-								</div>
-							</div><!-- row -->
-						 		
-							
-							
-				</div><!-- box body -->
-			</div><!-- box primary -->
-		<!-- / fin Ultimos adjuntos -->
 
-		
 			<!-- consulta rapida -->
 			<div class="box box-primary">
-					<div class="box-header with-border">
+					<div class="box-header">
 					<h3 class="box-title">Consulta rapida</h3>
 						<div class="box-tools pull-right">
 								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -294,7 +180,7 @@
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
-							<div class"row">
+							<div class="row">
 								<div class="col-md-8">
 									<div class="form-group">
 									<input id="buscarpedido" class="form-control input-sm" type="text" placeholder="Ingrese pedido">
@@ -310,22 +196,106 @@
 					<!-- /.box-body -->
 
 				</div><!-- fin consulta rapida -->
-		   
+	</div>
 
-					
-
-	</div><!-- Segunda columna-->
 </div><!-- row -->
-<!-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------->
- <div class="box">
- 	<div class="box-header with-border">
-  		<h3>Resultados</h3>
-		  <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-          </div>
-  	</div><!-- Box Header -->
-  	<div class="box-body">
-  	
+
+<!-- consulta filtros principales -->
+<div class="box box-default" >
+									<div class="box-header with-border">
+									<h3 class="box-title">Panel de pedidos</h3>
+
+									</div>
+									<!-- /.box-header -->
+									<div class="box-body">
+
+		<div class="row">
+			<div class="col-md-12">
+
+								<!-- Filtros -->
+								<div class="box box-primary collapsed-box">
+								<div class="box-header">
+								<h3 class="box-title">Filtros</h3>
+									<div class="box-tools">
+											<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+									</div>
+								</div>
+								<!-- /.box-header -->
+								<div class="box-body">
+										<div class="row">
+											<div class="col-md-5">
+												<div class="form-group">Estados</div>
+											</div>
+											<div class="col-md-7">
+												<div class="form-group">
+														<select  id="sl_estado" class="form-control input-sm" multiple>
+														<?php
+														foreach($vEstados as $est) {
+															echo "<option "; 
+															
+															echo " value = \"". $est['id']."\"";
+															if ($est['id']<3)
+																echo " selected=\"selected\"";
+														?>
+														>
+														<?php echo $est['descripcion']; ?>
+															
+														</option>
+														<?php }?>	
+												</select>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-5">
+												<div class="form-group">Comisión</div>
+											</div>
+											<div class="col-md-7">
+												<div class="form-group">
+													<select id="sl_comision" class="form-control input-sm">
+																<?php if($this->ion_auth->is_admin()){ ?>
+																<option value="-1">Comisi&oacute;n</option>
+															<option value="0">No</option>
+															<?php }?>
+															<option value="1">Si</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-5">
+												<div class="form-group">Buscar por criterio</div>
+											</div>
+											<div class="col-md-7">
+												<div class="form-group">
+												<input name="search_txt" class="form-control input-sm" type="text" placeholder="Buscar" id="search_txt">
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-5">
+												<div class="form-group">Producto</div>
+											</div>
+											<div class="col-md-7">
+												<div class="form-group">
+													<select id="cntrl_id_producto"  class="form-control" name="cntrl_id_producto" data-error="Seleccione un Producto" required></select>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12">
+													<button  id="ok" type="button" class="btn btn-info input-sm right">Actualizar</button>
+											</div>
+										</div>
+								</div>
+								<!-- /.box-body -->
+
+							</div><!-- fin filtros -->
+
+				
+			</div>
+												
+	</div><!-- row -->
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-xs-12">	
 		
@@ -480,6 +450,15 @@
 				    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
 	});
 
+
+
+/*	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
+/*	W I D G E T S
+/*	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
+
+	/*
+	*	Muestra las ultimas hojas que se han creado
+	*/
 	function ultimasHojasProcesadas(){
 	$('#tbl_ultimashojas').bootstrapTable('destroy').bootstrapTable
 	({
@@ -490,39 +469,35 @@
 					   {field: 'nombre_hoja',title: 'Hoja',formatter:'f_nombrehojalink'}, 
 					   {field: 'fecha_proceso',title: 'Fecha proceso'},
 					   {field: 'fecha_mod',title: 'Ult. Modificación'}
-					   
 		   ]
-   }
-	);
-	}
-
+    });}
+	/*
+	*	MUestra los ultimos archivos adjuntos.
+	*/
 	function ultimosAdjuntos(){
-
 	var criterio = $('#txt_criterio_adj').val();		
 	$('#tbl_ultimosadjuntos').bootstrapTable('destroy').bootstrapTable
 	(	{
-		   url: base_url+'Pedido/muestraUltimosAdjuntos/'+criterio,
+		   url: base_url+'Pedido/Adj_buscar/'+criterio,
 		   method:"GET",
 		   dataType: 'json',
-		   columns:[   {field: 'fecha_subida',title: 'Fec. Subida'},
+		   columns:[  /* {field: 'fecha_subida',title: 'Fec. Subida'},*/
 					   {field: 'id_cabecera',title: 'Pedido',formatter:'f_idpedido'}, 
-					   {field: 'id_tipo',title: 'Tipo'},
+					   /*{field: 'id_tipo',title: 'Tipo'},*/
 					   {field: 'filenameid',title: 'filename',formatter:'f_archivoadjunto'}
 		   		   ]
    		}
-	);
-	}
+	);}
 
+/*	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
+/*	 Metodos  
+/*	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
 	
-	
-	
-
-	
-	/*Funcion llamada cuando se gatilla el evento de eliminar pedido*/
-	function eliminaPedido(row)
-	{
+	/*
+	*	Funcion llamada cuando se gatilla el evento de eliminar pedido
+	*/
+	function eliminaPedido(row){
 		var id = row['numeroPedido'];
-
 		if(confirm('¿ Seguro desea eliminar el pedido  ' + id +' ? ' ))
 		{
 			jQuery.ajax({
@@ -534,8 +509,7 @@
 						if (res.estado == false){
 							//alert("Problema al eliminar el pedido")
 							MuestraMensaje("Módulo Pedidos","Error : "+ res.mensaje); 
-						}
-						else{ 
+						}else{ 
 							MuestraMensaje("Módulo Pedidos",res.mensaje);
 							buscaResultados($('#tabla_resultado'));
 						}
@@ -544,8 +518,11 @@
 		}
 	}
 
-	
-	
+
+
+	/*
+	*	Refresca la tabla solicitada
+	*/
     function buscaResultados($table){
     	$table.bootstrapTable('refresh');
     }
@@ -583,8 +560,10 @@
 	}
 
 	
-	
-	/**
+/*	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
+/*	 Metodos  de la tabla de resultados
+/*	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */	
+	/*
 	 * Procesa la respuesta del metodo que carga v�a ajax los datos a la tabla.
 	 */
 	function responseHandler(res){
@@ -596,8 +575,6 @@
 		calculaTotalesDetalle(res);
 		return res;
 	}
-
-	
 	/*
 	 * Funcion que setea los parametros.
 	 */
@@ -615,11 +592,6 @@
         });*/
 	    return params;
 	}
-	
-	
-	
-	
-	
 
 </script>
  

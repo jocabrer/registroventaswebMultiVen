@@ -179,7 +179,7 @@ function diasTranscurridosFormater(data)
 }
 
 function f_archivoadjunto(data){
-	return "<a href="+base_url+"uploads/"+data+" data-toggle='lightbox'>"+data+"</a>";
+	return "<a href="+base_url+"uploads/"+data+">"+data+"</a>";
 
 }
 /*

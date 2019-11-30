@@ -16,7 +16,15 @@ class M_Chatbot extends CI_Model {
 		
     }
     
-    
+    /**
+     * Graba eun objto de chatbox para el visitante y atención.
+     *
+     * @param [type] $texto
+     * @param [type] $fecha
+     * @param [type] $atencion
+     * @param [type] $visitante
+     * @return el id del chatbox
+     */
     function insertaChatbot($texto,$fecha,$atencion,$visitante)
     {
         $this->texto = $texto;

@@ -5,6 +5,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Chatbot extends CI_Controller {
 
 	
+	/**
+	 * Método inicial del chatbot con el cuál comienza una atención
+	 * se inicializa los objetos y se procesa la vista del chatbot
+	 *
+	 * @return void
+	 */
 	public function index()
 	{
 		
@@ -14,7 +20,6 @@ class Chatbot extends CI_Controller {
 		$this->load->model('M_Chatbot');
 
 		$this->load->library("Comun");
-
 
 		$fecha = $this->load->obtieneFechaActual();
 		$datosVisitante = $this->comun->obtieneDatosVisitante();
@@ -37,11 +42,11 @@ class Chatbot extends CI_Controller {
 	
 
 	/**
-	 * 
+	 * Crea um nuevo registro de visitante enlazado a una atención
 	 *
 	 * @return void
 	 */
-	public function creaVisitante($atencion){
+	/*public function creaVisitante($atencion){
 
 		
 
@@ -60,7 +65,7 @@ class Chatbot extends CI_Controller {
 		$ip = $_SERVER['REMOTE_ADDR'];
 
 		return $this->M_Cbvisitantes->insertaVisitante($agent,$ip,$atencion);
-	}
+	}*/
 
 
 	/**
@@ -122,6 +127,11 @@ class Chatbot extends CI_Controller {
 		return $this->M_cbpatrones->obtieneMensaje('cordial');
 	}
 
+	/**
+	 * Metodo que lee el mensaje que se está enviando , y los datos para indentificar si es un campo obligatorio que necesite guardar.
+	 *
+	 * @return Objeto Json con el mensaje que se habia enviado.
+	 */
 	function actualizaObligatorio(){
 		
 		//$this->load->model('M_Chatbot');

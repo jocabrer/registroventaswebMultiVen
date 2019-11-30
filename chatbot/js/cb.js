@@ -19,11 +19,10 @@
         return this;
     };
 
-
+    /* Main */
     $(function (){
         
         var getMessageText, sendMessage, obligatorio, ck_saludo, ck_nombre, ck_contacto;
-
 
         obligatorio = 0 ; //no es campo del visitante obligatorio
         claveobligatorio = "";

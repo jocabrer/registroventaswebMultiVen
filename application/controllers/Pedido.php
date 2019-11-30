@@ -279,7 +279,7 @@ class Pedido extends CI_Controller
     /**
      * Graba una nota para una cabecera
      */
-    public function grabaAdjunto()
+    public function Adj_grabar()
     {
         //Verificamos seguridad
         if (!$this->ion_auth->logged_in()) {
@@ -556,7 +556,7 @@ class Pedido extends CI_Controller
     /**
      * Metodo que llama al modelo que elimina un adjunto
      */
-    public function eliminaAdjunto()
+    public function Adj_eliminar()
     {
 
         if (!$this->ion_auth->logged_in()) {
@@ -566,18 +566,20 @@ class Pedido extends CI_Controller
         $id_adjunto = $this->input->post('id');
         $adjunto = $this->M_pedido->obtenerAdjunto($id_adjunto);
 
-        //Cargo liberías necesaria
-        $this->load->helper('file');
+        if($adjunto!=null){
+            //Cargo liberías necesaria
+            $this->load->helper('file');
 
-        //Debo rescatar el pathurl del archivo para eliminarlo
-        unlink($adjunto->pathurl . $adjunto->filename);
+            //Debo rescatar el pathurl del archivo para eliminarlo
+            unlink($adjunto->pathurl . $adjunto->filename);
 
-        //Eliminamos registro de la BD 
-        $estado = $this->M_pedido->eliminaAdjunto($adjunto->id);
+            //Eliminamos registro de la BD 
+            $estado = $this->M_pedido->eliminaAdjunto($adjunto->id);
 
-        // Salida de respuesta 
-        //$id,$objeto,$estado,$accion,$mensaje
-        $this->load->salidaRetornoAjax($id_adjunto, "adjunto", "L", "eliminado", $estado);
+            // Salida de respuesta 
+            //$id,$objeto,$estado,$accion,$mensaje
+            $this->load->salidaRetornoAjax($id_adjunto, "adjunto", "L", "eliminado", $estado);
+        }
     }
 
     /*
@@ -605,7 +607,7 @@ class Pedido extends CI_Controller
      *
      * @return Obj. JSON con las lineas de detalle
      */
-    public function ObtenerListadoAdjuntos()
+    public function Adj_obtenerPorPedido()
     {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
@@ -629,7 +631,7 @@ class Pedido extends CI_Controller
         echo json_encode($data);
     }
 
-    public function muestraUltimosAdjuntos($criterio = ""){
+    public function Adj_buscar($criterio = ""){
 
         $this->load->model('M_hojas');
 		$datos = $this->M_pedido->buscador_adjuntos(5,"desc",$criterio);
@@ -639,7 +641,7 @@ class Pedido extends CI_Controller
 
     
 
-    public function obtieneTipoAdjunto()
+    public function Adj_listadoTipo()
     {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
