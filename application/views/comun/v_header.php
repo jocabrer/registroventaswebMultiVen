@@ -225,7 +225,44 @@ date_default_timezone_set('America/Santiago');
               <li class="footer"><a href="#">Ver todos</a></li>
             </ul>
           </li>
-         
+<!-- ---------------------------------------------  ALERTAS ----------------------------------------------->
+          <?php 
+					          $cantSinFac= count($ind_conivasinfactura);
+                    $cantDescuadrados = count($ind_descuadrados);
+                    $totnotificaciones = $cantSinFac+$cantDescuadrados;
+                    if($totnotificaciones>0)
+                      echo "<li class=\"dropdown notifications-menu open\">";
+                    else
+                      echo "<li class=\"dropdown notifications-menu\">";
+          ?>
+          
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+              <i class="fa fa-bell-o"></i>
+              <span class="label label-warning"><?php echo $cantDescuadrados+$cantSinFac;?></span>
+            </a>
+            <ul class="dropdown-menu">
+
+            
+        
+          <li class="header">Tienes <?php echo $cantDescuadrados+$cantSinFac;?> notificaciones</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <?php if($cantSinFac>0) {?>
+                  <li><a href="javascript:pedidosConIvaSinFactura()"><i class="fa fa-warning text-yellow"></i><?php echo $cantSinFac; ?> Pedidos sin factura.</a></li>
+                  <?php }?>
+                  <?php if($cantDescuadrados>0) {?>
+                  <li><a href="javascript:pedidosDescuadrados()"><i class="fa fa-warning text-yellow"></i><?php echo $cantDescuadrados; ?> pedido(s) listos y descuadrado.</a></li>
+                  <?php }?>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+
+<!-- --------------------------------------------- FIN ALERTAS ----------------------------------------------->
+
+
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">

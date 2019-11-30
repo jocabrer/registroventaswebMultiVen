@@ -339,7 +339,55 @@ function MuestraMensaje(titulo,mensaje){
 
 
 
-
+/*
+	*	MUestra pedidos con iva sin factura
+	*/
+	function pedidosConIvaSinFactura(){
+	
+		$('#tbl_listapedidos').bootstrapTable('destroy').bootstrapTable
+		(	{
+			   url: base_url+'Pedido/obtenerPedidosConIvaSinFacturaAjax/',
+			   method:"GET",
+			   dataType: 'json',
+			   columns:[  /* {field: 'fecha_subida',title: 'Fec. Subida'},*/
+						   {field: 'id',title: 'Pedido',formatter:'f_idpedido'},
+						   {field: 'cli_nom',title:'Nombre',formatter:'f_cliente'},
+						   /*{field: 'filenameid',title: 'filename',formatter:'f_archivoadjunto'}*/
+						  ]
+			   }
+		);
+	
+		var modal = $('#modalDinamicoMuestraPedido');
+		  modal.find('.modal-title').text('Pedidos sin Factura')
+		  //modal.find('.modal-body').html(mensaje)
+		  modal.modal('show');
+	
+		}
+	
+	
+		/*
+		* muestra descuadrados
+		*/
+		function pedidosDescuadrados(){
+			$('#tbl_listapedidos').bootstrapTable('destroy').bootstrapTable
+		(	{
+			   url: base_url+'Pedido/obtenerPedidosDescuadradoAjax/',
+			   method:"GET",
+			   dataType: 'json',
+			   columns:[  /* {field: 'fecha_subida',title: 'Fec. Subida'},*/
+						   {field: 'numeroPedido',title: 'Pedido',formatter:'f_idpedido'},
+						   {field: 'cli_nom',title:'Nombre',formatter:'f_cliente'},
+						   /*{field: 'filenameid',title: 'filename',formatter:'f_archiv|oadjunto'}*/
+						  ]
+			   }
+		);
+	
+		var modal = $('#modalDinamicoMuestraPedido');
+		  modal.find('.modal-title').text('Pedidos descuadrados')
+		  //modal.find('.modal-body').html(mensaje)
+		  modal.modal('show');
+	
+		}
 
 
 

@@ -58,7 +58,10 @@ class MY_Loader extends CI_Loader {
 		
 		$dataFooter['ultimospedidos'] =  $CI->M_pedido->ObtenerPedidosListado($criterio="",$limit="10",$slestado= array('0','1','2','3'),$ordenarpor="numeroPedido","desc",$slcomision=-1,$cliente="todos");
 		$dataFooter['ultimosproductos'] =  $CI->M_Productos->get_productos($criterio="",$limit="5",$ordenarpor="producto.id","desc",$categoria=0);
-		
+        
+        
+        $dataheader['ind_conivasinfactura']  = $CI->M_pedido->obtenerPedidosConIvaSinFactura();
+        $dataheader['ind_descuadrados']  = $CI->M_pedido->obtenerPedidosDescuadrados();
 		
 		//var_dump($dataFooter['ultimospedidos']) ;
 		//exit(0);
