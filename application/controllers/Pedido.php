@@ -197,6 +197,8 @@ class Pedido extends CI_Controller
         $dataContent['ind_conproblema'] = $this->M_estados->get_cantidadEstadoComision(4, $comision);
         $dataContent['ind_calculando'] = $this->M_estados->get_cantidadEstadoComision(5, $comision);
 
+        $dataContent['ind_graficoventas'] = $this->M_pedido->obtenerIngresosPorPedido();
+
         $this->load->template('v_pedido_listado', $dataContent);
     }
 
@@ -690,6 +692,14 @@ class Pedido extends CI_Controller
         echo json_encode($data);
     }
 
+    public function obtenerIngresosPorPedido(){
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login');
+        }
+        
+        $data = $this->M_pedido->obtenerIngresosPorPedido();
+        echo json_encode($data);
+    }
     /**
      * ********************************************* V_pedido_listado *****************************************************************************
      */

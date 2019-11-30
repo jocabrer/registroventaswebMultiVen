@@ -21,6 +21,7 @@ function PriceFormatter(data) {
 	}
 }
 
+
 /*
 Crea columnas con el boton de eliminar
 */

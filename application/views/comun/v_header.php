@@ -51,6 +51,9 @@ date_default_timezone_set('America/Santiago');
     <script src="<?php echo base_url('Template/dist/js/app.min.js')?>" type="text/javascript"></script>
     <!-- Select2 -->
     <script src="<?php echo base_url('Template/plugins/select2/select2.full.min.js')?>" type="text/javascript"></script>
+
+    <script src="<?php echo base_url('Template/plugins/chartjs/Chart.min.js')?>" type="text/javascript"></script>
+    
     <!-- Bootstrap -->
     <script src="<?php echo base_url('Template/bootstrap/js/bootstrap.min.js')?>" type="text/javascript"></script>
     <!-- Bootstrap WYSIHTML5 -->
@@ -82,11 +85,14 @@ date_default_timezone_set('America/Santiago');
     <link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
   		
-  	
+    
+    
   	
 	<script src="<?php echo base_url('Template/plugins/bootstrap-multiselect/dist/js/bootstrap-multiselect.js')?>" type="text/javascript"></script>
 	
-	
+  
+  
+  
 
     <!--  Se agrega bootstrap table  editable 03112017-->
 	
@@ -226,7 +232,11 @@ date_default_timezone_set('America/Santiago');
             </ul>
           </li>
 <!-- ---------------------------------------------  ALERTAS ----------------------------------------------->
-          <?php 
+        
+        
+        <?php 
+            if ($this->ion_auth->is_admin())
+            {
 					          $cantSinFac= count($ind_conivasinfactura);
                     $cantDescuadrados = count($ind_descuadrados);
                     $totnotificaciones = $cantSinFac+$cantDescuadrados;
@@ -249,7 +259,7 @@ date_default_timezone_set('America/Santiago');
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <?php if($cantSinFac>0) {?>
-                  <li><a href="javascript:pedidosConIvaSinFactura()"><i class="fa fa-warning text-yellow"></i><?php echo $cantSinFac; ?> Pedidos sin factura.</a></li>
+                  <li><a href="javascript:pedidosConIvaSinFactura()"><i class="fa fa-warning text-yellow"></i><?php echo $cantSinFac; ?> pedido(s) sin factura.</a></li>
                   <?php }?>
                   <?php if($cantDescuadrados>0) {?>
                   <li><a href="javascript:pedidosDescuadrados()"><i class="fa fa-warning text-yellow"></i><?php echo $cantDescuadrados; ?> pedido(s) listos y descuadrado.</a></li>
@@ -259,6 +269,9 @@ date_default_timezone_set('America/Santiago');
             </ul>
           </li>
 
+          <?php 
+            }
+            ?>
 
 <!-- --------------------------------------------- FIN ALERTAS ----------------------------------------------->
 

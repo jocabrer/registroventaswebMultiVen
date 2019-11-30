@@ -297,7 +297,6 @@ class M_pedido extends CI_Model {
 	function obtenerPedidosDescuadrados(){
 		
 		$notin = array(0, 1);
-
 		
 		$this->db->select('v_listadopedidoextendido.*');
 		$this->db->from('v_listadopedidoextendido');
@@ -308,6 +307,19 @@ class M_pedido extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 
+	function obtenerIngresosPorPedido(){
+
+		$this->db->select('year(est_fec_ing)');
+		$this->db->select('month(est_fec_ing)');
+		$this->db->select('concat(year(est_fec_ing),"-",month(est_fec_ing)) as label');
+		$this->db->select_sum('totalAPagar','totalAPagar');
+		$this->db->select_sum('Ganancia100','ganancia');
+		$this->db->from('v_listadopedidoextendido');
+		$this->db->where('est_fec_ing >','2019-05-01');
+		$this->db->group_by(array("year(est_fec_ing)", "month(est_fec_ing)","(concat(year(est_fec_ing),'-',month(est_fec_ing)))"));
+
+		return $this->db->get()->result_array();
+	}
 
 
 	/**
