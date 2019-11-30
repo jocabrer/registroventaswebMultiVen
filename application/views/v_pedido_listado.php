@@ -19,9 +19,10 @@
 		<div class="col-md-3">
 			<!-- Resumen Pedidos ---------------------------------------------------------------------------------->
 			<?php $totalactual=$ind_ingresado+$ind_enfabricacion+$ind_esperando+$ind_conproblema+$ind_calculando;?>
+			
 			<div class="box box-primary">
 										<div class="box-header with-border">
-										<h3 class="box-title"><a href="javascript:seleccionaEstadosActuales()">Total actual : <?php echo $totalactual;?></a></h3>
+										<h3 class="box-title"><a href="javascript:seleccionaEstadosActuales()">Pedidos totales <?php echo $totalactual;?></a></h3>
 
 										<div class="box-tools pull-right">
 											<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -32,32 +33,32 @@
 									
 										<!-- /.box-header --> 
 										<div class="box-body">
-												<p><a href="javascript:seleccionaEstados(0)">Ingresados</a></p>
+												<a href="javascript:seleccionaEstados(0)">Ingresados</a>
 												<div class="progress">
 													<div class="progress-bar progress-bar-silver" role="progressbar" aria-valuenow="<?php echo $ind_ingresado;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_ingresado*100)/$totalactual;?>%">
 													<span style="color:#000000;"><b><?php echo $ind_ingresado;?></b></span>
 													</div>
 												</div>
-												<p><a href="javascript:seleccionaEstados(1)">En fabricación</a></p>
+												<a href="javascript:seleccionaEstados(1)">En fabricación</a>
 												<div class="progress">
 													<div class="progress-bar progress-bar-yellow" role="progressbar" aria-valuenow="<?php echo $ind_enfabricacion;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_enfabricacion*100)/$totalactual;?>%">
 													<span><?php echo $ind_enfabricacion;?></span>
 													</div>
 												</div>
-												<p><a href="javascript:seleccionaEstados(2)">Esperando Entrega</a></p>
+												<a href="javascript:seleccionaEstados(2)">Esperando Entrega</a>
 												<div class="progress">
 													<div class="progress-bar progress-bar-green" role="progressbar" aria-valuenow="<?php echo $ind_esperando;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_esperando*100)/$totalactual;?>%">
 													<span><?php echo $ind_esperando;?></span>
 													</div>
 												</div>
 												
-												<p><a href="javascript:seleccionaEstados(5)">Calculando</a></p>
+												<a href="javascript:seleccionaEstados(5)">Calculando</a>
 												<div class="progress">
 													<div class="progress-bar progress-bar-blue" role="progressbar" aria-valuenow="<?php echo $ind_calculando;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_calculando*100)/$totalactual;?>%">
 													<span><?php echo $ind_calculando;?></span>
 													</div>
 												</div>
-												<p><a href="javascript:seleccionaEstados(4)">Con Problema</a></p>
+												<a href="javascript:seleccionaEstados(4)">Con Problema</a>
 												<div class="progress">
 													<div class="progress-bar progress-bar-red" role="progressbar" aria-valuenow="<?php echo $ind_conproblema;?>" aria-valuemin="0" aria-valuemax="<?php echo $totalactual;?>" style="width: <?php echo ($ind_conproblema*100)/$totalactual;?>%">
 													<span><?php echo $ind_conproblema;?></span>
@@ -79,7 +80,7 @@
 	<div class="col-md-3"><!-- --------------------------------------------- SEGUNDA columna ----------------------------------------------->
 		   <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Saldos actuales</h3>
+              <h3 class="box-title">Indicadores dinámicos</h3>
 	              <div class="box-tools pull-right">
                 		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                    </div>
@@ -113,11 +114,44 @@
 					</table>
 			</div>
             <!-- /.box-body -->
-            <div class="box-footer text-center">
-				<a href="<?php echo base_url(); ?>Pedido/nuevoPedido/" class="btn btn-default"><i class="fa fa-edit"></i> Nuevo Pedido</a>
+            <div class="box-footer text-left">
+				<?php 
+					$cant= count($ind_conivasinfactura);
+					if($cant>0)
+						echo "<i class='fa fa-warning text-yellow'></i>Existen <a href='javascript:pedidosConIvaSinFactura()'>$cant</a> pedido(s) sin factura adjunta";
+				?>
+				
+				<!--<a href="<?php echo base_url(); ?>Pedido/nuevoPedido/" class="btn btn-default"><i class="fa fa-edit"></i> Nuevo Pedido</a>-->
             </div>
             <!-- /.box-footer -->
 		  </div>
+								
+		 <!-- consulta rapida -->
+		 <div class="box box-primary">
+					<div class="box-header">
+					<h3 class="box-title">Consulta rapida</h3>
+						<div class="box-tools pull-right">
+								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+						</div>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+							<div class="row">
+								<div class="col-md-8">
+									<div class="form-group">
+									<input id="buscarpedido" class="form-control input-sm" type="text" placeholder="Ingrese pedido">
+								</div>
+								</div>
+								<div class="col-md-4">
+								<div class="form-group">
+								<button  id="verPedido" type="button" class="btn btn-info input-sm">Ver Pedido</button>
+								</div>
+								</div>
+							</div>
+					</div>
+					<!-- /.box-body -->
+
+				</div><!-- fin consulta rapida -->
 
 	</div><!-- --------------------------------------------- SEGUNDA columna ----------------------------------------------->
 	<div class="col-md-3"><!-- --------------------------------------------- TERCERA columna ----------------------------------------------->
@@ -170,32 +204,7 @@
 			<?php }?>
 
 
-			<!-- consulta rapida -->
-			<div class="box box-primary">
-					<div class="box-header">
-					<h3 class="box-title">Consulta rapida</h3>
-						<div class="box-tools pull-right">
-								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-						</div>
-					</div>
-					<!-- /.box-header -->
-					<div class="box-body">
-							<div class="row">
-								<div class="col-md-8">
-									<div class="form-group">
-									<input id="buscarpedido" class="form-control input-sm" type="text" placeholder="Ingrese pedido">
-								</div>
-								</div>
-								<div class="col-md-4">
-								<div class="form-group">
-								<button  id="verPedido" type="button" class="btn btn-info input-sm">Ver Pedido</button>
-								</div>
-								</div>
-							</div>
-					</div>
-					<!-- /.box-body -->
-
-				</div><!-- fin consulta rapida -->
+			
 	</div>
 
 </div><!-- row -->
@@ -210,7 +219,7 @@
 									<div class="box-body">
 
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-6">
 
 								<!-- Filtros -->
 								<div class="box box-primary collapsed-box">
@@ -293,6 +302,9 @@
 							</div><!-- fin filtros -->
 
 				
+			</div><!-- col -->
+			<div class="col-md-6">
+			
 			</div>
 												
 	</div><!-- row -->
@@ -489,6 +501,31 @@
    		}
 	);}
 
+
+	/*
+	*	MUestra pedidos.
+	*/
+	function pedidosConIvaSinFactura(){
+	
+	$('#tbl_listapedidos').bootstrapTable('destroy').bootstrapTable
+	(	{
+		   url: base_url+'Pedido/obtenerPedidosConIvaSinFacturaAjax/',
+		   method:"GET",
+		   dataType: 'json',
+		   columns:[  /* {field: 'fecha_subida',title: 'Fec. Subida'},*/
+					   {field: 'id',title: 'Pedido',formatter:'f_idpedido'},
+					   {field: 'cli_nom',title:'Nombre',formatter:'f_cliente'},
+					   /*{field: 'filenameid',title: 'filename',formatter:'f_archivoadjunto'}*/
+		   		   ]
+   		}
+	);
+
+	var modal = $('#modalDinamicoMuestraPedido');
+	  modal.find('.modal-title').text('Pedidos sin Factura')
+	  //modal.find('.modal-body').html(mensaje)
+	  modal.modal('show');
+
+	}
 /*	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */
 /*	 Metodos  
 /*	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  */

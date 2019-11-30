@@ -198,6 +198,9 @@ class Pedido extends CI_Controller
         $dataContent['ind_calculando'] = $this->M_estados->get_cantidadEstadoComision(5, $comision);
 
 
+        $dataContent['ind_conivasinfactura']  = $this->obtenerPedidosConIvaSinFactura();
+
+
         $this->load->template('v_pedido_listado', $dataContent);
     }
 
@@ -667,6 +670,26 @@ class Pedido extends CI_Controller
         isset($obj->numeroPedido) ? $numeroPedido = $obj->numeroPedido : $numeroPedido = -1;
 
         $data = $this->M_pedido->obtenerPedidoDetalle($numeroPedido);
+        echo json_encode($data);
+    }
+
+    public function obtenerPedidosConIvaSinFactura(){
+        
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login');
+        }
+        return $this->M_pedido->obtenerPedidosConIvaSinFactura();
+        /*$data = $this->M_pedido->obtenerPedidosConIvaSinFactura();
+        echo json_encode($data);*/
+    }
+
+    public function obtenerPedidosConIvaSinFacturaAjax(){
+        
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login');
+        }
+        
+        $data = $this->M_pedido->obtenerPedidosConIvaSinFactura();
         echo json_encode($data);
     }
 

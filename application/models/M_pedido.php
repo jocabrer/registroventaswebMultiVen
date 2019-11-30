@@ -236,24 +236,22 @@ class M_pedido extends CI_Model {
 	 */
 	function ObtenerPedidosListado($criterio,$limit,$estados,$ordenarpor,$orden,$slcomision,$cliente,$idprod = -1)
 	{
-		$data = $this->db->select('*')->from('v_listadopedidoextendido');
-		
-		if($idprod<>-1)
-		{
-			$data = $this->db->join('detalle', ' detalle.id_cabecera =  v_listadopedidoextendido.numeroPedido');
-			$data = $this->db->where(' id_producto', $idprod);
-		}
-		
-	    $data = $this->db->where_in(' estado_sec', $estados);
-	    
-	    if($cliente!="todos")
-			$data = $this->db->where(' cli_id', $cliente);
+			$data = $this->db->select('*')->from('v_listadopedidoextendido');
 			
-	
-	        
-		if($slcomision <> -1){
-			$data = $this->db->where(' comision', $slcomision);
-		}
+			if($idprod<>-1)
+			{
+				$data = $this->db->join('detalle', ' detalle.id_cabecera =  v_listadopedidoextendido.numeroPedido');
+				$data = $this->db->where(' id_producto', $idprod);
+			}
+		
+	   		 $data = $this->db->where_in(' estado_sec', $estados);
+	    
+	    	if($cliente!="todos")
+				$data = $this->db->where(' cli_id', $cliente);
+
+			if($slcomision <> -1){
+				$data = $this->db->where(' comision', $slcomision);
+			}
 	        if($criterio!=""){
 	            
 	            $data = $this->db->group_start();
@@ -264,21 +262,39 @@ class M_pedido extends CI_Model {
 	        }
 	        $data = $this->db->limit($limit);
 	        $data = $this->db->order_by($ordenarpor, $orden);
-	        
 	        //$res = null;
 	        //if($cliente!="todos"){
 	         $res = $this->db->get()->result_array();
 	           //echo $this->db->last_query();
 	          // var_dump($res);
 	        //}
-	        
-	        
 	        return $res;
-	        
-	        
 	        //exit(0);
-	        
 	}
+
+	/**
+	 * Undocumented function
+	 *
+	 * Por defecto busca los que estaban marcado con iva 
+	 * @param integer $obligatorio
+	 * @return void
+	 */
+	function obtenerPedidosConIvaSinFactura($iva=1){
+
+		$this->db->select('v_cabecera.*');
+		$this->db->from('v_cabecera');
+		$this->db->join('v_adjunto', 'v_cabecera.id = v_adjunto.id_cabecera and v_adjunto.id_tipo = 1', 'left');
+		$this->db->join('cliente', 'v_cabecera.id = v_adjunto.id_cabecera and v_adjunto.id_tipo = 1', 'left');
+		$this->db->where('v_cabecera.ConFactura',$iva);
+		$this->db->where('v_adjunto.id',null);
+			
+		$this->db->where('v_cabecera.est_fec_ing >','2019-11-01');
+
+		return $this->db->get()->result_array();
+
+	}
+	
+
 	/**
 	 * Obtiene los indicadores de un pedido
 	 * @param int $idpedido
@@ -321,6 +337,10 @@ class M_pedido extends CI_Model {
 
 		return $query->result_array(); 
 	}
+
+	
+
+
 
 	/**
 	 * Obtiene los indicadores de un pedido al detalle en varias lineas dependiendo los vendedores involucrados.
