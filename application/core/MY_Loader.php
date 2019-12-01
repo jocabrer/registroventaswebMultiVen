@@ -42,7 +42,6 @@ class MY_Loader extends CI_Loader {
 		if (!$CI->ion_auth->logged_in())
 		{
 		    redirect('auth/login');
-		    
 		}else
 		{
 		    $user = $CI->ion_auth->user()->row();

@@ -64,7 +64,13 @@ class Auth extends CI_Controller {
 				//if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect('/', 'refresh');
+
+				$previous_url = $this->session->userdata('previous_url');
+  				//print_r($previous_url);
+				if($previous_url!="")
+					redirect($previous_url, 'refresh');
+				else
+					redirect('/', 'refresh');
 			}
 			else
 			{

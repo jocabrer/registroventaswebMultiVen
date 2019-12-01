@@ -82,6 +82,7 @@ class Pedido extends CI_Controller
         date_default_timezone_set('America/Santiago');
 
             if (!$this->ion_auth->logged_in()) {
+                $this->session->set_userdata('previous_url', current_url());
                 redirect('auth/login/');
             } else {
 
@@ -682,6 +683,7 @@ class Pedido extends CI_Controller
 
     public function obtenerIngresosPorPedido(){
         if (!$this->ion_auth->logged_in()) {
+            $this->session->set_userdata('previous_url', current_url());
             redirect('auth/login');
         }
         
