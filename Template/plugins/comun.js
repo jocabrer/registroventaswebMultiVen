@@ -180,7 +180,7 @@ function diasTranscurridosFormater(data)
 }
 
 function f_archivoadjunto(data){
-	return "<a href="+base_url+"uploads/"+data+">"+data+"</a>";
+	return "<a target='blank' href="+base_url+"uploads/"+data+">"+data+"</a>";
 
 }
 /*
@@ -196,6 +196,9 @@ function FormatoComision(data)
 	}	
 }
 
+function cantidadRegistros(data) {
+    return data.length
+  }
 function FormatoEsPublico(data)
 {
 	switch(data)

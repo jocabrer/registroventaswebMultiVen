@@ -354,11 +354,11 @@
                  <th data-field="cli_id" data-visible="false">id cliente</th>
                  <th data-field="cli_nom" data-filterby="true"  data-formatter="f_cliente">Cliente</th>
                  <th data-field="estado_sec"  data-sortable="true" data-align="left" data-formatter="FormatoEstado">Estado</th>
-				 <th data-field="comision"  data-sortable="true" data-align="left"    <?php if($this->ion_auth->is_admin()){ echo "data-visible=\"true\""; }?>   data-formatter="FormatoComision"  data-footer-formatter="totalTextFormatter">Comisi&oacute;n</th>
-				 <th data-field="confactura"  data-sortable="true" data-align="center" data-visible="false">Factura</th>
-				 <th data-field="est_fec_ing" data-sortable="true" data-visible="true">Ingresado</th>
-				 <th data-field="est_fec_estactual" data-sortable="true" data-visible="false">Fecha Act</th>
-				 <th data-field="diastranscurridos" data-sortable="true"  data-visible="true" data-formatter="diasTranscurridosFormater">D&iacute;as T.</th>
+				 <th data-field="comision"  data-sortable="true" data-align="left"    <?php if($this->ion_auth->is_admin()){ echo "data-visible=\"true\""; }?>   data-formatter="FormatoComision">Comisi&oacute;n</th>
+				 <th data-field="confactura"  data-sortable="true" data-align="center" data-visible="false" data-formatter="FormatoComision">Factura</th>
+				 <th data-field="est_fec_ing" data-sortable="true" data-visible="true" data-footer-formatter="totalTextFormatter">Ingresado</th>
+				 <th data-field="est_fec_estactual" data-sortable="true" data-visible="false" >Fecha Act</th>
+				 <th data-field="diastranscurridos" data-sortable="true"  data-visible="true" data-formatter="diasTranscurridosFormater" data-footer-formatter="cantidadRegistros">D&iacute;as T.</th>
 				 <th data-field="totalAPagar" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" data-footer-formatter="sumFormatter" >Venta Total</th>
 				 <th data-field="SaldoCliente" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right"  data-footer-formatter="sumFormatter" >Saldo Cliente</th>
 				 <th data-field="SaldoVendedor1"  data-sortable="true" data-formatter="PriceFormatter"  data-visible="<?php if($this->ion_auth->is_admin())echo "true";else echo"false";?>" data-align="right"  data-footer-formatter="sumFormatter" >Saldo VEN1</th>
@@ -551,7 +551,7 @@
 		   dataType: 'json',
 		   columns:[  /* {field: 'fecha_subida',title: 'Fec. Subida'},*/
 					   {field: 'id_cabecera',title: 'Pedido',formatter:'f_idpedido'}, 
-					   /*{field: 'id_tipo',title: 'Tipo'},*/
+					   {field: 'cli_nombre',title: 'Cliente',formatter:'i_cliente'},
 					   {field: 'filenameid',title: 'filename',formatter:'f_archivoadjunto'}
 		   		   ]
    		}
@@ -727,31 +727,49 @@
 					success: function(res) {
 						console.log(res);
 						var montos = [];
+						var montosAnt = [];
+						var montosGananciaAnt = [];
 						var periodos = [];
 						var montosGanancia = [];
+						//var cantidadPedidos = [];
 						
-						for (var i in res) {
-							montos.push(res[i].totalAPagar);
-							montosGanancia.push(res[i].ganancia);
-							periodos.push(res[i].label);
+						for (var i in res.act) {
+							montos.push(res.act[i].totalAPagar);
+							montosGanancia.push(res.act[i].ganancia);
+							periodos.push(res.act[i].mes);
+							//cantidadPedidos.push(res[i].cantidadPedidos);
+						}
+
+						for (var i in res.ant) {
+							montosAnt.push(res.ant[i].totalAPagar);
+							montosGananciaAnt.push(res.ant[i].ganancia);
+							//periodosAnt.push(res.act[i].label);
+							//cantidadPedidos.push(res[i].cantidadPedidos);
 						}
 
 						var chartdata = {
                         labels: periodos,
                         datasets: [
                             {
-                                label: 'Venta',
+                                label: 'Ventas anuales',
 								backgroundColor: 'rgb(243, 156, 18)',
 								borderColor: 'rgb(243, 156, 18)',
 								fill: false,
                                 data: montos
 							},
 							{
-                                label: 'Ganancia',
+                                label: 'Ganancia anual',
 								backgroundColor: 'rgb(47, 51, 54)',
 								   borderColor: 'rgb(47, 51, 54)',
 								fill: false,
                                 data: montosGanancia
+							},
+							{
+                                label: 'Año Anterior',
+								backgroundColor: 'rgb(38, 154, 188)',
+								borderColor: 'rgb(38, 154, 188)',
+								fill: false,
+                                data: montosAnt
                             }
 							]
 						};

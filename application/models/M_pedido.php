@@ -318,15 +318,22 @@ class M_pedido extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 
-	function obtenerIngresosPorPedido(){
+	function obtenerIngresosPorPedido($fechaDesde,$fechaHasta){
 
 		$this->db->select('year(est_fec_ing)');
-		$this->db->select('month(est_fec_ing)');
+		$this->db->select('month(est_fec_ing) as mes');
 		$this->db->select('concat(year(est_fec_ing),"-",month(est_fec_ing)) as label');
 		$this->db->select_sum('totalAPagar','totalAPagar');
 		$this->db->select_sum('Ganancia100','ganancia');
 		$this->db->from('v_listadopedidoextendido');
-		$this->db->where('est_fec_ing >','2019-05-01');
+		if($fechaDesde!="" && $fechaHasta!="")
+			{
+				$data = $this->db->group_start();
+				$data = $this->db->where(' est_fec_ing >=', $fechaDesde." 00:00:00");
+				$data = $this->db->where(' est_fec_ing <=', $fechaHasta." 23:59:59");
+				$data = $this->db->group_end();
+			}
+
 		$this->db->group_by(array("year(est_fec_ing)", "month(est_fec_ing)","(concat(year(est_fec_ing),'-',month(est_fec_ing)))"));
 
 		return $this->db->get()->result_array();

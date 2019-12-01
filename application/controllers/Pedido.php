@@ -130,8 +130,6 @@ class Pedido extends CI_Controller
                     $dataContent['pedEdit'] = $pedido;
                     $dataContent['cliente'] = $cliente[0];
 
-                    // var_dump($dataContent['cliente']);
-                    // exit(0);
                     // Comentarios/Seguimiento
                     $dataContent['comm'] = $this->M_Comentarios->obtenerPedidoComentarios($idPed);
 
@@ -139,24 +137,16 @@ class Pedido extends CI_Controller
                     $fecha_ingreso = $this->comun->transformaStringFecha($pededit[0]['est_fec_ing']);
                     $cuantosdias = $this->comun->cuentaDias($fecha_ingreso, date_create());
 
-                    // if ($fecha_ingreso->format('Y-m-d')<=(NEW DateTime('America/Argentina/Mendoza'))->format('Y-m-d'))
-                    // $diasTranscurridos = $this->comun->Evalua($this->comun->DiasHabiles($fecha_ingreso->format('Y-m-d'),(NEW DateTime('America/Argentina/Mendoza'))->format('Y-m-d')));
-                    // else
 
                     $dataContent['pedEdit']['diastranscurridos'] = $cuantosdias;
 
                     // necesito la fehca estado para calcular los dias en ese estado
                     $fechaEstado = $this->comun->transformaStringFecha($pededit[0]['est_fec_estactual']);
-                    // if($dataContent['pedEdit']['est_esecuencia']==2){
                     // esperando entrega
                     $diasCambioEstado =  $this->comun->cuentaDias($fechaEstado, date_create());
-                    //$this->comun->Evalua($this->comun->DiasHabiles($fechaEstado->format('Y-m-d'), (new DateTime('America/Argentina/Mendoza'))->format('Y-m-d')));
-                    $dataContent['pedEdit']['diasCambioEstado'] = $diasCambioEstado;
-                    // }
 
-                    // echo $dataContent['pedEdit']['est_esecuencia'];
-                    // echo "han pasado ". $diasTranscurridos . " dias , entre el" . $fecha_ingreso . " y el ". $fecha_actual;
-                    // exit(0);
+                    $dataContent['pedEdit']['diasCambioEstado'] = $diasCambioEstado;
+
                 }
             } else
                 redirect('Pedido/nuevoPedido');
@@ -196,8 +186,6 @@ class Pedido extends CI_Controller
         $dataContent['ind_listos'] = $this->M_estados->get_cantidadEstadoComision(3, $comision);
         $dataContent['ind_conproblema'] = $this->M_estados->get_cantidadEstadoComision(4, $comision);
         $dataContent['ind_calculando'] = $this->M_estados->get_cantidadEstadoComision(5, $comision);
-
-        $dataContent['ind_graficoventas'] = $this->M_pedido->obtenerIngresosPorPedido();
 
         $this->load->template('v_pedido_listado', $dataContent);
     }
@@ -697,7 +685,12 @@ class Pedido extends CI_Controller
             redirect('auth/login');
         }
         
-        $data = $this->M_pedido->obtenerIngresosPorPedido();
+        $fechaDesde = '2019-01-01';
+        $fechaHasta = $this->load->obtieneFechaActual();
+
+
+        $data['act'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesde,$fechaHasta);
+        $data['ant'] = $this->M_pedido->obtenerIngresosPorPedido('2018-01-01','2018-12-31');
         echo json_encode($data);
     }
     /**
