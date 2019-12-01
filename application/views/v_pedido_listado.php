@@ -305,7 +305,21 @@
 											</div>
 											<div class="col-md-7">
 												<div class="form-group">
-													<select id="cntrl_id_producto"  class="form-control" name="cntrl_id_producto" data-error="Seleccione un Producto" required></select>
+													<select id="cntrl_id_producto"  class="form-control" name="cntrl_id_producto" data-error="Seleccione un Producto" style="width:1005;"></select>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-5">
+												<div class="form-group">Fecha</div>
+											</div>
+											<div class="col-md-7">
+												<div class="form-group" id="reportrange">
+													<button class="btn btn-default pull-left" id="daterange-btn">
+														
+														<i class="fa fa-calendar"></i> <span>Seleccionar fecha</span>
+														<i class="fa fa-caret-down"></i>
+													</button>
 												</div>
 											</div>
 										</div>
@@ -369,11 +383,15 @@
 
 
 <script type="text/javascript">
-
+	var startDate="";
+		var endDate="";
 	//http://davidstutz.github.io/bootstrap-multiselect/
 	//https://github.com/wenzhixin/bootstrap-table/blob/master/src/extensions/export/README.md
 	$(document).ready(function(){
 
+
+	
+		
 
 		//Widgets 
 		ultimasHojasProcesadas();
@@ -416,7 +434,26 @@
 			muestraPedidoVistaPreviaModal($('#buscarpedido').val());
 		});
 
-		
+		//Date range as a button
+        $('#daterange-btn').daterangepicker(
+                {
+                  ranges: {
+                    'Hoy': [moment(), moment()],
+                    'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Semana Pasada': [moment().subtract(6, 'days'), moment()],
+                    'Ultimos 30 dias': [moment().subtract(29, 'days'), moment()],
+                    'Este Mes': [moment().startOf('month'), moment().endOf('month')],
+                    'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                  },
+                  startDate: moment().subtract(29, 'days'),
+                  endDate: moment()
+                },
+        function (start, end) {
+		  $('#reportrange span').html(start.format('YYYY/MM/DD') + ' - ' + end.format('YYYY/MM/DD'));
+		  startDate = start.format('YYYY-MM-DD');
+          endDate = end.format('YYYY-MM-DD');
+        }
+        );
 		
 		
 		$('#btn_buscar_adj').click(function(){ultimosAdjuntos();});
@@ -621,6 +658,9 @@
 		params['search'] = $('#search_txt').val();
 		params['idprod'] = $('#cntrl_id_producto').val();
 		
+
+		params['fechaDesde'] = startDate;
+		params['fechaHasta'] = endDate;
         /*$('#toolbar').find('input[name]').each(function () {
             params[$(this).attr('name')] = $(this).val();
         });*/
@@ -635,7 +675,10 @@
 
 
 		var areaChartOptions = {
-          //Boolean - If we should show the scale at all
+			
+		  
+		  
+		  //Boolean - If we should show the scale at all
           showScale: true,
           //Boolean - Whether grid lines are shown across the chart
           scaleShowGridLines: true,
@@ -654,7 +697,7 @@
           //Boolean - Whether to show a dot for each point
           pointDot: true,
           //Number - Radius of each point dot in pixels
-          pointDotRadius: 4,
+          pointDotRadius: 8,
           //Number - Pixel width of point dot stroke
           pointDotStrokeWidth: 1,
           //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
@@ -664,13 +707,25 @@
           //Number - Pixel width of dataset stroke
           datasetStrokeWidth: 2,
           //Boolean - Whether to fill the dataset with a color
-          datasetFill: true,
+          datasetFill: false,
           //String - A legend template
-          //legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+          legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
           //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
           maintainAspectRatio: false,
           //Boolean - whether to make the chart responsive to window resizing
-          responsive: true
+		  responsive: true,
+		  
+		  scales: {
+            yAxes: [{
+                ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, values) {
+                        return PriceFormatter(value);
+                    }
+				}
+				
+            }]
+        }
 		};
 		
 
@@ -697,35 +752,31 @@
                         datasets: [
                             {
                                 label: 'Venta',
-								fillColor: "rgba(60,141,188,0.9)",
-								strokeColor: "rgba(60,141,188,0.8)",
-								pointColor: "#3b8bba",
-								pointStrokeColor: "rgba(60,141,188,1)",
-								pointHighlightFill: "#fff",
-								pointHighlightStroke: "rgba(60,141,188,1)",
+								backgroundColor: 'rgb(243, 156, 18)',
+								borderColor: 'rgb(243, 156, 18)',
+								fill: false,
                                 data: montos
 							},
 							{
                                 label: 'Ganancia',
-								fillColor: "rgba(210, 214, 222, 1)",
-								strokeColor: "rgba(210, 214, 222, 1)",
-								pointColor: "rgba(210, 214, 222, 1)",
-								pointStrokeColor: "#c1c7d1",
-								pointHighlightFill: "#fff",
-								pointHighlightStroke: "rgba(220,220,220,1)",
+								backgroundColor: 'rgb(47, 51, 54)',
+								   borderColor: 'rgb(47, 51, 54)',
+								fill: false,
                                 data: montosGanancia
                             }
 							]
 						};
 
-					//-------------
+						//-------------
 						//- LINE CHART -
 						//--------------
+						
 						var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
-						var lineChart = new Chart(lineChartCanvas);
-						var lineChartOptions = areaChartOptions;
-						lineChartOptions.datasetFill = false;
-						lineChart.Line(chartdata, lineChartOptions);
+						var chart = new Chart(lineChartCanvas, {
+							type: 'line',
+							data: chartdata,
+							options: areaChartOptions
+						});
 					
 					}
 		});			

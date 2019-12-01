@@ -52,7 +52,7 @@ date_default_timezone_set('America/Santiago');
     <!-- Select2 -->
     <script src="<?php echo base_url('Template/plugins/select2/select2.full.min.js')?>" type="text/javascript"></script>
 
-    <script src="<?php echo base_url('Template/plugins/chartjs/Chart.min.js')?>" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" type="text/javascript"></script>
     
     <!-- Bootstrap -->
     <script src="<?php echo base_url('Template/bootstrap/js/bootstrap.min.js')?>" type="text/javascript"></script>

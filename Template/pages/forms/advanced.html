@@ -995,6 +995,9 @@
     <!-- Page script -->
     <script type="text/javascript">
       $(function () {
+        var startDate="";
+        var endDate="";
+
         //Initialize Select2 Elements
         $(".select2").select2();
 
@@ -1025,6 +1028,8 @@
                 },
         function (start, end) {
           $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+          startDate = start;
+          endDate = end;
         }
         );
 

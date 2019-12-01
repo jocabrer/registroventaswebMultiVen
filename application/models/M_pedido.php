@@ -234,7 +234,7 @@ class M_pedido extends CI_Model {
 	/***
 	 * Listado de pedido en base a criterios
 	 */
-	function ObtenerPedidosListado($criterio,$limit,$estados,$ordenarpor,$orden,$slcomision,$cliente,$idprod = -1)
+	function ObtenerPedidosListado($criterio,$limit,$estados,$ordenarpor,$orden,$slcomision,$cliente,$idprod = -1,$fechaDesde="",$fechaHasta="")
 	{
 			$data = $this->db->select('*')->from('v_listadopedidoextendido');
 			
@@ -259,7 +259,18 @@ class M_pedido extends CI_Model {
 	            $data = $this->db->or_like(' cli_nom', $criterio);
 	            $data = $this->db->or_where(' cli_nom =', $criterio);
 	            $data = $this->db->group_end();
-	        }
+			}
+			
+			if($fechaDesde!="" && $fechaHasta!="")
+			{
+				$data = $this->db->group_start();
+				$data = $this->db->where(' est_fec_ing >=', $fechaDesde." 00:00:00");
+				$data = $this->db->where(' est_fec_ing <=', $fechaHasta." 23:59:59");
+				$data = $this->db->group_end();
+			}
+
+			
+
 	        $data = $this->db->limit($limit);
 	        $data = $this->db->order_by($ordenarpor, $orden);
 	        //$res = null;

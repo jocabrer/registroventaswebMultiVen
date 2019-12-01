@@ -724,11 +724,16 @@ class Pedido extends CI_Controller
         isset($obj->cliente) ? $cliente = $obj->cliente : $cliente = "todos";
         isset($obj->slcomision) ? $slcomision = $obj->slcomision : $slcomision = "-1";
         isset($obj->idprod) ? $idprod = $obj->idprod : $idprod = -1;
+        isset($obj->fechaDesde) ? $fechaDesde = $obj->fechaDesde : $fechaDesde = "";
+        isset($obj->fechaHasta) ? $fechaHasta = $obj->fechaHasta : $fechaHasta = "";
+
+
+        
 
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
-        $data = $this->M_pedido->ObtenerPedidosListado($criterio, $limit, $slestado, $ordenarpor, $orden, $slcomision, $cliente,$idprod);
+        $data = $this->M_pedido->ObtenerPedidosListado($criterio, $limit, $slestado, $ordenarpor, $orden, $slcomision, $cliente,$idprod,$fechaDesde,$fechaHasta);
 
         $data = $this->ProcesaListado($data);
 
