@@ -736,7 +736,7 @@
 						for (var i in res.act) {
 							montos.push(res.act[i].totalAPagar);
 							montosGanancia.push(res.act[i].ganancia);
-							periodos.push(res.act[i].mes);
+							periodos.push(numeroAmes(res.act[i].mes));
 							//cantidadPedidos.push(res[i].cantidadPedidos);
 						}
 

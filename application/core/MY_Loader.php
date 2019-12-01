@@ -165,5 +165,14 @@ class MY_Loader extends CI_Loader {
               
     }
 
+    public function restaDiasFecha($fecha,$arestar){
+
+        return date("Y-m-d",strtotime($fecha."- ".$arestar." days"));
+    }
+    public function restaAgnoFecha($fecha,$arestar){
+
+        return date("Y-m-d",strtotime($fecha."- ".$arestar." years"));
+    }
+
 
 }

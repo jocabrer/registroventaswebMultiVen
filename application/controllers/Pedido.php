@@ -681,18 +681,34 @@ class Pedido extends CI_Controller
         echo json_encode($data);
     }
 
+    /**
+     * Metodo que genera 2 dataset coin la información de ventas y ganancia de este periodo actual y del periodo anterior ( Año anterior ) 
+     *
+     * @return void
+     */
     public function obtenerIngresosPorPedido(){
+
         if (!$this->ion_auth->logged_in()) {
             $this->session->set_userdata('previous_url', current_url());
             redirect('auth/login');
         }
         
-        $fechaDesde = '2019-01-01';
+        //$fechaDesde = '2019-01-01';
+
+        
         $fechaHasta = $this->load->obtieneFechaActual();
+        $fechaDesde = $this->load->restaDiasFecha($fechaHasta,300);
+
+
+        $fechaHastaYP = $this->load->restaAgnoFecha($fechaHasta,1);
+        $fechaDesdeYP = $this->load->restaAgnoFecha($fechaDesde,1);
+
+        //echo $fechaDesdeYP."-".$fechaHastaYP;
+        //echo "<br>".$fechaDesde."-".$fechaHasta;
 
 
         $data['act'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesde,$fechaHasta);
-        $data['ant'] = $this->M_pedido->obtenerIngresosPorPedido('2018-01-01','2018-12-31');
+        $data['ant'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesdeYP,$fechaHastaYP);
         echo json_encode($data);
     }
     /**
