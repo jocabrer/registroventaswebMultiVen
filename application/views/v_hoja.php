@@ -15,7 +15,7 @@
 		<!-- hojas recientes -->
 		<div class="box box-primary">
 			<div class="box-header with-border">
-					<h3 class="box-title">Hojas Recientes</h3>
+					<h3 class="box-title">Últimas hojas</h3>
 					<div class="box-tools pull-right">
 				
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
@@ -108,23 +108,50 @@
 			
 		</div><!--row-->
 	
-	
-	
-	<div class="box box-success">
+		<div class="box box-success">
 				<div class="box-header with-border">
 						<h3 class="box-title">Hoja proceso #<label id="lbl_nombrehoja"></label></h3>
-						<div class="box-tools pull-right">
-									<button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-									<i class="fa fa-minus"></i></button>
-									
-						</div>
 				</div><!-- .header -->
 				<div class="box-body">
-						<table id="tbl_result_hoja"  data-show-columns="true" data-show-footer="false"    					 
-													data-toggle="table" data-show-export="true">
+						<table id="tbl_result_hoja"  
+						data-show-columns="true" 
+						data-show-footer="true"    					 
+						data-toggle="table" 
+						data-show-export="true"  data-side-pagination="server"
+						data-url="<?php echo base_url('Reporte/muestraHoja/'); ?>"
+						data-query-params="parametrosHoja"
+						data-response-handler="respuestaListadoHoja"
+						data-method="post"
+						>
+
+						<thead>
+							<tr>
+									<th data-field="tipo"  data-sortable="false" data-align="center" >Tipo</th>
+									<th data-field="id_cabecera"  data-sortable="false" data-align="" data-formatter="f_idpedido">Pedido</th>
+									<th data-field="cantidad"  data-sortable="false" data-align="center" data-formatter="">Cantidad</th>
+									<th data-field="producto"  data-sortable="false" data-align="left" data-formatter="" data-footer-formatter="totalTextFormatter">Producto</th>
+									<th data-field="costo_cu"  data-sortable="false" data-align="right"  data-formatter="PriceFormatter" data-footer-formatter="sumFormatter">Costo c/u</th>
+									<th data-field="tot_costo"  data-sortable="false" data-align="right" data-formatter="PriceFormatter" data-footer-formatter="sumFormatter">Total Costo</th>
+									<th data-field="iva"  data-sortable="false" data-align="right"  data-formatter="PriceFormatter" data-footer-formatter="sumFormatter">Iva</th>
+									<th data-field="pagado"  data-sortable="false" data-align="right"  data-formatter="PriceFormatter" data-footer-formatter="sumFormatter">Pagado</th>
+									<th data-field="saldo"  data-sortable="false"data-align="right"  data-formatter="PriceFormatter" data-footer-formatter="sumFormatter">Saldo/Abono</th>
+									<th data-field="saldovendedor2"  data-sortable="false" data-align="right"  data-formatter="PriceFormatter" data-footer-formatter="sumFormatter">Comisión</th>
+
+									
+					
+					
+					
+					
+					
+					
+					
+				
+							</tr>
+						</thead>
+													
 						</table>
 				</div><!-- /.box-body -->
-	</div><!-- box -->
+		</div><!-- box -->
 
 	<div class="box box-warning">
 		<div class="box-header with-border"><h3 class="box-title"> Alertas </h3></div>
@@ -179,7 +206,7 @@ function eliminaHoja(row){
 					alert("Problema al procesar");
 				}
 				else{ 
-					MuestraMensaje("Módulo Hojas",res.mensaje);
+					MuestraMensaje("Mรณdulo Hojas",res.mensaje);
 					ultimasHojasProcesadas();
 				}
 			},
@@ -191,28 +218,22 @@ function seteaHojaDesdeConsulta(){
 	var nombreHoja = $('#sl_hojas').val();	
 	muestraTablaHojas(nombreHoja);
 }
+
+function parametrosHoja(params){
+		params['hoja'] =$('#lbl_nombrehoja').text();
+		return params;
+}
+
+function respuestaListadoHoja(res){
+	return res;
+}
+
 function muestraTablaHojas(nombreHoja){
-	$('#tbl_result_hoja').bootstrapTable('destroy').bootstrapTable({
-			    url: base_url+'Reporte/muestraHoja/'+nombreHoja,
-			    method:"GET",
-				dataType: 'json',
-				columns:[
-					
-					{field: 'tipo',align: 'center',title: 'Tipo'},
-					{field: 'id_cabecera',title: 'Pedido',formatter:f_idpedido}, 
-					{field: 'cantidad',title: 'Cantidad'},
-					{field: 'producto',title: 'Producto',align:'left'},
-					{field: 'costo_cu',title: 'Costo c/u',align:'left',formatter:PriceFormatter},
-					{field: 'tot_costo',title: 'Total Costo',align:'left',formatter:PriceFormatter},
-					{field: 'iva',title: 'Iva',align:'left',formatter:PriceFormatter},
-					{field: 'pagado',title: 'Pagado',align:'left',formatter:PriceFormatter},
-					{field: 'saldo',title: 'Saldo/Abono',align:'left',formatter:PriceFormatter},
-					{field: 'saldovendedor2',title: 'Vendedor 2',align:'left',formatter:PriceFormatter}
-	  			]}
-	);
 	
+
 	$('#lbl_nombrehoja').text(nombreHoja);
 	$("#nombrehoja").attr('value',$('#lbl_nombrehoja').text());
+	$('#tbl_result_hoja').bootstrapTable('refresh');
 }
 
 function procesa() {
@@ -250,7 +271,7 @@ function ultimasHojasProcesadas(){
 		   columns:[
 					   {field: 'nombre_hoja',title: 'Hoja',formatter:'f_nombrehojalink'}, 
 					   {field: 'fecha_proceso',title: 'Fecha proceso'},
-					   {field: 'fecha_mod',title: 'Ult. Modificación'},
+					   {field: 'fecha_mod',title: 'Ult. Modificaciรณn'},
 					   {field: 'operate',title: 'Eliminar',align: 'center',events:eventoTablaHojas,formatter:operateFormatter}
 		   ]});
 }

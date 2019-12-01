@@ -92,14 +92,14 @@
 					<?php if($this->ion_auth->is_admin()){ ?>
 							<tr>
 								<th>Total Admin</th>
-								<td><label id="lbl_totalSaldoVen1"></label></td>
+								<td class="text-right"><label id="lbl_totalSaldoVen1"></label></td>
 							</tr>
 					<?php }?>
 					
 							<?php if($this->ion_auth->in_group(2) || $this->ion_auth->is_admin()) {?>
 							<tr>
 								<th>Total Vendedor</th>
-								<td><label id="lbl_totalSaldoVen2"></label></td>
+								<td class="text-right"><label id="lbl_totalSaldoVen2"></label></td>
 							</tr>
 							<?php } 
 							if($this->ion_auth->is_admin())
@@ -107,7 +107,7 @@
 							?>
 							<tr>
 								<th>Total Fabrica</th>
-								<td><label id="lbl_totalSaldoFab"></label></td>
+								<td class="text-right"><label id="lbl_totalSaldoFab"></label></td>
 							</tr>
 							<?php }?>
 					</tbody>
@@ -154,7 +154,7 @@
 			<!-- Ultimos adjuntos -->
 			<div class="box box-primary collapsed-box">
 					<div class="box-header with-border">
-							<h3 class="box-title">Archivos subidos</h3>
+							<h3 class="box-title">Archivos Adjuntos</h3>
 							<div class="box-tools pull-right">
 								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
 							</div>
@@ -187,7 +187,7 @@
 			<!-- LINE CHART -->
 			<div class="box box-info">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Ingresos Mensuales</h3>
+                  <h3 class="box-title">Ingresos mensuales totales</h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -295,7 +295,7 @@
 											</div>
 											<div class="col-md-7">
 												<div class="form-group">
-												<input name="search_txt" class="form-control input-sm" type="text" placeholder="Buscar" id="search_txt">
+												<input name="search_txt" class="form-control input-sm" type="text" placeholder="#pedido, cliente, etc" id="search_txt">
 												</div>
 											</div>
 										</div>
@@ -305,7 +305,7 @@
 											</div>
 											<div class="col-md-7">
 												<div class="form-group">
-													<select id="cntrl_id_producto"  class="form-control" name="cntrl_id_producto" data-error="Seleccione un Producto" style="width:1005;"></select>
+													<select id="cntrl_id_producto"  class="form-control" name="cntrl_id_producto" data-error="Seleccione un Producto" style="width:100%;"></select>
 												</div>
 											</div>
 										</div>
@@ -346,7 +346,7 @@
 		<table id="tabla_resultado" data-method="post" data-show-footer="true" data-show-columns="true"
                data-show-refresh="true" data-show-export="true" data-side-pagination="server" data-sort-Order="desc"
 			   data-toggle="table" data-query-params="queryParams" data-response-handler="responseHandler"
-			   data-url="<?php echo base_url(); ?>Pedido/listadoPedidos/">
+			   data-url="<?php echo base_url('Pedido/listadoPedidos/'); ?>">
 	     <thead>
          <tr >
          		 <th data-field="numeroPedido"  data-sortable="true" data-align="center" data-formatter="formatoVerDetalle" data-events="eventosTabla"></th>
@@ -669,15 +669,7 @@
 
 
 	function inicializaGraficoVentas(){
-		
-		
-
-
-
 		var areaChartOptions = {
-			
-		  
-		  
 		  //Boolean - If we should show the scale at all
           showScale: true,
           //Boolean - Whether grid lines are shown across the chart
@@ -727,9 +719,6 @@
             }]
         }
 		};
-		
-
-
 		//obtenerIngresosPorPedido
 		jQuery.ajax({
 				method: "GET",

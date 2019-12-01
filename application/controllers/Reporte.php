@@ -75,20 +75,29 @@ class Reporte extends CI_Controller {
 	 * @param [type] $idhoja
 	 * @return void
 	 */
-	function muestraHoja($idhoja){
+	function muestraHoja(){
 	    
 	    $this->load->model('M_hojas');
 	    
 	    if (! $this->ion_auth->logged_in ()) {
 	        redirect ( 'auth/login' );
-	    }
-	    
-	    $data =  $this->M_hojas->get_hoja($idhoja);
-	    
-	    $data2['rows'] = $data;
-	    $data2['total'] = count($data);
-	    
-	    echo json_encode($data);
+		}
+		
+		$json = file_get_contents('php://input');
+        $obj = json_decode($json);
+
+		isset($obj->hoja) ? $idhoja = $obj->hoja : $idhoja = -1;
+		
+		
+		if($idhoja!=-1)
+		{
+			$data =  $this->M_hojas->get_hoja($idhoja);
+			
+			$data2['rows'] = $data;
+			$data2['total'] = count($data);
+			
+			echo json_encode($data2);
+		}
 	}
 	
 	

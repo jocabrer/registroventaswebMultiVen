@@ -175,11 +175,8 @@ class M_Hojas extends CI_Model {
 
         $this->db->limit($limit);
         $this->db->order_by("fecha_mod",$descasc);
-
         $query = $this->db->get('cabecera_hojas');
-        
     	return $query->result_array();
-
     }
 
     /**

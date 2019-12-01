@@ -727,9 +727,6 @@ class Pedido extends CI_Controller
         isset($obj->fechaDesde) ? $fechaDesde = $obj->fechaDesde : $fechaDesde = "";
         isset($obj->fechaHasta) ? $fechaHasta = $obj->fechaHasta : $fechaHasta = "";
 
-
-        
-
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
         }
