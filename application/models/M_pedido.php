@@ -311,7 +311,12 @@ class M_pedido extends CI_Model {
 		
 		$this->db->select('v_listadopedidoextendido.*');
 		$this->db->from('v_listadopedidoextendido');
-		$this->db->where(' (SaldoCliente+SaldoFabrica+SaldoVendedor1+SaldoVendedor2) <>',0);
+		$data = $this->db->group_start();
+		$this->db->or_where('SaldoCliente <>',0);
+		$this->db->or_where('SaldoFabrica <>',0);
+		$this->db->or_where('SaldoVendedor1 <>',0);
+		$this->db->or_where('SaldoVendedor2 <>',0);
+		$data = $this->db->group_end();
 		$this->db->where('est_fec_ing >','2019-11-01');
 		$this->db->where_not_in('estado_sec',$notin);
 
@@ -320,9 +325,10 @@ class M_pedido extends CI_Model {
 
 	function obtenerIngresosPorPedido($fechaDesde,$fechaHasta){
 
-		$this->db->select('year(est_fec_ing)');
+		$this->db->select('year(est_fec_ing) as agno');
 		$this->db->select('month(est_fec_ing) as mes');
 		$this->db->select('concat(year(est_fec_ing),"-",month(est_fec_ing)) as label');
+		$this->db->select('count(est_fec_ing) as qty');
 		$this->db->select_sum('totalAPagar','totalAPagar');
 		$this->db->select_sum('Ganancia100','ganancia');
 		$this->db->from('v_listadopedidoextendido');
