@@ -107,8 +107,14 @@
 						<a href="<?php echo base_url('Reporte/hojas'); ?>">Hojas de trabajo</a>
 					</li>
 
-					<li class="<?php echo ($currentAction == "verdetallemovimientos")?'active':'treeview'; ?>">
-						<a href="<?php echo base_url('Cuenta/verdetallemovimientos'); ?>">Movimiento cuentas</a>
+				
+
+					<li class="<?php echo ($currentAction == "graficosCC/RPTDIARIO")?'active':'treeview'; ?>">
+						<a href="<?php echo base_url('Reporte/graficosCC/RPTDIARIO'); ?>">Reporte diario</a>
+					</li>
+			    
+					<li class="<?php echo ($currentAction == "Reporte/graficosCC/RPTMENSUAL")?'active':'treeview'; ?>">
+						<a href="<?php echo base_url('Reporte/graficosCC/RPTMENSUAL'); ?>">Reporte Mensual</a>
 					</li>
 			    
               </ul>
@@ -124,8 +130,12 @@
 			  </a>
               <ul class="treeview-menu">
               	
-              		<li class="<?php echo ($currentAction == "agregar")?'active':'treeview'; ?>">
+              		<li class="<?php echo ($currentAction == "Cuenta")?'active':'treeview'; ?>">
 						<a href="<?php echo base_url('Cuenta'); ?>">Cuentas</a>
+					</li>
+
+					<li class="<?php echo ($currentAction == "verdetallemovimientos")?'active':'treeview'; ?>">
+						<a href="<?php echo base_url('Cuenta/verdetallemovimientos'); ?>">Movimiento cuentas</a>
 					</li>
 					
               </ul>
