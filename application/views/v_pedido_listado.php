@@ -359,13 +359,14 @@
 				 <th data-field="est_fec_ing" data-sortable="true" data-visible="true" data-footer-formatter="totalTextFormatter">Ingresado</th>
 				 <th data-field="est_fec_estactual" data-sortable="true" data-visible="false" >Fecha Act</th>
 				 <th data-field="diastranscurridos" data-sortable="true"  data-visible="true" data-formatter="diasTranscurridosFormater" data-footer-formatter="cantidadRegistros">D&iacute;as T.</th>
+				 <th data-field="iva" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" data-footer-formatter="sumFormatter" >IVA</th>
 				 <th data-field="totalAPagar" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" data-footer-formatter="sumFormatter" >Venta Total</th>
 				 <th data-field="Ganancia100" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right" data-footer-formatter="sumFormatter" >Ganancia</th>
 				 <th data-field="SaldoCliente" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right"  data-footer-formatter="sumFormatter" >Saldo Cliente</th>
 				 <th data-field="SaldoVendedor1"  data-sortable="true" data-formatter="PriceFormatter"  data-visible="<?php if($this->ion_auth->is_admin())echo "true";else echo"false";?>" data-align="right"  data-footer-formatter="sumFormatter" >Saldo VEN1</th>
 				 <th data-field="SaldoVendedor2"  data-sortable="true" data-formatter="PriceFormatter"  data-visible="<?php if($this->ion_auth->is_admin())echo "false";else echo"true";?>>" data-align="right"  data-footer-formatter="sumFormatter" >Saldo VEN2</th>
 				 <th data-field="SaldoFabrica" data-sortable="true" data-formatter="PriceFormatter"  data-visible="true" data-align="right"  data-footer-formatter="sumFormatter" >Saldo F&aacute;brica</th>
-				 	
+				 <th data-field="adjuntos" data-sortable="true"  data-visible="true" data-align="right">Adjuntos</th>
 				 <th data-field="operate" data-events="eventosTabla" data-formatter="operateFormatter"  data-visible="false">Eliminar</th>
 
             </tr>

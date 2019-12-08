@@ -203,8 +203,12 @@ class M_pedido extends CI_Model {
 	 */
     function obtenerPedido($idcabecera)
 	{
-		$this->db->where('id',$idcabecera);
-		$query = $this->db->get('v_cabecera');
+
+		$this->db->select('v_cabecera.*, v_indicador_lite.comision');
+		$this->db->from('v_cabecera');
+		$this->db->join('v_indicador_lite', 'v_cabecera.id = v_indicador_lite.id_cabecera ', 'left');
+		$this->db->where('v_cabecera.id',$idcabecera);
+		$query = $this->db->get();
 		return $query->result_array();
 	}
 	/**
