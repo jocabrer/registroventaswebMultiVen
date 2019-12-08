@@ -131,9 +131,12 @@ class Pedido extends CI_Controller
                     $dataContent['pedEdit'] = $pedido;
                     $dataContent['cliente'] = $cliente[0];
 
-                    // Comentarios/Seguimiento
+                    //Comentarios/Seguimiento
                     $dataContent['comm'] = $this->M_Comentarios->obtenerPedidoComentarios($idPed);
 
+                    //Adjuntos
+                    $dataContent['adjuntos'] = $this->M_pedido->obtenerPedidoAdjuntosListado($idPed,$userid,'asc');
+                    $dataContent['adjuntosCount'] = count($dataContent['adjuntos']);
                     // Cuento los dias transcurridos del pedido desde su fecha de ingreso
                     $fecha_ingreso = $this->comun->transformaStringFecha($pededit[0]['est_fec_ing']);
                     $cuantosdias = $this->comun->cuentaDias($fecha_ingreso, date_create());
@@ -145,7 +148,6 @@ class Pedido extends CI_Controller
                     $fechaEstado = $this->comun->transformaStringFecha($pededit[0]['est_fec_estactual']);
                     // esperando entrega
                     $diasCambioEstado =  $this->comun->cuentaDias($fechaEstado, date_create());
-
                     $dataContent['pedEdit']['diasCambioEstado'] = $diasCambioEstado;
 
                 }

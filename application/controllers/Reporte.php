@@ -11,10 +11,8 @@ class Reporte extends CI_Controller {
 	    $dataContent['descHeader']   	   = "Hojas de trabajo, analisis de ventas, Sistema lym.";
 	    
 	    //Autenticación
-	    if (!$this->ion_auth->logged_in())
-	    {
+	    if (!$this->ion_auth->logged_in()){
 	        redirect('auth/login');
-	        
 		}
 		$this->hojas(-1);
 	}
@@ -34,12 +32,9 @@ class Reporte extends CI_Controller {
 
         //Rescato id a eliminar
         $nombre_hoja = $this->input->post('nombre_hoja');
-	
 		//Eliminamos registro de la BD 
         $estado = $this->M_hojas->eliminaHojaCompleta($nombre_hoja);
-
-        // Salida de respuesta 
-        //$id,$objeto,$estado,$accion,$mensaje
+        // Salida de respuesta $id,$objeto,$estado,$accion,$mensaje
         $this->load->salidaRetornoAjax($nombre_hoja, "hoja", "L", "eliminada", $estado);
 	}
 
@@ -288,8 +283,8 @@ class Reporte extends CI_Controller {
 	}
 
 
-	/**************************************************************************************************************************
-	 * Página muestra los distintos informes y graficos
+	/**
+	 * Página muestra los distintos informes y graficos según el códigop del reporte muestra titulos y otra info.
 	 *
 	 * @return void
 	 */
@@ -300,15 +295,12 @@ class Reporte extends CI_Controller {
 			redirect ( 'auth/login' );
 		}
 
-		if(!$this->ion_auth->is_admin())
-		{
+		if(!$this->ion_auth->is_admin()){
 			redirect ( '/' );
 		}
 
 		$dataContent['titleHeader']  =  "Informes y Gráficos.";
 		$dataContent['descHeader']   =  "Analisis de las ventas.";
-
-
 
 		if($cod=="RPTDIARIO") 
 			$dataContent['subtitulo']  =  "Informe de pedidos diarios";
@@ -323,8 +315,12 @@ class Reporte extends CI_Controller {
         $this->load->template('v_graficos', $dataContent);
 		
 	}
-	/*	* ************************************************************************************************************************/
 
+	/**
+	 * Método que deriva según el código de reporte al método adecuado para obtener la data
+	 *
+	 * @return void
+	 */
 	public function graficoObtieneDatos(){
 
 		$cod =  $this->input->post('cod');
@@ -336,7 +332,11 @@ class Reporte extends CI_Controller {
 	   }
 
 	}
-
+	/**
+	 * Método Ajax que obtiene la data para el gráfico mensual
+	 *
+	 * @return void
+	 */
 	public function obtenerIngresosPorRango(){
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');
@@ -351,8 +351,12 @@ class Reporte extends CI_Controller {
         $data['act'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesde,$fechaHasta);
         $data['ant'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesdeYP,$fechaHastaYP);
         echo json_encode($data);
-
-    }
+	}
+	/**
+	 * Método Ajax que obtiene la data para el gráfico diario
+	 *
+	 * @return void
+	 */
 	public function obtenerIngresosPorRangoDiario(){
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login');

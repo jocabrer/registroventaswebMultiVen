@@ -1,87 +1,72 @@
-<!-- Content Wrapper. Contains page content -->
+
 <div class="content-wrapper">
-	<!-- Content Header (Page header) -->
+
 	<section class="content-header">
-  	<h1>
-		<?php echo $titleHeader; ?>
-		<small><?php echo $descHeader ?></small>
-  	</h1>
-  	<ol class="breadcrumb">
-		<li><a href="<?php echo base_url(); ?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-		<li><a href="<?php echo base_url($currentClass); ?>"><?php echo $currentClass ?></a></li>
-		<li class="active"><?php echo $currentAction ?></li>
-  	</ol>
+			<h1>
+				<?php echo $titleHeader; ?>
+				<small><?php echo $descHeader ?></small>
+			</h1>
+			<ol class="breadcrumb">
+				<li><a href="<?php echo base_url(); ?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
+				<li><a href="<?php echo base_url($currentClass); ?>"><?php echo $currentClass ?></a></li>
+				<li class="active"><?php echo $currentAction ?></li>
+			</ol>
 	</section>
 
 	<section class="content">
-	
 
-		<!-- Cantidad de Pedidos -->
-		<div class="box box-info">
+				<div class="box">
+				<div class="box box-info">
                 <div class="box-header with-border">
-                  <h3 class="box-title"><?php echo $subtitulo; ?></h5>
-                  <div class="box-tools pull-right">
-                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                  </div>
-                </div>
-                <div class="box-body">
-
-	
-	<div class="row">
-		<div class="col-md-12"><!-- --------------------------------------------- PRIMERA columna ----------------------------------------------->
-			
-		<div class="box box-danger box-solid">
-            <div class="box-header">
-              <h3 class="box-title" id="tituloperiodo">Periodo</h3>
-            </div>
-            <div class="box-body">
-					<div class="chart"  id="graficoVentas"></div>
-            </div>
-            <!-- /.box-body -->
-            <!-- Loading (remove the following to stop the loading)-->
-            <div class="overlay" id="divloading">
-              <i class="fa fa-refresh fa-spin"></i>
-            </div>
-            <!-- end loading -->
-		  </div>
-
-
-							    
-
-
-				
-		</div>
-	</div><!-- FILA -->
-	<div class="row">
-						<div class="col-md-12" style="text-align:center;">
-									<div class="form-group" id="reportrange">
-										<button class="btn btn-default pull-left" id="daterange-btn">
-											<i class="fa fa-calendar"></i> <span>Seleccionar rango</span>
-											<i class="fa fa-caret-down"></i>
-
-										</button>
-									</div>
-									<div class="form-group">
-										<button  id="actualizaIngTotales" type="button" class="btn btn-info input-sm right">Actualizar</button>
-									</div>
-
+							<h3 class="box-title"><?php echo $subtitulo; ?></h5>
+							<div class="box-tools pull-right">
+								<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+								<button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+							</div>
+      			</div>
+         		<div class="box-body">
+							<div class="row">
+								<div class="col-md-12">
+													<!-- --------------------------------------------- PRIMERA columna ----------------------------------------------->
+													<div class="box box-info box-solid">
+														<div class="box-header">
+															<h3 class="box-title" id="tituloperiodo">Periodo</h3>
+														</div>
+														<div class="box-body">
+															<div class="chart"  id="graficoVentas"></div>
+														</div>
+														<!-- /.box-body -->
+														<!-- Loading (remove the following to stop the loading)-->
+														<div class="overlay" id="divloading">
+															<i class="fa fa-refresh fa-spin"></i>
+														</div>
+													<!-- end loading -->
+													</div>
+													<!-- --------------------------------------------- FIN PRIMERA columna ----------------------------------------------->
+								</div>
+							</div><!-- FILA -->
+				</div>
+				<div class="box-footer text-center">
+						<div class="form-group" id="reportrange">
+									<button class="btn btn-default pull-left" id="daterange-btn">
+										<i class="fa fa-calendar"></i> <span>Seleccionar rango</span>
+										<i class="fa fa-caret-down"></i>
+									</button>
 						</div>
-	</div><!-- fila -->
+						<div class="form-group">
+									<button  id="actualizaIngTotales" type="button" class="btn btn-info input-sm right">Actualizar</button>
+						</div>	
+				</div>
+
+   				</div><!--box box-info-->
+				</div><!-- /.box-body -->
+
+	
 	
 
-			
-	</div><!-- /.box-body -->
-			  </div><!-- /.box -->
-
-
-
-
+</div><!-- /.box -->
 </section><!-- /.content -->
 </div><!-- /.content-wrapper -->
-
-
-
 
 
 <script type="text/javascript">
@@ -92,7 +77,6 @@
 		var chart;
 		var chartdata;
 		var cod = '<?php echo $codigoReporte; ?>';
-					
 		
 		$(document).ready(function(){
 
@@ -115,12 +99,15 @@
 							$('#daterange-btn').daterangepicker(
 									{
 									ranges: {
-										'Hoy': [moment(), moment()],
+										
 										'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 										'Semana Pasada': [moment().subtract(6, 'days'), moment()],
-										'Ultimos 30 dias': [moment().subtract(29, 'days'), moment()],
 										'Este Mes': [moment().startOf('month'), moment().endOf('month')],
-										'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+										'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+										'Ultimos 30 dias': [moment().subtract(29, 'days'), moment()],
+										'Ultimos 90 dias': [moment().subtract(90, 'days'), moment()],
+										'Ultimo Año': [moment().subtract(1, 'year'), moment()]
+										
 									},
 									startDate: moment().subtract(29, 'days'),
 									endDate: moment()
@@ -136,7 +123,7 @@
 							);
 					}
 
-					/* configura las opciones del gráfico */
+					/* configura las opciones del grรกfico */
 					function configuraOpcionesGrafico(){
 
 									/* lo destuyo */
@@ -171,6 +158,10 @@
 							datasetStroke: true,
 							//Number - Pixel width of dataset stroke
 							datasetStrokeWidth: 2,
+
+							//cubicInterpolationMode:'monotone',
+
+
 							//Boolean - Whether to fill the dataset with a color
 							datasetFill: false,
 							//String - A legend template
@@ -179,7 +170,9 @@
 							maintainAspectRatio: false,
 							//Boolean - whether to make the chart responsive to window resizing
 							responsive: true,
-				
+							tooltips: {
+										mode: 'x'
+									},
 								scales: {
 									yAxes: [{
 										ticks: {
@@ -189,7 +182,8 @@
 											}
 										}
 										
-									}]
+									}
+									]
 								}
 								};
 					}
@@ -231,6 +225,7 @@
 							montosAnt.push(res.ant[i].totalAPagar);
 							montosGananciaAnt.push(res.ant[i].ganancia);
 							cantidadPedidos.push(res.ant[i].qty);
+							/*periodos.push(res.ant[i].mes);*/
 						}
 
 						chartdata = {
@@ -293,8 +288,6 @@
 									}
 						});	
 					}
-
-
 });
 </script>
  

@@ -21,7 +21,7 @@
 		<div class="box-header with-border">
 			<h3 class="box-title">#<label id="lbl_id_pedido"></label>&nbsp;&nbsp;&nbsp;<?php echo $descHeader; ?></h3>
 					<div class="box-tools pull-right">
-						<a class="btn btn-default" title="Ver adjuntos" href="#"><i class="fa fa-fw fa-paperclip"></i></a>
+						<a class="btn btn-default" title="Ver adjuntos" href="#"><i class="fa fa-fw fa-paperclip"></i><?php echo $adjuntosCount;?></a>
 						<a class="btn btn-default"  title="Ver comprobante" href="<?php echo base_url(); ?>Comprobante/verComprobante/<?php echo $pedEdit['id'];?> " target="blank"><i class="fa fa-fw fa-print"></i> </a>
 						<a class="btn btn-default" title="Ver seguimiento de pedido" href="<?php echo base_url('seguimiento/ver/'.$pedEdit['id'].'/'.$pedEdit['cli_id']); ?>" target="blank"><i class="fa fa-fw fa-tasks"></i>Ver Seguimiento</a>
 					</div>
@@ -513,37 +513,26 @@
 
 $(document).ready(function() {
 
-
-
-	$.fn.editable.defaults.mode = 'inline';
-
 	
-	// E    V    E    N   T   O   S   -------------------------------------------------------------------------------------------------
 
+	var idglobal = <?php echo $pedEdit['id']?>;
+
+
+	// E    V    E    N   T   O   S   -------------------------------------------------------------------------------------------------
+	$.fn.editable.defaults.mode = 'inline';
 	//Seteamos el id del comprobante que estamos editando
 	$('#lbl_id_pedido').text(<?php echo $pedEdit['id']?>);
-	var idglobal = <?php echo $pedEdit['id']?>;
-	
 	//Seteamos eventos de los botons que abren ventanas modals
 	$("#btn_agregar_comision").click(function(){$("#div_comision").modal('show');});
 	$("#btn_agregar_caja").click(function(){$("#div_agregarcaja").modal('show');});
-	
-	//Seteamos eventos para mostrar imagenes adjunto
-	/*$(document).on('click', '[data-toggle="lightbox"]', function(event) {
-                event.preventDefault();
-                $(this).ekkoLightbox();
-	});*/
-	
 	//Seteamos evento del control de estado para que grabe cada vez que se cambia de estado 
 	$("#sl_estado").change(function(){cambiaEstadoPedido();});
 	$('#chk_iva').change(function (){actualizaFactura();});
 	$('#cntrl_id_producto').change(function(){buscaProducto();});
-	
 	$('#table_comision').on('editable-save.bs.table', actualizarComision);
 	window.eventosTablaComision = {'click .remove': function (e, value, row, index) {eliminaComision(row);}	};
 	window.eventoTablaAdjunto = {'click .remove': function (e, value, row, index) {eliminaAdjunto(row);}	};
 	//I    N     I    C   I  A   L  I   Z   A   D  O   R   E    S  ----------------------------------------------------------------------
-
 	//Cargamos controles con informacion
 	buscaLineaDetalle ();
 	buscaComisiones();
@@ -556,6 +545,10 @@ $(document).ready(function() {
 	<?php if ($pedEdit['comision']==1){ ?>
   		$('#chk_comision').prop('checked', true);
    	<?php } ?>
+
+
+	//console.log('<?php echo json_encode($adjuntos); ?>');
+
 
 	//Formateo de divisas para inputs
 	$('#txt_costoventa').priceFormat({prefix: '$ ',centsSeparator: ',',thousandsSeparator: '.',centsLimit: 0});
@@ -1087,7 +1080,8 @@ $(document).ready(function() {
 				window.history.back();});
 
 			$('.fa-paperclip').click(function(){
-	$('#divsubearchivo').modal('show');});
+				$('#divsubearchivo').modal('show');}
+			);
 				
 }); //Function ready
 </script>
