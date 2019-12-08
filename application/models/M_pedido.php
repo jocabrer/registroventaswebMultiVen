@@ -362,7 +362,7 @@ class M_pedido extends CI_Model {
 				$data = $this->db->group_end();
 			}
 
-		$this->db->group_by('DATE_FORMAT(est_fec_ing, "%Y-%m-%d"),');
+		$this->db->group_by(array("DATE_FORMAT(est_fec_ing, '%Y-%m-%d')","year(est_fec_ing)"));
 
 		return $this->db->get()->result_array();
 	}
