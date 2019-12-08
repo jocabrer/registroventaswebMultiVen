@@ -693,12 +693,8 @@ class Pedido extends CI_Controller
             redirect('auth/login');
         }
         
-        //$fechaDesde = '2019-01-01';
-
-        
         $fechaHasta = $this->load->obtieneFechaActual();
         $fechaDesde = $this->load->restaDiasFecha($fechaHasta,300);
-
 
         $fechaHastaYP = $this->load->restaAgnoFecha($fechaHasta,1);
         $fechaDesdeYP = $this->load->restaAgnoFecha($fechaDesde,1);
@@ -711,6 +707,34 @@ class Pedido extends CI_Controller
         $data['ant'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesdeYP,$fechaHastaYP);
         echo json_encode($data);
     }
+
+
+
+   /* public function obtenerIngresosPorRango(){
+        
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login');
+        }
+
+        $fechaDesde = $this->input->post('startDate');
+        $fechaHasta = $this->input->post('endDate');
+
+
+ 
+
+        $fechaHastaYP = $this->load->restaAgnoFecha($fechaHasta,1);
+        $fechaDesdeYP = $this->load->restaAgnoFecha($fechaDesde,1);
+
+        $data['act'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesde,$fechaHasta);
+        $data['ant'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesdeYP,$fechaHastaYP);
+
+        echo json_encode($data);
+
+    }*/
+
+
+
+    
     /**
      * ********************************************* V_pedido_listado *****************************************************************************
      */

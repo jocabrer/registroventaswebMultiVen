@@ -346,6 +346,29 @@ class M_pedido extends CI_Model {
 	}
 
 
+	function obtenerIngresosPorPedidoDiario($fechaDesde,$fechaHasta){
+
+		$this->db->select('year(est_fec_ing) as agno');
+		$this->db->select('DATE_FORMAT(est_fec_ing, "%Y-%m-%d") as label');
+		$this->db->select('count(est_fec_ing) as qty');
+		$this->db->select_sum('totalAPagar','totalAPagar');
+		$this->db->select_sum('Ganancia100','ganancia');
+		$this->db->from('v_listadopedidoextendido');
+		if($fechaDesde!="" && $fechaHasta!="")
+			{
+				$data = $this->db->group_start();
+				$data = $this->db->where(' est_fec_ing >=', $fechaDesde." 00:00:00");
+				$data = $this->db->where(' est_fec_ing <=', $fechaHasta." 23:59:59");
+				$data = $this->db->group_end();
+			}
+
+		$this->db->group_by('DATE_FORMAT(est_fec_ing, "%Y-%m-%d"),');
+
+		return $this->db->get()->result_array();
+	}
+
+
+
 	/**
 	 * Obtiene los indicadores de un pedido
 	 * @param int $idpedido

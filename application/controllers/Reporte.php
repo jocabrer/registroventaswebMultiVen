@@ -286,4 +286,84 @@ class Reporte extends CI_Controller {
 		$datos = $this->M_hojas->buscador_hojas(5,"desc","");
 		echo json_encode ( $datos );
 	}
+
+
+	/**************************************************************************************************************************
+	 * Página muestra los distintos informes y graficos
+	 *
+	 * @return void
+	 */
+	public function graficosCC($cod="RPTDIARIO"){
+
+	    if (! $this->ion_auth->logged_in ()) {
+			$this->session->set_userdata('previous_url', current_url());
+			redirect ( 'auth/login' );
+		}
+
+		if(!$this->ion_auth->is_admin())
+		{
+			redirect ( '/' );
+		}
+
+		$dataContent['titleHeader']  =  "Informes y Gráficos.";
+		$dataContent['descHeader']   =  "Analisis de las ventas.";
+
+
+
+		if($cod=="RPTDIARIO") 
+			$dataContent['subtitulo']  =  "Informe de pedidos diarios";
+		if($cod=="RPTMENSUAL") 
+			$dataContent['subtitulo']  =  "Informe de pedidos mensuales";
+
+		$dataContent['codigoReporte']   =  $cod;
+		$dataContent['fechaActual']	= $this->load->obtieneFechaActual();
+		$dataContent['agnoActual']	= date("Y");
+
+
+        $this->load->template('v_graficos', $dataContent);
+		
+	}
+	/*	* ************************************************************************************************************************/
+
+	public function graficoObtieneDatos(){
+
+		$cod =  $this->input->post('cod');
+		if ($cod=="RPTDIARIO"){
+			 $this->obtenerIngresosPorRangoDiario();
+		}
+		if ($cod=="RPTMENSUAL"){
+			$this->obtenerIngresosPorRango();
+	   }
+
+	}
+
+	public function obtenerIngresosPorRango(){
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login');
+        }
+
+        $fechaDesde = $this->input->post('startDate');
+        $fechaHasta = $this->input->post('endDate');
+
+		$fechaDesdeYP = $this->load->restaAgnoFecha($fechaDesde,1);
+		$fechaHastaYP = $this->load->restaAgnoFecha($fechaHasta,1);
+
+        $data['act'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesde,$fechaHasta);
+        $data['ant'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesdeYP,$fechaHastaYP);
+        echo json_encode($data);
+
+    }
+	public function obtenerIngresosPorRangoDiario(){
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login');
+        }
+
+        $fechaDesde = $this->input->post('startDate');
+        $fechaHasta = $this->input->post('endDate');
+
+        $data['act'] = $this->M_pedido->obtenerIngresosPorPedidoDiario($fechaDesde,$fechaHasta);
+
+        echo json_encode($data);
+
+    }
 }
