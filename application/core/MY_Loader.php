@@ -165,6 +165,39 @@ class MY_Loader extends CI_Loader {
               
     }
 
+    public function fechaFinalDeMes(){
+        $mes = date('m');
+        $agno = date('Y');
+        if($mes==12){
+            $mesprox = 1;
+            $agno = $agno+1;
+        }
+        else
+            $mesprox = $mes +1;
+
+        $fechamesprox = date_create("01-$mesprox-$agno");
+        return date_modify($fechamesprox,'-1 day');
+        
+    }
+
+    public function fechaInicialDeAgno(){
+        $agno = date('Y');
+        return date_create("01-01-$agno");
+    }
+
+    public function fechaInicialDeAgnoAnterior(){
+        return date_modify($this->fechaInicialDeAgno(),'-1 year');
+      }
+      
+    public function fechaFinalDeAgnoAnterior(){
+      return date_modify($this->fechaInicialDeAgno(),'-1 days');
+    }
+    
+    
+
+   
+   
+   
     public function restaDiasFecha($fecha,$arestar){
 
         return date("Y-m-d",strtotime($fecha."- ".$arestar." days"));

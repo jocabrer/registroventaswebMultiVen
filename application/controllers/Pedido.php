@@ -695,11 +695,13 @@ class Pedido extends CI_Controller
             redirect('auth/login');
         }
         
-        $fechaHasta = $this->load->obtieneFechaActual();
-        $fechaDesde = $this->load->restaDiasFecha($fechaHasta,300);
+        $fechaHasta = $this->load->fechaFinalDeMes()->format('Y-m-d');
+        $fechaDesde = $this->load->fechaInicialDeAgno()->format('Y-m-d');
 
-        $fechaHastaYP = $this->load->restaAgnoFecha($fechaHasta,1);
-        $fechaDesdeYP = $this->load->restaAgnoFecha($fechaDesde,1);
+        //$fechaHastaYP = $this->load->restaAgnoFecha($fechaHasta,1);
+        
+        $fechaDesdeYP = $this->load->fechaInicialDeAgnoAnterior($fechaDesde,1)->format('Y-m-d');
+        $fechaHastaYP = $this->load->fechaFinalDeAgnoAnterior()->format('Y-m-d');
 
         //echo $fechaDesdeYP."-".$fechaHastaYP;
         //echo "<br>".$fechaDesde."-".$fechaHasta;
@@ -707,6 +709,13 @@ class Pedido extends CI_Controller
 
         $data['act'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesde,$fechaHasta);
         $data['ant'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesdeYP,$fechaHastaYP);
+
+        $data['fd'] = $fechaDesde;
+        $data['fh'] = $fechaHasta;
+
+        $data['fda'] = $fechaDesdeYP;
+        $data['fha'] = $fechaHastaYP;
+
         echo json_encode($data);
     }
 

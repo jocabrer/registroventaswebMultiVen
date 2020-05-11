@@ -703,7 +703,7 @@
           //Boolean - Whether to fill the dataset with a color
           datasetFill: false,
           //String - A legend template
-          legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+          legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=PriceFormatter(datasets[i].label)<%}%></li><%}%></ul>",
           //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
           maintainAspectRatio: false,
           //Boolean - whether to make the chart responsive to window resizing
@@ -712,7 +712,6 @@
 		  scales: {
             yAxes: [{
                 ticks: {
-                    // Include a dollar sign in the ticks
                     callback: function(value, index, values) {
                         return PriceFormatter(value);
                     }
@@ -737,15 +736,16 @@
 						
 						for (var i in res.act) {
 							montos.push(res.act[i].totalAPagar);
-							montosGanancia.push(res.act[i].ganancia);
-							periodos.push(numeroAmes(res.act[i].mes));
+							//montosGanancia.push(res.act[i].ganancia);
+							//periodos.push(numeroAmes(res.act[i].mes));
 							//cantidadPedidos.push(res[i].cantidadPedidos);
 						}
 
 						for (var i in res.ant) {
 							montosAnt.push(res.ant[i].totalAPagar);
-							montosGananciaAnt.push(res.ant[i].ganancia);
-							//periodosAnt.push(res.act[i].label);
+							//montosGananciaAnt.push(res.ant[i].ganancia);
+							//Los periodos los saco del año anterior porque siempre tendrá todo el año
+							periodos.push(numeroAmes(res.ant[i].mes));
 							//cantidadPedidos.push(res[i].cantidadPedidos);
 						}
 
@@ -753,11 +753,18 @@
                         labels: periodos,
                         datasets: [
                             {
-                                label: 'Ventas anuales',
+                                label: 'Actual(' + res.fd + '-' + res.fh +')'  ,
 								backgroundColor: 'rgb(243, 156, 18)',
 								borderColor: 'rgb(243, 156, 18)',
 								fill: false,
                                 data: montos
+							},
+							{
+                                label: 'Anterior (' + res.fda + '-' + res.fha +')',
+								backgroundColor: 'rgb(38, 154, 188)',
+								borderColor: 'rgb(38, 154, 188)',
+								fill: false,
+                                data: montosAnt
 							},
 							{
                                 label: 'Ganancia anual',
@@ -765,14 +772,7 @@
 								   borderColor: 'rgb(47, 51, 54)',
 								fill: false,
                                 data: montosGanancia
-							},
-							{
-                                label: 'Año Anterior',
-								backgroundColor: 'rgb(38, 154, 188)',
-								borderColor: 'rgb(38, 154, 188)',
-								fill: false,
-                                data: montosAnt
-                            }
+							}
 							]
 						};
 
