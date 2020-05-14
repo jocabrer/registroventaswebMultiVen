@@ -419,6 +419,8 @@ class Reporte extends CI_Controller {
 
 		
 		$data['rows'] = $this->M_Productos->obtenerProductosMasVendidos($fechaDesde,$fechaHasta);
+		
+
         echo json_encode($data['rows']);
 	}
 

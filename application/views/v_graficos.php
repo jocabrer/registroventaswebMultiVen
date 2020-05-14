@@ -62,6 +62,7 @@
 					<div class="form-group" >
 						Selecciones Producto 
 						<select id="cntrl_id_producto"  class="form-control" name="cntrl_id_producto" data-error="Seleccione un Producto""></select>
+						
 					</div>	
 			</div>
 
@@ -151,20 +152,24 @@
 				var unidades = [];
 				var unidadesAnt = [];
 				var periodos = [];
+				var sum1 = 0;
+				var sum2 = 0;
 				for (var i in res.prodata) {
 					unidades.push(res.prodata[i].unidades);
+					sum1 = sum1 + parseInt(res.prodata[i].unidades);
 				}
 				for (var i in res.prodataAnt) {
 					unidadesAnt.push(res.prodataAnt[i].unidades);
+					sum2 = sum2 + parseInt(res.prodataAnt[i].unidades);
 					periodos.push(res.prodataAnt[i].mes);
 				}
 				chartdata = {labels: periodos,datasets:[{	
-													label: 'Actual' ,
+													label: 'Actual = ' + sum1,
 													backgroundColor: 'rgb(243, 156, 18)',
 													borderColor: 'rgb(243, 156, 18)',
 													fill: false,
 													data: unidades},{
-													label: 'Anterior',
+													label: 'Anterior ' + sum2,
 													backgroundColor: 'rgb(47, 51, 54)',
 													borderColor: 'rgb(47, 51, 54)',
 													fill: false,
@@ -175,19 +180,19 @@
 
 			function reporteProductosMasVendidos(){
 			
-			$('#tbl_masvendidos').bootstrapTable('destroy').bootstrapTable
-			(	{
-				url: base_url+'Reporte/obtenerReporteProductosVendido/',
-				method:"GET",
-				dataType: 'json',
-				columns:[  
-							{field: 'id',title: 'ID',formatter:'f_idpedido'}, 
-							{field: 'nombre',title: 'Cliente'},
-							{field: 'unidades',title: 'Unidades'}
-						]
-				}
-			);}
-
+				$('#tbl_masvendidos').bootstrapTable('destroy').bootstrapTable
+				(	{
+					url: base_url+'Reporte/obtenerReporteProductosVendido/',
+					method:"GET",
+					dataType: 'json',
+					columns:[  
+								{field: 'id',title: 'ID'}, 
+								{field: 'nombre',title: 'Cliente'},
+								{field: 'unidades',title: 'Unidades'}
+							]
+					}
+				);
+			}
 			/* RPTMENSUAL o DIARIO....................................................................................................................................*/ 
 			function inicializaControlRangoFecha(){
 					//Date range as a button
