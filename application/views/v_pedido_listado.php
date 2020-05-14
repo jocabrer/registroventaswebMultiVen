@@ -765,14 +765,14 @@
 								borderColor: 'rgb(38, 154, 188)',
 								fill: false,
                                 data: montosAnt
-							},
+							}/*,
 							{
                                 label: 'Ganancia anual',
 								backgroundColor: 'rgb(47, 51, 54)',
 								   borderColor: 'rgb(47, 51, 54)',
 								fill: false,
                                 data: montosGanancia
-							}
+							}*/
 							]
 						};
 

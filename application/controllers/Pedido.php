@@ -1,5 +1,4 @@
-﻿
-<?php
+﻿<?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
 date_default_timezone_set('America/Santiago');
@@ -79,13 +78,14 @@ class Pedido extends CI_Controller
      */
     public function editarPedido($idPed = -1)
     {
+        
         date_default_timezone_set('America/Santiago');
 
             if (!$this->ion_auth->logged_in()) {
                 $this->session->set_userdata('previous_url', current_url());
                 redirect('auth/login/');
             } else {
-
+                $this->session->set_userdata('previous_url', current_url());
                 $user = $this->ion_auth->user()->row();
                 $userid = $user->id;
             

@@ -171,6 +171,63 @@ class M_Productos extends CI_Model {
     }
     
 
+    function obtenerProductosMasVendidos($fechaDesde,$fechaHasta){
+
+        $this->db->select('p.id as id');
+		$this->db->select('p.Nombre as nombre');
+		$this->db->select('p.Descripcion as descripcion');
+		$this->db->select_sum('d.cantidad','unidades');
+        $this->db->from('cabecera as cab','as cab'); 
+        $this->db->join('detalle as d','cab.id = d.id_cabecera');
+        $this->db->join('producto as p','d.id_producto = p.id');
+
+		if($fechaDesde!="" && $fechaHasta!="")
+			{
+				$data = $this->db->group_start();
+				$data = $this->db->where(' cab.fecha_ingreso >=', $fechaDesde." 00:00:00");
+				$data = $this->db->where(' cab.fecha_ingreso <=', $fechaHasta." 23:59:59");
+				$data = $this->db->group_end();
+			}
+
+        $this->db->group_by(array("p.id", "p.Nombre","p.Descripcion"));
+        $this->db->order_by(4,"desc");
+		return $this->db->get()->result_array();
+    }
+
+    
+    /**
+     * Obtiene el desglose mensual de unidades vendidas para un  producto durante un año.-
+     *
+     * @param [type] $fechaDesde fecha desde
+     * @param [type] $fechaHasta fecha hasta
+     * @param [type] $prod prod a analizar.
+     * @return Resultados
+     */
+    function obtenerProductoPorMes($fechaDesde,$fechaHasta,$prod){
+
+        $this->db->select('p.id as id');
+		$this->db->select('p.Nombre as nombre');
+        $this->db->select('p.Descripcion as descripcion');
+        $this->db->select('MONTH(cab.fecha_ingreso) mes');
+		$this->db->select_sum('d.cantidad','unidades');
+        $this->db->from('cabecera as cab','as cab'); 
+        $this->db->join('detalle as d','cab.id = d.id_cabecera');
+        $this->db->join('producto as p','d.id_producto = p.id');
+
+		if($fechaDesde!="" && $fechaHasta!="")
+			{
+				$data = $this->db->group_start();
+				$data = $this->db->where(' cab.fecha_ingreso >=', $fechaDesde." 00:00:00");
+				$data = $this->db->where(' cab.fecha_ingreso <=', $fechaHasta." 23:59:59");
+                $data = $this->db->group_end();
+                $data = $this->db->where(' d.id_producto ', $prod);
+			}
+
+		$this->db->group_by(array("p.id", "p.Nombre","p.Descripcion,MONTH(cab.`fecha_ingreso`)"));
+		return $this->db->get()->result_array();
+    }
+    
+
 }
 
 ?>

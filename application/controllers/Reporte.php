@@ -302,11 +302,22 @@ class Reporte extends CI_Controller {
 		$dataContent['titleHeader']  =  "Informes y Gráficos.";
 		$dataContent['descHeader']   =  "Analisis de las ventas.";
 
-		if($cod=="RPTDIARIO") 
+		if($cod == "RPTDIARIO"){
 			$dataContent['subtitulo']  =  "Informe de pedidos diarios";
-		if($cod=="RPTMENSUAL") 
+		}
+			
+		if($cod == "RPTMENSUAL"){
 			$dataContent['subtitulo']  =  "Informe de pedidos mensuales";
+		
+		}
 
+		if($cod == "RPTPRODUCTO"){
+			$dataContent['subtitulo']  =  "Informe de productos";
+			/* controles a desplegar */
+		
+		}
+		
+		$dataContent['cod']  = $cod;
 		$dataContent['codigoReporte']   =  $cod;
 		$dataContent['fechaActual']	= $this->load->obtieneFechaActual();
 		$dataContent['agnoActual']	= date("Y");
@@ -324,12 +335,18 @@ class Reporte extends CI_Controller {
 	public function graficoObtieneDatos(){
 
 		$cod =  $this->input->post('cod');
-		if ($cod=="RPTDIARIO"){
-			 $this->obtenerIngresosPorRangoDiario();
+
+		switch ($cod) {
+			case "RPTDIARIO":
+				$this->obtenerIngresosPorRangoDiario();
+				break;
+			case "RPTMENSUAL":
+				$this->obtenerIngresosPorRango();
+				break;
+			case "RPTPRODUCTO":
+				$this->obteneReporteProductosMensual();
+				break;
 		}
-		if ($cod=="RPTMENSUAL"){
-			$this->obtenerIngresosPorRango();
-	   }
 
 	}
 	/**
@@ -348,11 +365,13 @@ class Reporte extends CI_Controller {
 		$fechaDesdeYP = $this->load->restaAgnoFecha($fechaDesde,1);
 		$fechaHastaYP = $this->load->restaAgnoFecha($fechaHasta,1);
 
+		$data['tipo'] = "pedidos";
         $data['act'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesde,$fechaHasta);
-        $data['ant'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesdeYP,$fechaHastaYP);
+		$data['ant'] = $this->M_pedido->obtenerIngresosPorPedido($fechaDesdeYP,$fechaHastaYP);
+		
         echo json_encode($data);
 	}
-	/**
+	/*
 	 * Método Ajax que obtiene la data para el gráfico diario
 	 *
 	 * @return void
@@ -364,10 +383,44 @@ class Reporte extends CI_Controller {
 
         $fechaDesde = $this->input->post('startDate');
         $fechaHasta = $this->input->post('endDate');
-
+		$data['tipo'] = "pedidos";
+		
         $data['act'] = $this->M_pedido->obtenerIngresosPorPedidoDiario($fechaDesde,$fechaHasta);
 
         echo json_encode($data);
 
-    }
+	}
+	
+
+	public function obteneReporteProductosMensual(){
+
+		$fechaHasta = $this->load->fechaFinalDeMes()->format('Y-m-d');
+		$fechaDesde = $this->load->fechaInicialDeAgno()->format('Y-m-d');
+		$prod = $this->input->post('prod');
+
+               
+        $fechaDesdeYP = $this->load->fechaInicialDeAgnoAnterior($fechaDesde,1)->format('Y-m-d');
+        $fechaHastaYP = $this->load->fechaFinalDeAgnoAnterior()->format('Y-m-d');
+
+		$data['tipo'] = "productos";
+		$data['prodata'] = $this->M_Productos->obtenerProductoPorMes($fechaDesde,$fechaHasta,$prod);
+		$data['prodataAnt'] = $this->M_Productos->obtenerProductoPorMes($fechaDesdeYP,$fechaHastaYP,$prod);
+        echo json_encode($data);
+	}
+
+
+	public function obtenerReporteProductosVendido(){
+
+		$fechaHasta = $this->load->fechaFinalDeMes()->format('Y-m-d');
+		$fechaDesde = $this->load->fechaInicialDeAgno()->format('Y-m-d');
+		       
+        $fechaDesdeYP = $this->load->fechaInicialDeAgnoAnterior($fechaDesde,1)->format('Y-m-d');
+        $fechaHastaYP = $this->load->fechaFinalDeAgnoAnterior()->format('Y-m-d');
+
+		
+		$data['rows'] = $this->M_Productos->obtenerProductosMasVendidos($fechaDesde,$fechaHasta);
+        echo json_encode($data['rows']);
+	}
+
+
 }

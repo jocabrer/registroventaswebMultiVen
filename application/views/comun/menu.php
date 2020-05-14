@@ -110,13 +110,16 @@
 				
 
 					<li class="<?php echo ($currentAction == "graficosCC/RPTDIARIO")?'active':'treeview'; ?>">
-						<a href="<?php echo base_url('Reporte/graficosCC/RPTDIARIO'); ?>">Reporte diario</a>
+						<a href="<?php echo base_url('Reporte/graficosCC/RPTDIARIO'); ?>">Diario</a>
 					</li>
 			    
 					<li class="<?php echo ($currentAction == "Reporte/graficosCC/RPTMENSUAL")?'active':'treeview'; ?>">
-						<a href="<?php echo base_url('Reporte/graficosCC/RPTMENSUAL'); ?>">Reporte Mensual</a>
+						<a href="<?php echo base_url('Reporte/graficosCC/RPTMENSUAL'); ?>">Mensual</a>
 					</li>
-			    
+				
+					<li class="<?php echo ($currentAction == "Reporte/graficosCC/RPTPRODUCTO")?'active':'treeview'; ?>">
+						<a href="<?php echo base_url('Reporte/graficosCC/RPTPRODUCTO'); ?>">Productos</a>
+					</li>
               </ul>
             </li>
             
