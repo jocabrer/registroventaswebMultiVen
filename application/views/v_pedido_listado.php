@@ -732,35 +732,34 @@
 						var montosGananciaAnt = [];
 						var periodos = [];
 						var montosGanancia = [];
-						//var cantidadPedidos = [];
+						var sum1= 0 ;
+						var sum2= 0;
 						
 						for (var i in res.act) {
 							montos.push(res.act[i].totalAPagar);
-							//montosGanancia.push(res.act[i].ganancia);
-							//periodos.push(numeroAmes(res.act[i].mes));
-							//cantidadPedidos.push(res[i].cantidadPedidos);
+							sum1 = sum1 + parseInt(res.act[i].totalAPagar);
 						}
 
 						for (var i in res.ant) {
 							montosAnt.push(res.ant[i].totalAPagar);
-							//montosGananciaAnt.push(res.ant[i].ganancia);
-							//Los periodos los saco del año anterior porque siempre tendrá todo el año
+							sum2 = sum2 + parseInt(res.ant[i].totalAPagar);
 							periodos.push(numeroAmes(res.ant[i].mes));
-							//cantidadPedidos.push(res[i].cantidadPedidos);
 						}
 
 						var chartdata = {
                         labels: periodos,
                         datasets: [
                             {
-                                label: 'Actual(' + res.fd + '-' + res.fh +')'  ,
+                                //label: 'Actual(' + res.fd + '-' + res.fh +') ' + PriceFormatter(sum1)  ,
+								label: 'Actual  ' + PriceFormatter(sum1),
 								backgroundColor: 'rgb(243, 156, 18)',
 								borderColor: 'rgb(243, 156, 18)',
 								fill: false,
                                 data: montos
 							},
 							{
-                                label: 'Anterior (' + res.fda + '-' + res.fha +')',
+                                //label: 'Anterior (' + res.fda + '-' + res.fha +') ' + PriceFormatter(sum2),
+								label: 'Anterior ' + PriceFormatter(sum2),
 								backgroundColor: 'rgb(38, 154, 188)',
 								borderColor: 'rgb(38, 154, 188)',
 								fill: false,
