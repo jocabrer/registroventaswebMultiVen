@@ -191,6 +191,7 @@
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+					<button class="btn btn-box-tool" id="btn_update_grafico"><i class="fa fa-refresh"></i></button>
                   </div>
                 </div>
                 <div class="box-body">
@@ -435,7 +436,7 @@
 		$btnVerPedido.click(function () {
 			muestraPedidoVistaPreviaModal($('#buscarpedido').val());
 		});
-
+		$('#btn_update_grafico').click(function(){localStorage.removeItem("resgraficoventas");inicializaGraficoVentas();});
 		//Date range as a button
         $('#daterange-btn').daterangepicker(
                 {
@@ -720,13 +721,29 @@
             }]
         }
 		};
-		//obtenerIngresosPorPedido
-		jQuery.ajax({
+		
+			//grafico
+			if(localStorage.getItem("resgraficoventas")!=null){
+				procesagraficoventas(JSON.parse(localStorage.getItem("resgraficoventas")));
+			}
+			else{
+			//obtenerIngresosPorPedido
+			jQuery.ajax({
 				method: "GET",
 					url: "<?php echo base_url('Pedido/obtenerIngresosPorPedido/'); ?>",
 					dataType: 'json',
 					success: function(res) {
-						console.log(res);
+						localStorage.setItem("resgraficoventas", JSON.stringify(res));
+						console.log(JSON.parse(localStorage.getItem("resgraficoventas")));
+						procesagraficoventas(JSON.parse(localStorage.getItem("resgraficoventas")));
+					}
+				});
+			}//grafico
+			
+
+
+		function procesagraficoventas(res){
+			console.log(res.act);
 						var montos = [];
 						var montosAnt = [];
 						var montosGananciaAnt = [];
@@ -785,8 +802,8 @@
 							data: chartdata,
 							options: areaChartOptions
 						});
-					}
-		});			
+		}
+
 	}
 </script>
  

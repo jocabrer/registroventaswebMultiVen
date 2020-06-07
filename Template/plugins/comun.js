@@ -357,6 +357,7 @@ function MuestraMensaje(titulo,mensaje){
 						   {field: 'id',title: 'Pedido',formatter:'f_idpedido'},
 						   {field: 'cli_nom',title:'Nombre',formatter:'f_cliente'},
 						   /*{field: 'filenameid',title: 'filename',formatter:'f_archivoadjunto'}*/
+						   {field: 'estado_sec',title:'Estado',formatter:'FormatoEstado'}
 						  ]
 			   }
 		);
@@ -381,7 +382,7 @@ function MuestraMensaje(titulo,mensaje){
 			   columns:[  /* {field: 'fecha_subida',title: 'Fec. Subida'},*/
 						   {field: 'numeroPedido',title: 'Pedido',formatter:'f_idpedido'},
 						   {field: 'cli_nom',title:'Nombre',formatter:'f_cliente'},
-						   /*{field: 'filenameid',title: 'filename',formatter:'f_archiv|oadjunto'}*/
+						   {field: 'estado_sec',title:'Estado',formatter:'FormatoEstado'}
 						  ]
 			   }
 		);
