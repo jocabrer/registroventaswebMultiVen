@@ -101,6 +101,14 @@
 						</div>
 					<p class="text-muted well well-sm no-shadow left" style="text-align:left;">
 					Si su pedido no corresponde a lo que usted solicitó favor avisar.
+					<br>
+					<br>
+					<b>I M P O R T A N T E</b>
+					<br>
+					<br>
+					Se recuerda que en caso de retiro de sus productos, puede realizarlos de Lunes a Viernes de 08:00 a 12:00 y de 13:00 a 16hrs. 
+					<br>
+					<b>Dirección: Quinta Normal, Ingeniero Lloyd #01660.</b>
 					</p>
 				</div>         <!-- col -->         
 			
