@@ -4,3 +4,5 @@ application/config/database.php
 license.txt
 .htaccess
 v_totalcuentapedidoNueva.txt
+error_log
+logs/

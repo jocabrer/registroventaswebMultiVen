@@ -443,6 +443,7 @@ function clientesExistentesCall(res){
 function queryParams(params) {
 	var cliente = '<?php echo $cliEdit['id']?>';
 	params['cliente'] = cliente;
+        params['limit'] = 50;
     return params;
 }
 

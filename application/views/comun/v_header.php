@@ -61,7 +61,7 @@ date_default_timezone_set('America/Santiago');
 	<!-- bootstrap-table Latest compiled and minified JavaScript -->
 	<script src="<?php echo base_url('Template/plugins/bootstrap-table/dist/bootstrap-table.js')?>"></script>
 	<!-- Script para exportar tablas -->
-	<script src="http://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+	<script src="https://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 	<script src="<?php echo base_url('Template/plugins/bootstrap-table/dist/extensions/export/bootstrap-table-export.js')?>"></script>
 	<!-- Script para exportar a pdf -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
@@ -167,7 +167,7 @@ date_default_timezone_set('America/Santiago');
             echo "<body class=\"skin-purple  sidebar-mini \">";
 		}
 		else {
-		    echo "<body class=\"skin-yellow  sidebar-mini \">";
+		    echo "<body class=\"skin-red  sidebar-mini \">";
 		}
   
   ?>

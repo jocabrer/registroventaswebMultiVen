@@ -137,7 +137,7 @@ $(document).ready(function() {
 		}
 		else
 		{
-    		if(confirm('¿ Seguro desea eliminar la transaccion ? ')){
+    		if(confirm('¿ Seguro desea eliminar la transacción ? ')){
         		
     			var ids = $('#tabladetallemovimientos').bootstrapTable('getSelections');
     			console.log(ids.length); 
@@ -172,9 +172,9 @@ function eliminaTransacciones(ids){
 function callback_elimina(data){
 
 		if(!data)
-			alert("Hubo un error al tratar de eliminar la l�nea :(, favor actualizar la p�gina y reintentar...");
+			alert("Hubo un error al tratar de eliminar la línea :(, favor actualizar la página y reintentar...");
 		
-		alert('Linea(s) borrada(s)');
+		alert('Línea(s) borrada(s)');
 
 		var $table = $('#tabladetallemovimientos');
 		$table.bootstrapTable('refresh');
@@ -182,7 +182,7 @@ function callback_elimina(data){
 
 
 /**
- * Procesa la respuesta del metodo que carga v�a ajax los datos a la tabla.
+ * Procesa la respuesta del metodo que carga v�a ajax los datos a la tabla.
  */
 function responseHandler(res){
 

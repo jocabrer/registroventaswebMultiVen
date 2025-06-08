@@ -1,14 +1,5 @@
 <html>
     <head>
-        <script>base_url = '<?php echo base_url(); ?>'; 
-                id_visitante = <?php echo $id_visitante;?>;
-                id_atencion = <?php echo $id_atencion;?>;
-                ck_nombre = '<?php echo $atencion['ck_nombre']; ?>';
-                ck_contacto= '<?php echo $atencion['ck_contacto']; ?>';
-                ck_saludo = '<?php echo $atencion['ck_saludo']; ?>';
-                
-                ;
-        </script>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
@@ -25,7 +16,7 @@
             </div>
              <div class="title">Agente de Ventas<br><span id="escribiendo" class="escribiendo">Escribiendo<img src="<?php echo base_url("chatbot/img/message.gif"); ?>"></span></div>
         </div>
-        <ul class="messages"></ul>
+                    <ul class="messages"></ul>
 
                     
                     <div class="bottom_wrapper clearfix">
@@ -36,6 +27,9 @@
                             <div class="text">Enviar</div>
                           </div>
                       </div>
+                   
+
+                    
     </div>
 
     <!-- template sistema -->

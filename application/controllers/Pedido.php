@@ -1,4 +1,5 @@
-﻿<?php
+﻿
+<?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
 date_default_timezone_set('America/Santiago');
@@ -321,7 +322,7 @@ class Pedido extends CI_Controller
                 $arr = array('id' => -1, 'mensaje' => $res . " " . $error);
         }
         //Redireccionamos a la página del pedido.
-        redirect('/Pedido/editarPedido/' . $id_pedido);
+        redirect('/Pedido/editarPedido/' . $id_pedido, 'refresh');
     }
 
     /*

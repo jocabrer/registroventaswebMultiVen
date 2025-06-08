@@ -45,7 +45,7 @@
                 <strong>Jos&eacute; Cabrera Gatica</strong><br>
                 Ingeniero Lloyd #01660<br>
                 Quinta Normal, Santiago<br>
-                Fono: (+569) 5254-6005<br/>
+                Fono: (+569) 2054-7036<br/>
                 Email: ventas@latasymoldes.com
               </address>
           </div><!-- /.col -->
@@ -107,7 +107,7 @@
           <div class="col-xs-6">
             <p class="lead">Observaciones<p>
               <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                <?php echo $pedEdit['nota']; ?>
+                               <?php echo nl2br($cliEdit->observaciones); ?>
               </p>
           </div><!-- /.col -->
           <div class="col-xs-6">

@@ -26,6 +26,7 @@ class comun {
             $this->feriados = $resultado2;
         }
     }
+
     /**
      * Crea un Datetime a partir de un string
      * @param $fecha_ingreso string fecha debe estar separado por guion
@@ -36,7 +37,12 @@ class comun {
         $temp1  =  explode('-', $fecha_ingreso);
         $temp1[2] = substr($temp1[2], 0,2);
         return new DateTime(join('-',$temp1 ));
-     
+        
+        //2017-10-05 09:58:28
+        
+       // return datetime::createfromformat('Y-M-d H:i:s',$fecha_ingreso);
+        
+        //exit(0);
     }
     
     function transformaStringFechaHora($fecha_ingreso)
@@ -46,7 +52,7 @@ class comun {
     }
     
     /**
-     * Cuenta los dï¿½as entre 2 fechas
+     * Cuenta los días entre 2 fechas
      * @param date $fecha_ingreso fecha pasada
      * @param date $fecha_actual fecha actual
      * @return number
@@ -70,35 +76,12 @@ class comun {
             }
         
         }while($fecha_aux <= $fecha_actual);
+        
         return $contador;
+        
     }
-
     
-    /**
-     * Obtiene informaciÃ³n relevante al visitante actual
-     */
-    public function obtieneDatosVisitante(){
-
-        $this->ci->load->library('user_agent');
-        
-        $data ="";
-        $agent="";
-
-        if ($this->ci->agent->is_browser()){
-				$agent = $this->ci->agent->browser().' '.$this->ci->agent->version();
-		}elseif ($this->ci->agent->is_robot()){
-				$agent = $this->ci->agent->robot();
-		}elseif ($this->ci->agent->is_mobile()){
-				$agent = $this->ci->agent->mobile();
-		}else{
-				$agent = 'Unidentified User Agent';
-		}
-        
-        $data['agent'] = $agent;
-        $data['ip'] = $_SERVER['REMOTE_ADDR'];
-
-        return $data;
-    }
+  
     
     
 }

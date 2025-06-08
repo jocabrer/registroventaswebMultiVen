@@ -453,16 +453,16 @@ class M_pedido extends CI_Model {
 	function obtenerPedidoSeguimiento($idcabecera, $idcliente,$userid){
 	    
 	    //v_seguimiento
-	    $query = $this->db->where('pedido',$idcabecera);
-		$query = $this->db->where('id_cliente',$idcliente);
+	    $this->db->where('pedido',$idcabecera);
+	    $this->db->where('id_cliente',$idcliente);
 	    
 	    if($userid==-1)
-			$query = $this->db->where('publico',1);
+	        $this->db->where('publico',1);
 	    
-			$query = $this->db->where_not_in('tipo','E');
-			$query = $this->db->order_by('fecha_mod','desc');
+	    $this->db->where_not_in('tipo','E');
+	    $this->db->order_by('fecha_mod','desc');
 	    
-	   		$query = $this->db->get('v_seguimiento');
+	    $query = $this->db->get('v_seguimiento');
 	    
 	    return $query->result_array();
 	}

@@ -186,7 +186,7 @@
 					method:"GET",
 					dataType: 'json',
 					columns:[  
-								{field: 'id',title: 'ID'}, 
+								{field: 'id',title: 'ID',formatter:'f_idpedido'}, 
 								{field: 'nombre',title: 'Cliente'},
 								{field: 'unidades',title: 'Unidades'}
 							]

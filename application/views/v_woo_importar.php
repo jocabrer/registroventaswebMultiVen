@@ -49,7 +49,7 @@
 										 <th data-field="id_woo"  data-sortable="true" data-align="center">Id Pedido Woo</th>
 										 
 										 
-										 <th data-field="pedido_sistema"  data-sortable="true" data-align="center" data-formatter="f_idpedido">Pedido Interno</th>
+										 <th data-field="pedido_sistema"  data-sortable="true" data-align="center">Pedido Interno</th>
 										 
 										 <th data-field="idcliente" data-sortable="true" data-align="left" data-formatter="i_cliente">Cliente Interno</th>
 										 <th data-field="cliente_correo" data-sortable="true" data-align="left">Correo</th>

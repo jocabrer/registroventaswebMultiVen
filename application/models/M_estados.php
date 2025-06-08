@@ -62,7 +62,7 @@ class M_estados extends CI_Model {
         if($comision!=-1)
         {
             $query = $this->db->query('SELECT v.*, il.comision FROM v_cabecera v  
-                inner join v_indicador_lite il on vc.id = il.id_cabecera
+                inner join v_indicador_lite il on v.id = il.id_cabecera
                 WHERE il.comision = '.$comision.' and v.`estado_sec` = '.$estado);
            
         }
